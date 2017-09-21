@@ -27,7 +27,6 @@ passport.use(
 			clientID: keys.googleClientID,
 			clientSecret: keys.googleClientSecret,
 			callbackURL: '/auth/google/callback', // google oauth will route here after login
-			proxy: true
 		},
 		// this function will run after google logs in.
 		// async code using ES2015 async await syntax

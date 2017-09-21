@@ -17,7 +17,7 @@ module.exports = app => {
 	// logout automicatlly bound to passport req object.
 	app.get('/api/logout', (req, res) => {
 		req.logout();
-		res.redirect('/');
+		res.send(req.user);
 	});
 
 	// call to get currently logged in user
