@@ -11,17 +11,23 @@ module.exports = app => {
 	);
 
 	// callback route after logging in on google
-	app.get('/auth/google/callback', passport.authenticate('google'));
+	app.get(
+		'/auth/google/callback',
+		passport.authenticate('google'),
+		(req, res) => {
+			res.redirect('/dashboard');
+		}
+	);
 
 	// route handler for logging out
 	// logout automicatlly bound to passport req object.
 	app.get('/api/logout', (req, res) => {
 		req.logout();
-		res.send(req.user);
+		res.redirect('/');
 	});
 
 	// call to get currently logged in user
 	app.get('/api/current_user', (req, res) => {
 		res.send(req.user);
-	})
+	});
 };
