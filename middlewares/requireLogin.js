@@ -1,0 +1,8 @@
+// middleware to check if user is logged in in order to proceed with certain route handlers.
+module.exports = (req, res, next) => {
+	if(!req.user) {
+		return res.status(401).send({error: 'You must be logged in to continue.'});
+	}
+
+	next();
+};

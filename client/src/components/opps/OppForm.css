@@ -3,3 +3,17 @@
 	justify-content: space-between;
 	flex-wrap: wrap;
 }
+
+.form-fields > * {
+	margin-bottom: 25px;
+}
+
+.opp-form {
+	padding-bottom: 70px;
+}
+
+.form-buttons {
+	display: flex;
+	justify-content: space-between;
+	margin-top: 20px;
+}
