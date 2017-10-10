@@ -177,8 +177,6 @@ class OppTable extends Component {
 		this.setState({ tableRows: rows });
 	}
 	handleSearch = async event => {
-		console.log('Original List', this.originalOpps);
-		console.log('Search param', event.target.value.toLowerCase());
 		let search = event.target.value.toLowerCase();
 		const filteredOpps = this.originalOpps.filter(opp => {
 			return (
@@ -186,13 +184,31 @@ class OppTable extends Component {
 				opp.jobTitle.toLowerCase().includes(search)
 			);
 		});
-		console.log('Filtered opps', filteredOpps);
-		await this.setState({ opps: filteredOpps });
+		await this.setState({
+			opps: filteredOpps,
+			tableHeaders: [
+				{ label: "Company", value: "company", sortable: true, reversed: 0 },
+				{
+					label: "Job Title",
+					value: "jobTitle",
+					sortable: true,
+					reversed: 0
+				},
+				{ label: "Status", value: "status", sortable: true, reversed: 0 },
+				{
+					label: "Last Update",
+					value: "lastUpdate",
+					sortable: true,
+					reversed: 0
+				},
+				{ label: "Priority", value: "priority", sortable: true, reversed: 0 },
+				{ label: "Link", value: "appLink", sortable: false, reversed: 0 }
+			]
+		});
 		this.renderTableRows();
 	};
 
 	render() {
-		console.log("rendering");
 		return (
 			<div>
 				<div style={styles.searchBar}>
