@@ -7,8 +7,6 @@ import DatePicker from 'material-ui/DatePicker';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import { grey600, grey800 } from 'material-ui/styles/colors';
-import { Rating } from 'material-ui-rating';
-import { ToggleStar, ToggleStarBorder } from 'material-ui/svg-icons';
 
 const datePickerTheme = getMuiTheme({
 	datePicker: {
@@ -71,14 +69,3 @@ export const renderDatePicker = ({ input, label, meta, ...custom }) => (
 	</MuiThemeProvider>
 );
 
-export const renderStarRater = ({ input, label, meta, ...custom }) => {
-	console.log(custom);
-	return(
-	<Rating
-		value={custom.rating}
-		max={5}
-		onChange={(value) => console.log('value is ' + value)}
-		iconFilled={<ToggleStar color={grey800} />}
-		iconHovered={<ToggleStarBorder color={grey800} />}
-	/>
-)};

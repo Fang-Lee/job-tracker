@@ -11,12 +11,12 @@ const opportunitySchema = new Schema({
 	appLink: String,
 	jobDescription: String,
 	companyDescription: String,
-	lastUpdate: String,
+	lastUpdate: Date,
 	priority: { type: Number, default: 0 },
 	contactName: String,
 	contactEmail: String,
 	contactPhone: String,
-	lastContact: String,
+	lastContact: Date,
 	notes: String,
 	_user: { type: Schema.Types.ObjectId, ref: 'User' }
 });

@@ -11,6 +11,7 @@ import Header from './Header/Header';
 import Landing from './Landing/Landing';
 import Dashboard from './Dashboard/Dashboard';
 import OppForm from './opps/OppForm';
+import OppPage from './opps/OppPage';
 
 import './App.css';
 
@@ -28,6 +29,7 @@ class App extends Component {
 							<Route exact path="/" component={Landing} />
 							<Route exact path="/dashboard" component={Dashboard} />
 							<Route path="/new" component={OppForm} />
+							<Route path="/opp/:id" component={OppPage} />
 						</div>
 					</div>
 				</BrowserRouter>

@@ -1,17 +1,25 @@
 // route handlers for creating, fetching opportunities
-const mongoose = require('mongoose');
-const requireLogin = require('../middlewares/requireLogin');
+const mongoose = require("mongoose");
+const requireLogin = require("../middlewares/requireLogin");
+const linkify = require("linkifyjs");
 
-const Opportunity = mongoose.model('opps');
+const Opportunity = mongoose.model("opps");
 
 module.exports = app => {
-	app.get('/api/opps', requireLogin, async (req, res) => {
+	// fetch all opps
+	app.get("/api/opps", requireLogin, async (req, res) => {
 		const opps = await Opportunity.find({ _user: req.user.id });
-		console.log(opps);
 		res.send(opps);
 	});
 
-	app.post('/api/opp', requireLogin, async (req, res) => {
+	// fetch single opp by id
+	app.get("/api/opp/:id", requireLogin, async (req, res) => {
+		const opp = await Opportunity.findOne({ _id: req.params.id });
+		res.send(opp);
+	});
+
+	// create an opp
+	app.post("/api/opp", requireLogin, async (req, res) => {
 		const {
 			company,
 			jobTitle,
@@ -31,7 +39,19 @@ module.exports = app => {
 			notes
 		} = req.body;
 
-		// create new opp in db
+		// linkify the application link
+		let appLinkHref = "";
+		if (appLink) {
+			console.log("app link", appLink);
+			const linkInfo = linkify.find(appLink);
+			console.log("link info", linkInfo);
+			if (linkInfo.length > 0) {
+				console.log("link info", linkInfo);
+				appLinkHref = linkInfo[0].href;
+				console.log(appLinkHref);
+			}
+		}
+
 		const opp = new Opportunity({
 			company,
 			jobTitle,
@@ -39,15 +59,15 @@ module.exports = app => {
 			status,
 			salary,
 			origin,
-			appLink,
+			appLink: appLinkHref,
 			jobDescription,
 			companyDescription,
-			lastUpdate: new Date(lastUpdate).toLocaleDateString(),
+			lastUpdate,
 			priority,
 			contactName,
 			contactEmail,
 			contactPhone,
-			lastContact: new Date(lastContact).toLocaleDateString(),
+			lastContact,
 			notes,
 			_user: req.user.id
 		});
