@@ -1,19 +1,19 @@
-import React, { Component } from 'react';
-import { BrowserRouter, Route } from 'react-router-dom';
-import { connect } from 'react-redux';
-import * as actions from '../actions';
+import React, { Component } from "react";
+import { BrowserRouter, Route } from "react-router-dom";
+import { connect } from "react-redux";
+import * as actions from "../actions";
 
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import getMuiTheme from 'material-ui/styles/getMuiTheme';
-import { grey700, grey800 } from 'material-ui/styles/colors';
+import MuiThemeProvider from "material-ui/styles/MuiThemeProvider";
+import getMuiTheme from "material-ui/styles/getMuiTheme";
+import { grey700, grey800 } from "material-ui/styles/colors";
 
-import Header from './Header/Header';
-import Landing from './Landing/Landing';
-import Dashboard from './Dashboard/Dashboard';
-import OppForm from './opps/OppForm';
-import OppPage from './opps/OppPage';
+import Header from "./Header/Header";
+import Landing from "./Landing/Landing";
+import Dashboard from "./Dashboard/Dashboard";
+import OppForm from "./opps/OppForm";
+import OppPage from "./opps/OppPage";
 
-import './App.css';
+import "./App.css";
 
 class App extends Component {
 	componentDidMount() {
@@ -26,10 +26,12 @@ class App extends Component {
 					<div>
 						<Header />
 						<div className="container">
-							<Route exact path="/" component={Landing} />
-							<Route exact path="/dashboard" component={Dashboard} />
-							<Route path="/new" component={OppForm} />
-							<Route path="/opp/:id" component={OppPage} />
+							<div style={{ padding: "0 15px" }}>
+								<Route exact path="/" component={Landing} />
+								<Route exact path="/dashboard" component={Dashboard} />
+								<Route path="/new" component={OppForm} />
+								<Route path="/opp/:id" component={OppPage} />
+							</div>
 						</div>
 					</div>
 				</BrowserRouter>
@@ -41,8 +43,8 @@ class App extends Component {
 const muiTheme = getMuiTheme({
 	palette: {
 		primary1Color: grey800,
-		primary2Color: grey700,
+		primary2Color: grey700
 	}
-})
+});
 
 export default connect(null, actions)(App);

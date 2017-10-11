@@ -39,7 +39,7 @@ class OppTable extends Component {
 				{
 					label: "Last Update",
 					value: "lastUpdate",
-					sortable: true,
+					sortable: false,
 					reversed: 0
 				},
 				{ label: "Priority", value: "priority", sortable: true, reversed: 0 },
@@ -84,7 +84,7 @@ class OppTable extends Component {
 			{
 				label: "Last Update",
 				value: "lastUpdate",
-				sortable: true,
+				sortable: false,
 				reversed: 0
 			},
 			{ label: "Priority", value: "priority", sortable: true, reversed: 0 },
@@ -178,12 +178,13 @@ class OppTable extends Component {
 	}
 	handleSearch = async event => {
 		let search = event.target.value.toLowerCase();
-		const filteredOpps = this.originalOpps.filter(opp => {
+		let filteredOpps = this.originalOpps.filter(opp => {
 			return (
 				opp.company.toLowerCase().includes(search) ||
 				opp.jobTitle.toLowerCase().includes(search)
 			);
 		});
+		filteredOpps = filteredOpps.reverse();
 		await this.setState({
 			opps: filteredOpps,
 			tableHeaders: [
@@ -198,7 +199,7 @@ class OppTable extends Component {
 				{
 					label: "Last Update",
 					value: "lastUpdate",
-					sortable: true,
+					sortable: false,
 					reversed: 0
 				},
 				{ label: "Priority", value: "priority", sortable: true, reversed: 0 },

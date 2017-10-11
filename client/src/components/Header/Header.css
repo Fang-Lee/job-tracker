@@ -1,0 +1,9 @@
+.appBar{
+	margin: 0 auto !important;
+	padding: 0 calc(calc(100% - 960px) / 2) !important;
+	min-width: 960px;
+}
+
+.appBar > * {
+	padding: 0 5px;
+}

@@ -1,0 +1,24 @@
+.opp-page-header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.company-name {
+	display: inline-block;
+	font-size: 4em;
+	margin-right: 10px;
+}
+
+.opp-status {
+	padding: 10px;
+	border-radius: 5px;
+}
+
+.opp-status-text {
+	align-items: center;
+	color: white;
+}
+
+
+
