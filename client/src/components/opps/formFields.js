@@ -49,10 +49,10 @@ const formFields = [
 		component: renderSelectField,
 		style: styles.quarterWidth,
 		children: [
-			{ value: 'Interested', textLabel: 'Interested' },
-			{ value: 'Applied', textLabel: 'Applied' },
-			{ value: 'Interviewing', textLabel: 'Interviewing' },
-			{ value: 'Received Offer', textLabel: 'Received Offer' }
+			{ value: 1, textLabel: 'Interested' },
+			{ value: 2, textLabel: 'Applied' },
+			{ value: 3, textLabel: 'Interviewing' },
+			{ value: 4, textLabel: 'Received Offer' }
 		]
 	},
 	{

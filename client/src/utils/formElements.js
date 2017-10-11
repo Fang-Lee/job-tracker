@@ -1,12 +1,12 @@
 // generating any redux form fields with material-ui, all forms can use these funcitons to render fields
 
-import React from 'react';
-import TextField from 'material-ui/TextField';
-import SelectField from 'material-ui/SelectField';
-import DatePicker from 'material-ui/DatePicker';
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import getMuiTheme from 'material-ui/styles/getMuiTheme';
-import { grey600, grey800 } from 'material-ui/styles/colors';
+import React from "react";
+import TextField from "material-ui/TextField";
+import SelectField from "material-ui/SelectField";
+import DatePicker from "material-ui/DatePicker";
+import MuiThemeProvider from "material-ui/styles/MuiThemeProvider";
+import getMuiTheme from "material-ui/styles/getMuiTheme";
+import { grey600, grey800 } from "material-ui/styles/colors";
 
 const datePickerTheme = getMuiTheme({
 	datePicker: {
@@ -45,7 +45,7 @@ export const renderTextAreaField = ({ input, label, meta, ...custom }) => (
 export const renderSelectField = ({
 	input,
 	label,
-	meta,
+	meta: { touched, error },
 	children,
 	...custom
 }) => (
@@ -56,6 +56,7 @@ export const renderSelectField = ({
 		children={children}
 		{...custom}
 		hintText={custom.hint}
+		errorText={touched && error}
 	/>
 );
 
@@ -68,4 +69,3 @@ export const renderDatePicker = ({ input, label, meta, ...custom }) => (
 		/>
 	</MuiThemeProvider>
 );
-

@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { fetchOpp } from "../../actions";
 import "./OppPage.css";
 
-import { white } from 'material-ui/styles/colors'
+import Paper from 'material-ui/Paper'
 import Star from 'material-ui/svg-icons/action/grade';
 
 class OppPage extends Component {
@@ -14,28 +14,30 @@ class OppPage extends Component {
 	renderStatus(status, priority) {
 		let color;
 		let stars = [];
-		console.log(status);
-		console.log(color);
-		console.log(status === "INTERESTED")
+		let statusLabel = "";
 		switch (status) {
-			case "INTERESTED":
+			case 1:
 				color = '#EA4335';
+				statusLabel = 'INTERESTED';
 				break;
-			case "APPLIED":
+			case 2:
 				color = '#FBBC05';
+				statusLabel = 'APPLIED';
 				break;
-			case "INTERVIEWING":
-				color = '#34A853';
-				break;
-			case "RECEIVED OFFER":
+			case 3:
 				color = '#4285F4';
+				statusLabel = 'INTERVIEWING'
+				break;
+			case 4:
+				color = '#34A853';
+				statusLabel = 'RECEIVED OFFER'
 				break;
 			default:
 				color = 'white';
 		}
 		return (
 			<div className="opp-status" style={{backgroundColor: color}}>
-				<span className="opp-status-text">{status.toUpperCase()}</span>
+				<span className="opp-status-text">{statusLabel}</span>
 			</div>
 		);
 	}
@@ -69,7 +71,7 @@ class OppPage extends Component {
 						<h1 className="company-name">{company}</h1>
 						{jobTitle}
 					</div>
-					{this.renderStatus(status.toUpperCase(), priority)}
+					{this.renderStatus(status, priority)}
 				</div>
 				{jobTitle}
 			</div>

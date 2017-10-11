@@ -5,7 +5,7 @@ const opportunitySchema = new Schema({
 	company: String,
 	jobTitle: String,
 	location: String,
-	status: String,
+	status: { type: Number, default: 0},
 	salary: String,
 	origin: String,
 	appLink: String,

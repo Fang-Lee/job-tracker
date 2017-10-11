@@ -53,16 +53,6 @@ class OppForm extends Component {
 								style={style}
 							/>
 						);
-					case 'starRater':
-						return (
-							<Field
-								key={name}
-								component={component}
-								name={name}
-								rating={this.state.rating}
-								handleRate={this.handleRate}
-							/>
-						);
 					default:
 						return (
 							<Field
@@ -118,7 +108,7 @@ function mapStateToProps(state) {
 function validate(values) {
 	const errors = {};
 
-	const requiredFields = ['company', 'jobTitle'];
+	const requiredFields = ['company', 'jobTitle', 'status'];
 
 	requiredFields.forEach(field => {
 		if (!values[field]) {

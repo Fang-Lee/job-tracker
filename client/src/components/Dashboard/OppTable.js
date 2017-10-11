@@ -42,8 +42,7 @@ class OppTable extends Component {
 					sortable: false,
 					reversed: 0
 				},
-				{ label: "Priority", value: "priority", sortable: true, reversed: 0 },
-				{ label: "Link", value: "appLink", sortable: false }
+				{ label: "Priority", value: "priority", sortable: true, reversed: 0 }
 			],
 			opps: [],
 			tableRows: [],
@@ -87,8 +86,7 @@ class OppTable extends Component {
 				sortable: false,
 				reversed: 0
 			},
-			{ label: "Priority", value: "priority", sortable: true, reversed: 0 },
-			{ label: "Link", value: "appLink", sortable: false, reversed: 0 }
+			{ label: "Priority", value: "priority", sortable: true, reversed: 0 }
 		];
 		updatedHeaders[index] = selectedCol;
 		this.setState({ opps: sortedOpps, tableHeaders: updatedHeaders });
@@ -137,42 +135,86 @@ class OppTable extends Component {
 		const rows = this.state.opps
 			.reverse()
 			.map(
-				({ _id, company, jobTitle, status, lastUpdate, priority, appLink }) => (
-					<TableRow key={_id}>
-						<TableRowColumn>{company}</TableRowColumn>
-						<TableRowColumn>{jobTitle}</TableRowColumn>
-						<TableRowColumn>{status}</TableRowColumn>
-						<TableRowColumn>
-							{lastUpdate ? lastUpdate.slice(0, 10) : ""}
-						</TableRowColumn>
-						<TableRowColumn>{this.renderStars(priority)}</TableRowColumn>
-						<TableRowColumn>
-							{appLink ? (
-								<IconButton href={appLink} target="_blank">
-									<LinkIcon color={grey600} />
-								</IconButton>
-							) : null}
-						</TableRowColumn>
-						<TableRowColumn
-							style={{
-								display: "flex",
-								justifyContent: "space-around",
-								overflow: "visible"
-							}}
-						>
-							<IconButton
-								containerElement={<Link to={`/opp/${_id}`} />}
-								tooltip="More Info"
-								tooltipPosition="bottom-center"
+				({ _id, company, jobTitle, status, lastUpdate, priority, appLink }) => {
+					let color;
+					let statusLabel = "";
+					switch (status) {
+						case 1:
+							color = "#EA4335";
+							statusLabel = "Interested";
+							break;
+						case 2:
+							color = "#FBBC05";
+							statusLabel = "Applied";
+							break;
+						case 3:
+							color = "#4285F4";
+							statusLabel = "Interviewing";
+							break;
+						case 4:
+							color = "#34A853";
+							statusLabel = "Received Offer";
+							break;
+						default:
+							color = "white";
+					}
+					return (
+						<TableRow key={_id}>
+							<TableRowColumn>
+								<b>{company}</b>
+							</TableRowColumn>
+							<TableRowColumn>{jobTitle}</TableRowColumn>
+							<TableRowColumn>
+								<div
+									style={{
+										backgroundColor: color,
+										padding: "5px",
+										borderRadius: "5px",
+										textAlign: "center"
+									}}
+								>
+									<span style={{ color: "white" }}>{statusLabel}</span>
+								</div>
+							</TableRowColumn>
+							<TableRowColumn>
+								{lastUpdate ? lastUpdate.slice(0, 10) : ""}
+							</TableRowColumn>
+							<TableRowColumn>{this.renderStars(priority)}</TableRowColumn>
+							<TableRowColumn
+								style={{
+									display: "flex",
+									justifyContent: "space-around",
+									overflow: "visible"
+								}}
 							>
-								<Info color={grey600} />
-							</IconButton>
-							<IconButton tooltip="Edit" tooltipPosition="bottom-center">
-								<ModeEdit color={grey600} />
-							</IconButton>
-						</TableRowColumn>
-					</TableRow>
-				)
+								{appLink ? (
+									<IconButton
+										href={appLink}
+										target="_blank"
+										tooltip="Application Link"
+										tooltipPosition="bottom-center"
+									>
+										<LinkIcon color={grey600} />
+									</IconButton>
+								) : (
+									<IconButton disabled={true}>
+										<LinkIcon />
+									</IconButton>
+								)}
+								<IconButton
+									containerElement={<Link to={`/opp/${_id}`} />}
+									tooltip="More Info"
+									tooltipPosition="bottom-center"
+								>
+									<Info color={grey600} />
+								</IconButton>
+								<IconButton tooltip="Edit" tooltipPosition="bottom-center">
+									<ModeEdit color={grey600} />
+								</IconButton>
+							</TableRowColumn>
+						</TableRow>
+					);
+				}
 			);
 		this.setState({ tableRows: rows });
 	}
@@ -202,8 +244,7 @@ class OppTable extends Component {
 					sortable: false,
 					reversed: 0
 				},
-				{ label: "Priority", value: "priority", sortable: true, reversed: 0 },
-				{ label: "Link", value: "appLink", sortable: false, reversed: 0 }
+				{ label: "Priority", value: "priority", sortable: true, reversed: 0 }
 			]
 		});
 		this.renderTableRows();
@@ -259,7 +300,8 @@ const styles = {
 	},
 	header: {
 		display: "flex",
-		alignItems: "center"
+		alignItems: "center",
+		cursor: "pointer"
 	}
 };
 
