@@ -160,9 +160,7 @@ class OppTable extends Component {
 					}
 					return (
 						<TableRow key={_id}>
-							<TableRowColumn>
-								<b>{company}</b>
-							</TableRowColumn>
+							<TableRowColumn>{company}</TableRowColumn>
 							<TableRowColumn>{jobTitle}</TableRowColumn>
 							<TableRowColumn>
 								<div

@@ -20,6 +20,7 @@ module.exports = app => {
 
 	// create an opp
 	app.post("/api/opp", requireLogin, async (req, res) => {
+		console.log(req.body);
 		const {
 			company,
 			jobTitle,
@@ -30,6 +31,8 @@ module.exports = app => {
 			appLink,
 			jobDescription,
 			companyDescription,
+			responsibilities,
+			qualifications,
 			lastUpdate,
 			priority,
 			contactName,
@@ -62,6 +65,8 @@ module.exports = app => {
 			appLink: appLinkHref,
 			jobDescription,
 			companyDescription,
+			responsibilities,
+			qualifications,
 			lastUpdate,
 			priority,
 			contactName,
@@ -74,6 +79,7 @@ module.exports = app => {
 
 		try {
 			await opp.save();
+			console.log('successfully added to db')
 			res.send({});
 		} catch (err) {
 			res.status(422).send(err);

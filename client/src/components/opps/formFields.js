@@ -97,6 +97,22 @@ const formFields = [
 		hint: 'Short description about the company. (Optional)'
 	},
 	{
+		type: 'textAreaField',
+		label: 'Responsibilities',
+		name: 'responsibilities',
+		component: renderTextAreaField,
+		style: styles.halfWidth,
+		hint: '(optional)'
+	},
+	{
+		type: 'textAreaField',
+		label: 'Qualifications',
+		name: 'qualifications',
+		component: renderTextAreaField,
+		style: styles.halfWidth,
+		hint: '(optional)'
+	},
+	{
 		type: 'datePicker',
 		label: 'Last Update',
 		name: 'lastUpdate',

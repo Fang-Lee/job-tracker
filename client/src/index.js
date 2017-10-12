@@ -4,6 +4,8 @@ import { Provider } from 'react-redux';
 import { createStore, applyMiddleware } from 'redux';
 import reduxThunk from 'redux-thunk';
 
+import '../node_modules/font-awesome/css/font-awesome.min.css';
+
 import App from './components/App';
 import reducers from './reducers';
 

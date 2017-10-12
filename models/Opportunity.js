@@ -11,6 +11,8 @@ const opportunitySchema = new Schema({
 	appLink: String,
 	jobDescription: String,
 	companyDescription: String,
+	responsibilities: String,
+	qualifications: String,
 	lastUpdate: Date,
 	priority: { type: Number, default: 0 },
 	contactName: String,
