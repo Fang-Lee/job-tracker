@@ -3,6 +3,8 @@ import { connect } from "react-redux";
 import { fetchOpp } from "../../actions";
 import "./OppPage.css";
 
+import { grey600 } from 'material-ui/styles/colors';
+import LinearProgress from 'material-ui/LinearProgress';
 import Paper from "material-ui/Paper";
 import Star from "material-ui/svg-icons/action/grade";
 import DownArrow from "material-ui/svg-icons/hardware/keyboard-arrow-down";
@@ -70,7 +72,7 @@ class OppPage extends Component {
 	render() {
 		const { opp } = this.props;
 		if (!opp) {
-			return <div>Loading...</div>;
+			return <LinearProgress className="loading-bar" mode="indeterminate" color={grey600}/>;
 		}
 		const {
 			company,
@@ -116,6 +118,12 @@ class OppPage extends Component {
 								<div className="company-description">
 									<h3>Location</h3>
 									<p>{location}</p>
+									{salary && (
+										<div>
+											<h3>Salary</h3>
+											<p>{salary}</p>
+										</div>
+									)}
 									<h3>Company Description</h3>
 									<p>{this.renderText(companyDescription)}</p>
 								</div>
@@ -145,6 +153,12 @@ class OppPage extends Component {
 							<div className="company-description">
 								<h3>Location</h3>
 								<p>{location}</p>
+								{salary && (
+									<div>
+										<h3>Salary</h3>
+										<p>{salary}</p>
+									</div>
+								)}
 								<h3>Company Description</h3>
 								<p>{this.renderText(companyDescription)}</p>
 							</div>

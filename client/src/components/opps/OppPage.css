@@ -1,5 +1,12 @@
+.loading-bar {
+	position: absolute !important;
+	width: 100vw !important;
+	left: 0px !important;
+}
+
 .opp-page-wrapper {
 	margin-bottom: 20px;
+	overflow: visible;
 }
 
 .opp-page-header {
