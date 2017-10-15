@@ -6,7 +6,7 @@ module.exports = app => {
 		'/auth/google',
 		passport.authenticate('google', {
 			prompt: 'consent',
-			scope: ['profile', 'email']
+			scope: ['profile', 'email', 'https://www.googleapis.com/auth/drive']
 		})
 	);
 

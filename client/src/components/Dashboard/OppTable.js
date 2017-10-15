@@ -60,7 +60,15 @@ class OppTable extends Component {
 		let sortedOpps = this.state.opps;
 		let selectedCol = this.state.tableHeaders[index];
 		sortedOpps.sort(function(a, b) {
-			return a[value] > b[value] ? 1 : b[value] > a[value] ? -1 : 0;
+			let x = a[value];
+			let y = b[value];
+			if (typeof x === 'string') {
+				x = x.toLowerCase();
+				y = y.toLowerCase();
+			}
+			return x > y
+				? 1
+				: y > x ? -1 : 0;
 		});
 		if (reversed === 0 || reversed === 2) {
 			sortedOpps = sortedOpps.reverse();
@@ -250,7 +258,7 @@ class OppTable extends Component {
 
 	render() {
 		return (
-			<div>
+			<div style={styles.tableWrapper}>
 				<div style={styles.searchBar}>
 					<SearchIcon style={styles.searchBarIcon} color={grey400} />
 					<TextField
@@ -300,6 +308,9 @@ const styles = {
 		display: "flex",
 		alignItems: "center",
 		cursor: "pointer"
+	},
+	tableWrapper: {
+		marginBottom: '20px'
 	}
 };
 

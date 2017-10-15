@@ -10,7 +10,9 @@ export const fetchUser = () => async dispatch => {
 // submitting survey
 export const submitForm = (values, history) => async dispatch => {
 	const res = await axios.post('/api/opp', values);
-	history.push('/dashboard');
+	console.log('values', values)
+	console.log(res.data);
+	history.push(res.data.redirect);
 	dispatch({ type: FETCH_USER, payload: res.data });
 }
 

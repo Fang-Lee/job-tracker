@@ -2,7 +2,7 @@ import {
 	renderTextField,
 	renderTextAreaField,
 	renderSelectField,
-	renderDatePicker,
+	renderDatePicker
 } from '../../utils/formElements';
 
 const styles = {
@@ -116,7 +116,7 @@ const formFields = [
 		type: 'datePicker',
 		label: 'Last Update',
 		name: 'lastUpdate',
-		component: renderDatePicker,
+		component: renderDatePicker
 	},
 	{
 		type: 'selectField',
@@ -125,10 +125,19 @@ const formFields = [
 		component: renderSelectField,
 		style: styles.halfWidth,
 		children: [
-			{ value: 1, textLabel: 'Low'},
-			{ value: 2, textLabel: 'Medium'},
-			{ value: 3, textLabel: 'High'},
+			{ value: 1, textLabel: 'Low' },
+			{ value: 2, textLabel: 'Medium' },
+			{ value: 3, textLabel: 'High' }
 		]
+	},
+	{
+		type: 'textAreaField',
+		label: 'Summary Tags',
+		name: 'tags',
+		component: renderTextAreaField,
+		style: styles.fullWidth,
+		hint:
+			'Add key phrases describing the job. Separate each with a comma. Ex. (Full-time/Part-time/Internship, Good benefits, Close commute, Cool campus)'
 	},
 	{
 		type: 'subHeader',

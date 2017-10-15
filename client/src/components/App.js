@@ -26,7 +26,7 @@ class App extends Component {
 					<div>
 						<Header />
 						<div className="container">
-							<div style={{ padding: "0 15px" }}>
+							<div className="inner-container" style={{ padding: "0 15px" }}>
 								<Route exact path="/" component={Landing} />
 								<Route exact path="/dashboard" component={Dashboard} />
 								<Route path="/new" component={OppForm} />

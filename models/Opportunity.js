@@ -20,6 +20,7 @@ const opportunitySchema = new Schema({
 	contactPhone: String,
 	lastContact: Date,
 	notes: String,
+	tags: [{type: String}],
 	_user: { type: Schema.Types.ObjectId, ref: 'User' }
 });
 

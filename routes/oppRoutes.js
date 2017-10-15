@@ -39,7 +39,8 @@ module.exports = app => {
 			contactEmail,
 			contactPhone,
 			lastContact,
-			notes
+			notes,
+			tags = "",
 		} = req.body;
 
 		// linkify the application link
@@ -74,13 +75,14 @@ module.exports = app => {
 			contactPhone,
 			lastContact,
 			notes,
+			tags: tags.split(',').map(tag => tag.trim()), 
 			_user: req.user.id
 		});
 
 		try {
 			await opp.save();
 			console.log('successfully added to db')
-			res.send({});
+			res.send({redirect: `/opp/${opp._id}`});
 		} catch (err) {
 			res.status(422).send(err);
 		}

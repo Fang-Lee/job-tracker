@@ -13,17 +13,19 @@
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
+	margin-bottom: 5px;
 }
 
 .company-name {
 	display: inline-block;
 	font-size: 3em;
-	margin-right: 10px;
+	margin: 40px 10px 20px 0;
 }
 
 .opp-status {
 	padding: 10px;
 	border-radius: 5px;
+	margin-top: 10px;
 }
 
 .opp-status-text {
@@ -31,57 +33,70 @@
 	color: white;
 }
 
+.tags {
+	display: flex;
+	padding-top: 15px;
+	overflow: scroll;
+}
+
+.tags::-webkit-scrollbar {
+	display: none;
+}
+
+.tag-chip {
+	margin-right: 6px !important;
+	margin-top: -10px !important;
+	margin-bottom: 15px !important;
+	background-color: #757575 !important;
+}
+
+.tag-chip > span {
+	color: white !important;
+}
+
 .opp-page-body {
-	margin: 0 10px;
 }
 
 .opp-page-body-truncated {
-	margin: 0 10px;
 	height: 360px;
 	overflow: hidden;
 	position: relative;
 }
 
 .fadeout {
-    position: absolute; 
-    bottom: 0em;
-    width:100%;
-    height: 4em;
-    background: -webkit-linear-gradient(
-        rgba(255, 255, 255, 0) 0%,
-        rgba(255, 255, 255, 1) 100%
-    ); 
-    background-image: -moz-linear-gradient(
-        rgba(255, 255, 255, 0) 0%,
-        rgba(255, 255, 255, 1) 100%
-    );
-    background-image: -o-linear-gradient(
-        rgba(255, 255, 255, 0) 0%,
-        rgba(255, 255, 255, 1) 100%
-    );
-    background-image: linear-gradient(
-        rgba(255, 255, 255, 0) 0%,
-        rgba(255, 255, 255, 1) 100%
-    );
-    background-image: -ms-linear-gradient(
-        rgba(255, 255, 255, 0) 0%,
-        rgba(255, 255, 255, 1) 100%
-    );
-} 
-
-.show-more-btn {
-	margin: 0 10px;
-	align-items: center;
-	text-align: center;
-	padding: 10px;
-	border-top: 1px solid lightgray;
+	position: absolute;
+	bottom: 0em;
+	width: 100%;
+	height: 4em;
+	background: -webkit-linear-gradient(
+		rgba(255, 255, 255, 0) 0%,
+		rgba(255, 255, 255, 1) 100%
+	);
+	background-image: -moz-linear-gradient(
+		rgba(255, 255, 255, 0) 0%,
+		rgba(255, 255, 255, 1) 100%
+	);
+	background-image: -o-linear-gradient(
+		rgba(255, 255, 255, 0) 0%,
+		rgba(255, 255, 255, 1) 100%
+	);
+	background-image: linear-gradient(
+		rgba(255, 255, 255, 0) 0%,
+		rgba(255, 255, 255, 1) 100%
+	);
+	background-image: -ms-linear-gradient(
+		rgba(255, 255, 255, 0) 0%,
+		rgba(255, 255, 255, 1) 100%
+	);
 }
 
+.show-more-btn,
 .show-less-btn {
 	align-items: center;
 	text-align: center;
 	padding: 10px;
 	border-top: 1px solid lightgray;
+	cursor: pointer;
 }
 
 .descriptions {
@@ -91,15 +106,69 @@
 
 .job-description {
 	width: 480px;
-	padding: 20px;
+	padding: 15px 20px;
 }
 
 .company-description {
 	width: 400px;
-	padding: 20px;
+	padding: 15px 20px;
 }
 
-.job-description > p, .company-description > p {
+.company-description-misc {
+	display: flex;
+}
+
+.company-description-misc > * {
+	margin-right: 100px;
+}
+
+.overflow-scroll {
+	overflow: hidden;
+}
+
+.job-description > p,
+.company-description > p,
+.notes-content > p {
 	font-size: smaller;
 	line-height: 1.5;
 }
+
+.contact-documents-wrapper {
+	display: flex;
+	justify-content: space-between;
+}
+
+.contact-wrapper,
+.documents-wrapper {
+	width: 49%;
+	margin-top: 20px;
+}
+
+.contact-content,
+.documents-content {
+	height: 260px;
+	padding: 10px 35px 25px !important;
+}
+
+.notes-content {
+	padding: 10px 35px 25px !important;
+}
+
+.contact-info {
+	display: flex;
+	flex-direction: column;
+}
+
+.contact-info > div {
+	margin: 10px 0;
+}
+
+.contact-info > div > i {
+	margin-right: 15px;
+}
+
+.notes-wrapper {
+	margin-top: 20px;
+	margin-bottom: 50px;
+}
+
