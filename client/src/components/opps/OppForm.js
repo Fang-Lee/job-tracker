@@ -10,6 +10,8 @@ import MenuItem from 'material-ui/MenuItem';
 import RaisedButton from 'material-ui/RaisedButton';
 import { white, red500, green500 } from 'material-ui/styles/colors';
 
+import Dropzone from 'react-dropzone';
+
 class OppForm extends Component {
 	state = { rating: 3 };
 	handleRate = value => {
@@ -68,6 +70,27 @@ class OppForm extends Component {
 			}
 		);
 	}
+	renderDropzoneInput = field => {
+		const files = field.input.value;
+		return (
+			<div>
+				<Dropzone
+					name={field.name}
+					onDrop={(filesToUpload, e) => field.input.onChange(filesToUpload)}
+				>
+					<div>
+						Try dropping some files here, or click to select files to upload.
+					</div>
+				</Dropzone>
+				{field.meta.touched &&
+					field.meta.error && <span className="error">{field.meta.error}</span>}
+				{files &&
+					Array.isArray(files) && (
+						<ul>{files.map((file, i) => <li key={i}>{file.name}</li>)}</ul>
+					)}
+			</div>
+		);
+	};
 	render() {
 		return (
 			<div className="opp-form">
@@ -78,7 +101,18 @@ class OppForm extends Component {
 						this.props.submitForm(this.props.formValues, this.props.history);
 					})}
 				>
-					<div className="form-fields">{this.renderFields()}</div>
+					<div className="form-fields">
+						{this.renderFields()}
+						<div>
+							<h3>Documents</h3>
+							<h6>Resume:</h6>
+							<Field
+		            name="files"
+		            component={this.renderDropzoneInput}
+		          />
+							<h6>Cover Letter:</h6>
+						</div>
+					</div>
 					<div className="form-buttons">
 						<RaisedButton
 							containerElement={<Link to="/dashboard" />}

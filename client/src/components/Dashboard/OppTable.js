@@ -1,7 +1,7 @@
-import React, { Component } from "react";
-import { connect } from "react-redux";
-import { Link } from "react-router-dom";
-import { fetchOpps } from "../../actions";
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
+import { fetchOpps } from '../../actions';
 
 import {
 	Table,
@@ -10,17 +10,18 @@ import {
 	TableHeaderColumn,
 	TableRow,
 	TableRowColumn
-} from "material-ui/Table";
-import TextField from "material-ui/TextField";
-import Grade from "material-ui/svg-icons/action/grade";
-import Info from "material-ui/svg-icons/action/info";
-import ModeEdit from "material-ui/svg-icons/editor/mode-edit";
-import LinkIcon from "material-ui/svg-icons/content/link";
-import UpArrow from "material-ui/svg-icons/hardware/keyboard-arrow-up";
-import DownArrow from "material-ui/svg-icons/hardware/keyboard-arrow-down";
-import SearchIcon from "material-ui/svg-icons/action/search";
-import { grey400, grey600 } from "material-ui/styles/colors";
-import IconButton from "material-ui/IconButton";
+} from 'material-ui/Table';
+import TextField from 'material-ui/TextField';
+import Grade from 'material-ui/svg-icons/action/grade';
+import Info from 'material-ui/svg-icons/action/info';
+import ModeEdit from 'material-ui/svg-icons/editor/mode-edit';
+import LinkIcon from 'material-ui/svg-icons/content/link';
+import UpArrow from 'material-ui/svg-icons/hardware/keyboard-arrow-up';
+import DownArrow from 'material-ui/svg-icons/hardware/keyboard-arrow-down';
+import SearchIcon from 'material-ui/svg-icons/action/search';
+import { grey400, grey600 } from 'material-ui/styles/colors';
+import IconButton from 'material-ui/IconButton';
+import LinearProgress from 'material-ui/LinearProgress';
 
 class OppTable extends Component {
 	constructor(props) {
@@ -28,31 +29,32 @@ class OppTable extends Component {
 		this.originalOpps = [];
 		this.state = {
 			tableHeaders: [
-				{ label: "Company", value: "company", sortable: true, reversed: 0 },
+				{ label: 'Company', value: 'company', sortable: true, reversed: 0 },
 				{
-					label: "Job Title",
-					value: "jobTitle",
+					label: 'Job Title',
+					value: 'jobTitle',
 					sortable: true,
 					reversed: 0
 				},
-				{ label: "Status", value: "status", sortable: true, reversed: 0 },
+				{ label: 'Status', value: 'status', sortable: true, reversed: 0 },
 				{
-					label: "Last Update",
-					value: "lastUpdate",
+					label: 'Last Update',
+					value: 'lastUpdate',
 					sortable: false,
 					reversed: 0
 				},
-				{ label: "Priority", value: "priority", sortable: true, reversed: 0 }
+				{ label: 'Priority', value: 'priority', sortable: true, reversed: 0 }
 			],
-			opps: [],
+			opps: null,
 			tableRows: [],
-			search: ""
+			search: '',
 		};
 	}
 
 	async componentDidMount() {
 		await this.props.fetchOpps();
 		this.originalOpps = this.props.opps;
+
 		this.setState({ opps: this.props.opps });
 		this.renderTableRows();
 	}
@@ -66,9 +68,7 @@ class OppTable extends Component {
 				x = x.toLowerCase();
 				y = y.toLowerCase();
 			}
-			return x > y
-				? 1
-				: y > x ? -1 : 0;
+			return x > y ? 1 : y > x ? -1 : 0;
 		});
 		if (reversed === 0 || reversed === 2) {
 			sortedOpps = sortedOpps.reverse();
@@ -76,25 +76,25 @@ class OppTable extends Component {
 		} else {
 			selectedCol.reversed = 2;
 		}
-		if (value === "priority") {
+		if (value === 'priority') {
 			sortedOpps = sortedOpps.reverse();
 		}
 		let updatedHeaders = [
-			{ label: "Company", value: "company", sortable: true, reversed: 0 },
+			{ label: 'Company', value: 'company', sortable: true, reversed: 0 },
 			{
-				label: "Job Title",
-				value: "jobTitle",
+				label: 'Job Title',
+				value: 'jobTitle',
 				sortable: true,
 				reversed: 0
 			},
-			{ label: "Status", value: "status", sortable: true, reversed: 0 },
+			{ label: 'Status', value: 'status', sortable: true, reversed: 0 },
 			{
-				label: "Last Update",
-				value: "lastUpdate",
+				label: 'Last Update',
+				value: 'lastUpdate',
 				sortable: false,
 				reversed: 0
 			},
-			{ label: "Priority", value: "priority", sortable: true, reversed: 0 }
+			{ label: 'Priority', value: 'priority', sortable: true, reversed: 0 }
 		];
 		updatedHeaders[index] = selectedCol;
 		this.setState({ opps: sortedOpps, tableHeaders: updatedHeaders });
@@ -125,7 +125,7 @@ class OppTable extends Component {
 		headers.push(
 			<TableHeaderColumn
 				key="action"
-				style={{ textAlign: "center", ...styles.tableHeaders }}
+				style={{ textAlign: 'center', ...styles.tableHeaders }}
 			>
 				Actions
 			</TableHeaderColumn>
@@ -145,26 +145,26 @@ class OppTable extends Component {
 			.map(
 				({ _id, company, jobTitle, status, lastUpdate, priority, appLink }) => {
 					let color;
-					let statusLabel = "";
+					let statusLabel = '';
 					switch (status) {
 						case 1:
-							color = "#EA4335";
-							statusLabel = "Interested";
+							color = '#EA4335';
+							statusLabel = 'Interested';
 							break;
 						case 2:
-							color = "#FBBC05";
-							statusLabel = "Applied";
+							color = '#FBBC05';
+							statusLabel = 'Applied';
 							break;
 						case 3:
-							color = "#4285F4";
-							statusLabel = "Interviewing";
+							color = '#4285F4';
+							statusLabel = 'Interviewing';
 							break;
 						case 4:
-							color = "#34A853";
-							statusLabel = "Received Offer";
+							color = '#34A853';
+							statusLabel = 'Received Offer';
 							break;
 						default:
-							color = "white";
+							color = 'white';
 					}
 					return (
 						<TableRow key={_id}>
@@ -174,23 +174,23 @@ class OppTable extends Component {
 								<div
 									style={{
 										backgroundColor: color,
-										padding: "5px",
-										borderRadius: "5px",
-										textAlign: "center"
+										padding: '5px',
+										borderRadius: '5px',
+										textAlign: 'center'
 									}}
 								>
-									<span style={{ color: "white" }}>{statusLabel}</span>
+									<span style={{ color: 'white' }}>{statusLabel}</span>
 								</div>
 							</TableRowColumn>
 							<TableRowColumn>
-								{lastUpdate ? lastUpdate.slice(0, 10) : ""}
+								{lastUpdate ? lastUpdate.slice(0, 10) : ''}
 							</TableRowColumn>
 							<TableRowColumn>{this.renderStars(priority)}</TableRowColumn>
 							<TableRowColumn
 								style={{
-									display: "flex",
-									justifyContent: "space-around",
-									overflow: "visible"
+									display: 'flex',
+									justifyContent: 'space-around',
+									overflow: 'visible'
 								}}
 							>
 								{appLink ? (
@@ -236,27 +236,30 @@ class OppTable extends Component {
 		await this.setState({
 			opps: filteredOpps,
 			tableHeaders: [
-				{ label: "Company", value: "company", sortable: true, reversed: 0 },
+				{ label: 'Company', value: 'company', sortable: true, reversed: 0 },
 				{
-					label: "Job Title",
-					value: "jobTitle",
+					label: 'Job Title',
+					value: 'jobTitle',
 					sortable: true,
 					reversed: 0
 				},
-				{ label: "Status", value: "status", sortable: true, reversed: 0 },
+				{ label: 'Status', value: 'status', sortable: true, reversed: 0 },
 				{
-					label: "Last Update",
-					value: "lastUpdate",
+					label: 'Last Update',
+					value: 'lastUpdate',
 					sortable: false,
 					reversed: 0
 				},
-				{ label: "Priority", value: "priority", sortable: true, reversed: 0 }
+				{ label: 'Priority', value: 'priority', sortable: true, reversed: 0 }
 			]
 		});
 		this.renderTableRows();
 	};
 
 	render() {
+		if (!this.state.opps) {
+			return <LinearProgress mode="indeterminate" color={grey600} />;
+		}
 		return (
 			<div style={styles.tableWrapper}>
 				<div style={styles.searchBar}>
@@ -270,8 +273,8 @@ class OppTable extends Component {
 					/>
 				</div>
 				<Table
-					wrapperStyle={{ overflow: "visible" }}
-					bodyStyle={{ overflow: "visible" }}
+					wrapperStyle={{ overflow: 'visible' }}
+					bodyStyle={{ overflow: 'visible' }} 
 				>
 					<TableHeader displaySelectAll={false} adjustForCheckbox={false}>
 						<TableRow>{this.renderTableHeaders()}</TableRow>
@@ -287,12 +290,12 @@ class OppTable extends Component {
 
 const styles = {
 	searchBar: {
-		position: "relative",
-		display: "inline-block",
-		width: "100%"
+		position: 'relative',
+		display: 'inline-block',
+		width: '100%'
 	},
 	searchBarIcon: {
-		position: "absolute",
+		position: 'absolute',
 		left: 0,
 		top: 14,
 		width: 20,
@@ -302,12 +305,12 @@ const styles = {
 		textIndent: 30
 	},
 	tableHeaders: {
-		fontSize: "0.9em"
+		fontSize: '0.9em'
 	},
 	header: {
-		display: "flex",
-		alignItems: "center",
-		cursor: "pointer"
+		display: 'flex',
+		alignItems: 'center',
+		cursor: 'pointer'
 	},
 	tableWrapper: {
 		marginBottom: '20px'

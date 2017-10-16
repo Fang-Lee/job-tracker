@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const { Schema } = mongoose;
+const FileSchema = require('./File');
 
 const opportunitySchema = new Schema({
 	company: String,
@@ -21,6 +22,8 @@ const opportunitySchema = new Schema({
 	lastContact: Date,
 	notes: String,
 	tags: [{type: String}],
+	resume: FileSchema,
+	coverLetter: FileSchema,
 	_user: { type: Schema.Types.ObjectId, ref: 'User' }
 });
 
