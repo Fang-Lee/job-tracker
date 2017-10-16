@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { FETCH_USER, FETCH_OPPS, FETCH_OPP } from './types';
+import { formatFormValues } from '../utils/formatFormValues';
 
 // fetchs currently logged in user, returns false if no user logged in.
 export const fetchUser = () => async dispatch => {
@@ -9,8 +10,11 @@ export const fetchUser = () => async dispatch => {
 
 // submitting survey
 export const submitForm = (values, history) => async dispatch => {
-	const res = await axios.post('/api/opp', values);
-	console.log('values', values)
+	// files cannot be parsed by body-parser so have to use middleware called multer.	
+	// for multer to read files, must be placed inside formData
+	const formatedValues = formatFormValues(values);
+	const res = await axios.post('/api/opp', formatedValues);
+	console.log('values', formatedValues)
 	console.log(res.data);
 	history.push(res.data.redirect);
 	dispatch({ type: FETCH_USER, payload: res.data });

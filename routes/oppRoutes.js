@@ -2,14 +2,15 @@
 const mongoose = require('mongoose');
 const requireLogin = require('../middlewares/requireLogin');
 const linkify = require('linkifyjs');
+const keys = require('../config/keys');
 var fs = require('fs');
 var S3FS = require('s3fs');
-var s3fsImpl = new S3FS('jobtracker-dev', {
-	accessKeyId: 'AKIAJAEU3HII566BG7KQ',
-	secretAccessKey: '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'
-});
+const multer = require('multer');
 
-s3fsImpl.create();
+var s3fsImpl = new S3FS('jobtracker-dev', {
+	accessKeyId: keys.s3AccessKeyId,
+	secretAccessKey: keys.s3SecretAccessKey
+});
 
 const Opportunity = mongoose.model('opps');
 
@@ -27,8 +28,11 @@ module.exports = app => {
 	});
 
 	// create an opp
-	app.post('/api/opp', requireLogin, async (req, res) => {
-		console.log(req.body);
+	// files cannot be parsed by body-parser so have to use middleware called multer.
+	// for multer to read files, must be placed inside formData
+	app.post('/api/opp', requireLogin, multer().any(), async (req, res) => {
+		console.log('req.body', req.body);
+		console.log('req.files', req.files);
 		const {
 			company,
 			jobTitle,
@@ -48,10 +52,16 @@ module.exports = app => {
 			contactPhone,
 			lastContact,
 			notes,
-			tags = ''
+			tags = '',
 		} = req.body;
 
-		console.log(req.body.file);
+		const resume = req.files[0];
+
+		// upload documents to aws s3
+		s3fsImpl.writeFile(resume.originalName, resume.buffer, err => {
+			if (err) throw err;
+			console.log('document saved!');
+		})
 
 		// linkify the application link
 		let appLinkHref = '';

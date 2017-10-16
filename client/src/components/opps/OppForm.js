@@ -10,7 +10,21 @@ import MenuItem from 'material-ui/MenuItem';
 import RaisedButton from 'material-ui/RaisedButton';
 import { white, red500, green500 } from 'material-ui/styles/colors';
 
-import Dropzone from 'react-dropzone';
+const adaptFileEventToValue = delegate => e => delegate(e.target.files[0]);
+
+const FileInput = ({
+	input: { value: omitValue, onChange, onBlur, ...inputProps },
+	meta: omitMeta,
+	...props
+}) => (
+	<input
+		onChange={adaptFileEventToValue(onChange)}
+		onBlur={adaptFileEventToValue(onBlur)}
+		type="file"
+		{...inputProps}
+		{...props}
+	/>
+);
 
 class OppForm extends Component {
 	state = { rating: 3 };
@@ -70,33 +84,13 @@ class OppForm extends Component {
 			}
 		);
 	}
-	renderDropzoneInput = field => {
-		const files = field.input.value;
-		return (
-			<div>
-				<Dropzone
-					name={field.name}
-					onDrop={(filesToUpload, e) => field.input.onChange(filesToUpload)}
-				>
-					<div>
-						Try dropping some files here, or click to select files to upload.
-					</div>
-				</Dropzone>
-				{field.meta.touched &&
-					field.meta.error && <span className="error">{field.meta.error}</span>}
-				{files &&
-					Array.isArray(files) && (
-						<ul>{files.map((file, i) => <li key={i}>{file.name}</li>)}</ul>
-					)}
-			</div>
-		);
-	};
 	render() {
 		return (
 			<div className="opp-form">
 				<h1>Add a new oppurtunity</h1>
 				<br />
 				<form
+					encType="multipart/form-data"
 					onSubmit={this.props.handleSubmit(() => {
 						this.props.submitForm(this.props.formValues, this.props.history);
 					})}
@@ -106,10 +100,7 @@ class OppForm extends Component {
 						<div>
 							<h3>Documents</h3>
 							<h6>Resume:</h6>
-							<Field
-		            name="files"
-		            component={this.renderDropzoneInput}
-		          />
+							<Field name="resume" component={FileInput} />
 							<h6>Cover Letter:</h6>
 						</div>
 					</div>
