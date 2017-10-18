@@ -32,7 +32,7 @@ class Header extends Component {
 		return (
 			<MuiThemeProvider muiTheme={appBarMuiTheme}>
 				<AppBar
-					title={<span style={styles.title}>Job Tracker</span>}
+					title={<span style={styles.title}>JobHub</span>}
 					onTitleTouchTap={this.handleTitleClick}
 					showMenuIconButton={false}
 					iconElementRight={this.renderContent()}

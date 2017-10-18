@@ -30,13 +30,6 @@ const FileInput = ({
 );
 
 class OppForm extends Component {
-	state = { rating: 3 };
-	handleRate = value => {
-		console.log('hello');
-		this.setState({
-			rating: value
-		});
-	};
 	renderFields() {
 		return formFields.map(
 			({ type, component, name, label, style, hint, children }) => {

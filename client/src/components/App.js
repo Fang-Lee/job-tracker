@@ -12,6 +12,7 @@ import Landing from "./Landing/Landing";
 import Dashboard from "./Dashboard/Dashboard";
 import OppForm from "./opps/OppForm";
 import OppPage from "./opps/OppPage";
+import OppForm2 from './opps/OppForm2';
 
 import "./App.css";
 
@@ -29,7 +30,7 @@ class App extends Component {
 							<div className="inner-container" style={{ padding: "0 15px" }}>
 								<Route exact path="/" component={Landing} />
 								<Route exact path="/dashboard" component={Dashboard} />
-								<Route path="/new" component={OppForm} />
+								<Route path="/new" component={OppForm2} />
 								<Route path="/opp/:id" component={OppPage} />
 							</div>
 						</div>

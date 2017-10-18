@@ -1,0 +1,23 @@
+.form-fields {
+	width: 650px;
+	margin: 0 auto;
+}
+
+.nav-buttons {
+	display: flex;
+	justify-content: center;
+	margin: 0 12px 20px;
+}
+
+.document-fields {
+	width: 650px;
+	margin: 0 auto;
+	display: flex;
+	justify-content: space-between;
+	margin-bottom: 40px;
+}
+
+.document-fields > div {
+	display: flex;
+	flex-direction: column;
+}

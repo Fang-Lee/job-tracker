@@ -20,18 +20,18 @@ const formFields = [
 	},
 	{
 		type: 'textField',
-		label: 'Company Name',
+		label: 'Company Name*',
 		name: 'company',
 		component: renderTextField,
-		style: styles.thirdWidth,
+		style: styles.halfWidth,
 		noValueError: 'You must enter a company.'
 	},
 	{
 		type: 'textField',
-		label: 'Job Title',
+		label: 'Job Title*',
 		name: 'jobTitle',
 		component: renderTextField,
-		style: styles.thirdWidth,
+		style: styles.halfWidth,
 		noValueError: 'You must enter a job title.'
 	},
 	{
@@ -39,28 +39,15 @@ const formFields = [
 		label: 'Location',
 		name: 'location',
 		component: renderTextField,
-		style: styles.thirdWidth,
+		style: styles.halfWidth,
 		hint: 'Optional'
-	},
-	{
-		type: 'selectField',
-		label: 'Status',
-		name: 'status',
-		component: renderSelectField,
-		style: styles.quarterWidth,
-		children: [
-			{ value: 1, textLabel: 'Interested' },
-			{ value: 2, textLabel: 'Applied' },
-			{ value: 3, textLabel: 'Interviewing' },
-			{ value: 4, textLabel: 'Received Offer' }
-		]
 	},
 	{
 		type: 'textField',
 		label: 'Salary',
 		name: 'salary',
 		component: renderTextField,
-		style: styles.quarterWidth,
+		style: styles.halfWidth,
 		hint: 'Optional'
 	},
 	{
@@ -68,7 +55,7 @@ const formFields = [
 		label: 'Where did you find this job?',
 		name: 'origin',
 		component: renderTextField,
-		style: styles.quarterWidth,
+		style: styles.halfWidth,
 		hint: 'Ex. Referral, Indeed, LinkedIn'
 	},
 	{
@@ -76,47 +63,21 @@ const formFields = [
 		label: 'Application Link',
 		name: 'appLink',
 		component: renderTextField,
-		style: styles.quarterWidth,
+		style: styles.halfWidth,
 		hint: 'Paste application link here'
 	},
 	{
-		type: 'textAreaField',
-		label: 'Job Description',
-		name: 'jobDescription',
-		component: renderTextAreaField,
+		type: 'selectField',
+		label: 'Status*',
+		name: 'status',
+		component: renderSelectField,
 		style: styles.halfWidth,
-		hint:
-			'Short description about the job such as qualifications and/or responsiblites. (Optional)'
-	},
-	{
-		type: 'textAreaField',
-		label: 'Company Description',
-		name: 'companyDescription',
-		component: renderTextAreaField,
-		style: styles.halfWidth,
-		hint: 'Short description about the company. (Optional)'
-	},
-	{
-		type: 'textAreaField',
-		label: 'Responsibilities',
-		name: 'responsibilities',
-		component: renderTextAreaField,
-		style: styles.halfWidth,
-		hint: '(optional)'
-	},
-	{
-		type: 'textAreaField',
-		label: 'Qualifications',
-		name: 'qualifications',
-		component: renderTextAreaField,
-		style: styles.halfWidth,
-		hint: '(optional)'
-	},
-	{
-		type: 'datePicker',
-		label: 'Last Update',
-		name: 'lastUpdate',
-		component: renderDatePicker
+		children: [
+			{ value: 1, textLabel: 'Interested' },
+			{ value: 2, textLabel: 'Applied' },
+			{ value: 3, textLabel: 'Interviewing' },
+			{ value: 4, textLabel: 'Received Offer' }
+		]
 	},
 	{
 		type: 'selectField',
@@ -129,6 +90,45 @@ const formFields = [
 			{ value: 2, textLabel: 'Medium' },
 			{ value: 3, textLabel: 'High' }
 		]
+	},
+		{
+		type: 'datePicker',
+		label: 'Last Update',
+		name: 'lastUpdate',
+		component: renderDatePicker
+	},
+	{
+		type: 'textAreaField',
+		label: 'Job Description',
+		name: 'jobDescription',
+		component: renderTextAreaField,
+		style: styles.fullWidth,
+		hint:
+			'Short description about the job such as qualifications and/or responsiblites. (Optional)'
+	},
+	{
+		type: 'textAreaField',
+		label: 'Responsibilities',
+		name: 'responsibilities',
+		component: renderTextAreaField,
+		style: styles.fullWidth,
+		hint: '(optional)'
+	},
+	{
+		type: 'textAreaField',
+		label: 'Qualifications',
+		name: 'qualifications',
+		component: renderTextAreaField,
+		style: styles.fullWidth,
+		hint: '(optional)'
+	},
+	{
+		type: 'textAreaField',
+		label: 'Company Description',
+		name: 'companyDescription',
+		component: renderTextAreaField,
+		style: styles.fullWidth,
+		hint: 'Short description about the company. (Optional)'
 	},
 	{
 		type: 'textAreaField',
@@ -146,31 +146,31 @@ const formFields = [
 	},
 	{
 		type: 'textField',
-		label: 'Name',
+		label: 'Recruiter Name',
 		name: 'contactName',
 		component: renderTextField,
-		style: styles.quarterWidth
+		style: styles.fullWidth
 	},
 	{
 		type: 'textField',
-		label: 'Email',
+		label: 'Recruiter Email',
 		name: 'contactEmail',
 		component: renderTextField,
-		style: styles.quarterWidth
+		style: styles.fullWidth
 	},
 	{
 		type: 'textField',
-		label: 'Phone Number',
+		label: 'Recruiter Phone Number',
 		name: 'contactPhone',
 		component: renderTextField,
-		style: styles.quarterWidth
+		style: styles.fullWidth
 	},
 	{
 		type: 'datePicker',
 		label: 'Last Contact',
 		name: 'lastContact',
 		component: renderDatePicker,
-		style: styles.quarterWidth
+		style: styles.fullWidth
 	},
 	{
 		type: 'subHeader',
