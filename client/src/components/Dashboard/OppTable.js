@@ -24,7 +24,7 @@ import { grey400, grey600 } from 'material-ui/styles/colors';
 import IconButton from 'material-ui/IconButton';
 import CircularProgress from 'material-ui/CircularProgress';
 
-const RESULTS_PER_PAGE = 20;
+const RESULTS_PER_PAGE = 10;
 
 class OppTable extends Component {
 	constructor(props) {
@@ -270,7 +270,8 @@ class OppTable extends Component {
 				{ label: 'Priority', value: 'priority', sortable: true, reversed: 0 }
 			],
 			page: 1,
-			totalPages: Math.floor(filteredOpps.length / RESULTS_PER_PAGE + 1)
+			totalPages: Math.floor(filteredOpps.length / RESULTS_PER_PAGE + 1),
+			totalOpps: filteredOpps.length
 		});
 	};
 	handleLeftArrow = () => {
@@ -306,7 +307,7 @@ class OppTable extends Component {
 		return pageNumbers;
 	};
 	render() {
-		const { opps, page, totalPages } = this.state;
+		const { opps, page, totalPages, totalOpps } = this.state;
 		if (!opps) {
 			return (
 				<div className="loading-circle">
@@ -350,7 +351,7 @@ class OppTable extends Component {
 						onClick={this.handleRightArrow}
 					/>
 					<div className="pagination-page-number">
-						{page} of {totalPages}
+						{(page-1) * RESULTS_PER_PAGE + 1}-{(page-1) * RESULTS_PER_PAGE + RESULTS_PER_PAGE < totalOpps ? (page-1) * RESULTS_PER_PAGE + RESULTS_PER_PAGE : totalOpps }  of {totalOpps}
 					</div>
 				</div>
 			</div>
