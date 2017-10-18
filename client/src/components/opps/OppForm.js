@@ -14,16 +14,19 @@ const adaptFileEventToValue = delegate => e => delegate(e.target.files[0]);
 
 const FileInput = ({
 	input: { value: omitValue, onChange, onBlur, ...inputProps },
-	meta: omitMeta,
+	meta: { error, touched },
 	...props
 }) => (
-	<input
-		onChange={adaptFileEventToValue(onChange)}
-		onBlur={adaptFileEventToValue(onBlur)}
-		type="file"
-		{...inputProps}
-		{...props}
-	/>
+	<div>
+		<input
+			onChange={adaptFileEventToValue(onChange)}
+			onBlur={adaptFileEventToValue(onBlur)}
+			type="file"
+			{...inputProps}
+			{...props}
+		/>
+		<div className="error-text">{touched && error}</div>
+	</div>
 );
 
 class OppForm extends Component {
@@ -102,6 +105,7 @@ class OppForm extends Component {
 							<h6>Resume:</h6>
 							<Field name="resume" component={FileInput} />
 							<h6>Cover Letter:</h6>
+							<Field name="coverLetter" component={FileInput} />
 						</div>
 					</div>
 					<div className="form-buttons">
@@ -130,14 +134,25 @@ function mapStateToProps(state) {
 	};
 }
 
+const fileMaxSize = 10 * 1000 * 1000; // 1MB
+
 function validate(values) {
 	const errors = {};
 
 	const requiredFields = ['company', 'jobTitle', 'status'];
+	const fileFields = ['resume', 'coverLetter'];
 
 	requiredFields.forEach(field => {
 		if (!values[field]) {
 			errors[field] = 'Required';
+		}
+	});
+
+	fileFields.forEach(field => {
+		if (values.resume) {
+			if (values.resume.size > fileMaxSize) {
+				errors.resume = 'File size exceeds maximum size';
+			}
 		}
 	});
 

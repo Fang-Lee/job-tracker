@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { fetchOpps } from '../../actions';
+import './OppTable.css';
 
 import {
 	Table,
@@ -21,7 +22,9 @@ import DownArrow from 'material-ui/svg-icons/hardware/keyboard-arrow-down';
 import SearchIcon from 'material-ui/svg-icons/action/search';
 import { grey400, grey600 } from 'material-ui/styles/colors';
 import IconButton from 'material-ui/IconButton';
-import LinearProgress from 'material-ui/LinearProgress';
+import CircularProgress from 'material-ui/CircularProgress';
+
+const RESULTS_PER_PAGE = 20;
 
 class OppTable extends Component {
 	constructor(props) {
@@ -48,6 +51,9 @@ class OppTable extends Component {
 			opps: null,
 			tableRows: [],
 			search: '',
+			page: 1,
+			totalOpps: 0,
+			totalPages: 0
 		};
 	}
 
@@ -55,8 +61,11 @@ class OppTable extends Component {
 		await this.props.fetchOpps();
 		this.originalOpps = this.props.opps;
 
-		this.setState({ opps: this.props.opps });
-		this.renderTableRows();
+		this.setState({
+			opps: this.props.opps.reverse(),
+			totalOpps: this.props.opps.length,
+			totalPages: Math.floor(this.props.opps.length / RESULTS_PER_PAGE + 1)
+		});
 	}
 	handleSort = (value, reversed, index) => {
 		let sortedOpps = this.state.opps;
@@ -71,9 +80,9 @@ class OppTable extends Component {
 			return x > y ? 1 : y > x ? -1 : 0;
 		});
 		if (reversed === 0 || reversed === 2) {
-			sortedOpps = sortedOpps.reverse();
 			selectedCol.reversed = 1;
 		} else {
+			sortedOpps = sortedOpps.reverse();
 			selectedCol.reversed = 2;
 		}
 		if (value === 'priority') {
@@ -97,7 +106,7 @@ class OppTable extends Component {
 			{ label: 'Priority', value: 'priority', sortable: true, reversed: 0 }
 		];
 		updatedHeaders[index] = selectedCol;
-		this.setState({ opps: sortedOpps, tableHeaders: updatedHeaders });
+		this.setState({ opps: sortedOpps, tableHeaders: updatedHeaders, page: 1 });
 		this.renderTableRows();
 	};
 	renderTableHeaders() {
@@ -140,8 +149,17 @@ class OppTable extends Component {
 		return stars;
 	}
 	renderTableRows() {
-		const rows = this.state.opps
-			.reverse()
+		const { page, totalOpps } = this.state;
+		let croppedRows = [];
+		if ((page - 1) * RESULTS_PER_PAGE + RESULTS_PER_PAGE > totalOpps) {
+			croppedRows = this.state.opps.slice((page - 1) * RESULTS_PER_PAGE);
+		} else {
+			croppedRows = this.state.opps.slice(
+				(page - 1) * RESULTS_PER_PAGE,
+				(page - 1) * RESULTS_PER_PAGE + RESULTS_PER_PAGE
+			);
+		}
+		return croppedRows
 			.map(
 				({ _id, company, jobTitle, status, lastUpdate, priority, appLink }) => {
 					let color;
@@ -222,7 +240,6 @@ class OppTable extends Component {
 					);
 				}
 			);
-		this.setState({ tableRows: rows });
 	}
 	handleSearch = async event => {
 		let search = event.target.value.toLowerCase();
@@ -233,7 +250,7 @@ class OppTable extends Component {
 			);
 		});
 		filteredOpps = filteredOpps.reverse();
-		await this.setState({
+		this.setState({
 			opps: filteredOpps,
 			tableHeaders: [
 				{ label: 'Company', value: 'company', sortable: true, reversed: 0 },
@@ -251,14 +268,51 @@ class OppTable extends Component {
 					reversed: 0
 				},
 				{ label: 'Priority', value: 'priority', sortable: true, reversed: 0 }
-			]
+			],
+			page: 1,
+			totalPages: Math.floor(filteredOpps.length / RESULTS_PER_PAGE + 1)
 		});
-		this.renderTableRows();
 	};
-
+	handleLeftArrow = () => {
+		if (this.state.page > 1) {
+			this.setState({ page: this.state.page - 1 });
+		}
+	};
+	handleRightArrow = () => {
+		if (this.state.page < this.state.totalPages) {
+			this.setState({ page: this.state.page + 1 });
+		}
+	};
+	handleNumberClick = (i) => {
+		this.setState({ page: i});
+	}
+	renderPaginationNumbers = () => {
+		let pageNumbers = [];
+		for (let i = 1; i < this.state.totalPages + 1; i++) {
+			if (i === this.state.page) {
+				pageNumbers.push(
+					<span className="page-number clickable" key={i} onClick={() => this.handleNumberClick(i)}>
+						<b>{i}</b>
+					</span>
+				);
+			} else {
+				pageNumbers.push(
+					<span className="page-number clickable" key={i} onClick={() => this.handleNumberClick(i)}>
+						{i}
+					</span>
+				);
+			}
+		}
+		return pageNumbers;
+	};
 	render() {
-		if (!this.state.opps) {
-			return <LinearProgress mode="indeterminate" color={grey600} />;
+		const { opps, page, totalPages } = this.state;
+		if (!opps) {
+			return (
+				<div className="loading-circle">
+					<CircularProgress size={80} thickness={5} />
+				</div>
+			);
 		}
 		return (
 			<div style={styles.tableWrapper}>
@@ -274,15 +328,31 @@ class OppTable extends Component {
 				</div>
 				<Table
 					wrapperStyle={{ overflow: 'visible' }}
-					bodyStyle={{ overflow: 'visible' }} 
+					bodyStyle={{ overflow: 'visible' }}
 				>
 					<TableHeader displaySelectAll={false} adjustForCheckbox={false}>
 						<TableRow>{this.renderTableHeaders()}</TableRow>
 					</TableHeader>
 					<TableBody displayRowCheckbox={false} showRowHover>
-						{this.state.tableRows}
+						{this.renderTableRows()}
 					</TableBody>
 				</Table>
+				<div className="pagination-wrapper">
+					<i
+						className="fa fa-chevron-left nav-arrows clickable"
+						onClick={this.handleLeftArrow}
+					/>
+					<div className="pagination-numbers">
+						{this.renderPaginationNumbers()}
+					</div>
+					<i
+						className="fa fa-chevron-right nav-arrows clickable"
+						onClick={this.handleRightArrow}
+					/>
+					<div className="pagination-page-number">
+						{page} of {totalPages}
+					</div>
+				</div>
 			</div>
 		);
 	}

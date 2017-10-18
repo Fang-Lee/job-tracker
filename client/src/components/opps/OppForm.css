@@ -22,3 +22,8 @@
 .form-buttons > * {
 	margin: 0 3px;
 }
+
+.error-text {
+	color: red;
+	margin-bottom: 20px;
+}

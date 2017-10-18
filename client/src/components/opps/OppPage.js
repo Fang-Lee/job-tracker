@@ -97,7 +97,7 @@ class OppPage extends Component {
 					<div className="company-description-misc">
 						<div>
 							<h3>Location</h3>
-							<p>{location}</p>
+							<div>{location ? location : <div><br /><br /></div>}</div>
 						</div>
 						{salary && (
 							<div>

@@ -1,3 +1,39 @@
-tbody {
-	height: 100px !important;
+.loading-circle {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	height: 400px;
+	width: 100%;
+	margin: 0 auto;
+}
+
+.pagination-wrapper {
+	position: relative;
+	display: flex;
+	justify-content: center;
+	margin: 0 auto;
+	padding: 20px;
+}
+
+.pagination-page-number {
+	position: absolute;
+	right: 0;
+	top: 20px;
+}
+
+.pagination-numbers {
+	display: flex;
+	justify-content: center;
+}
+
+.page-number {
+	margin: 0 10px;
+}
+
+.nav-arrows {
+	margin: 1px 20px;
+}
+
+.clickable {
+	cursor: pointer;
 }

@@ -52,16 +52,18 @@ module.exports = app => {
 			contactPhone,
 			lastContact,
 			notes,
-			tags = '',
+			tags = ''
 		} = req.body;
 
 		const resume = req.files[0];
 
 		// upload documents to aws s3
-		s3fsImpl.writeFile(resume.originalName, resume.buffer, err => {
-			if (err) throw err;
-			console.log('document saved!');
-		})
+		if (resume) {
+			s3fsImpl.writeFile(resume.originalName, resume.buffer, err => {
+				if (err) throw err;
+				console.log('document saved!');
+			});
+		}
 
 		// linkify the application link
 		let appLinkHref = '';
