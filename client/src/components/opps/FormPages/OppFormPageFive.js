@@ -6,7 +6,6 @@ import formFields from '../formFields';
 import * as actions from '../../../actions';
 import './OppFormPages.css';
 
-import MenuItem from 'material-ui/MenuItem';
 import FlatButton from 'material-ui/FlatButton';
 import RaisedButton from 'material-ui/RaisedButton';
 

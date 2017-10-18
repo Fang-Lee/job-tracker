@@ -2,8 +2,6 @@ import React, { Component } from 'react';
 import { reduxForm } from 'redux-form';
 
 import { Step, Stepper, StepLabel } from 'material-ui/Stepper';
-import RaisedButton from 'material-ui/RaisedButton';
-import FlatButton from 'material-ui/FlatButton';
 
 import OppFormPageOne from './FormPages/OppFormPageOne';
 import OppFormPageTwo from './FormPages/OppFormPageTwo';
@@ -19,7 +17,6 @@ import OppFormPageFive from './FormPages/OppFormPageFive';
  */
 class OppFormStepper extends Component {
   state = {
-    finished: false,
     stepIndex: 0
   };
 
@@ -71,7 +68,7 @@ class OppFormStepper extends Component {
   }
 
   render() {
-    const { finished, stepIndex } = this.state;
+    const { stepIndex } = this.state;
     const contentStyle = { margin: '0 16px' };
 
     return (

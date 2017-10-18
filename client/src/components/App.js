@@ -13,6 +13,7 @@ import Dashboard from "./Dashboard/Dashboard";
 import OppForm from "./opps/OppForm";
 import OppPage from "./opps/OppPage";
 import OppForm2 from './opps/OppForm2';
+import EditOppPage from './opps/EditOppPage';
 
 import "./App.css";
 
@@ -32,6 +33,7 @@ class App extends Component {
 								<Route exact path="/dashboard" component={Dashboard} />
 								<Route path="/new" component={OppForm2} />
 								<Route path="/opp/:id" component={OppPage} />
+								<Route path="/edit/opp/:id" component={EditOppPage} />
 							</div>
 						</div>
 					</div>

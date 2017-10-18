@@ -60,9 +60,9 @@ class OppTable extends Component {
 	async componentDidMount() {
 		await this.props.fetchOpps();
 		this.originalOpps = this.props.opps;
-		let totalPages = this.props.opps.length / RESULTS_PER_PAGE; 
+		let totalPages = this.props.opps.length / RESULTS_PER_PAGE;
 		if (this.props.opps.length % RESULTS_PER_PAGE) {
-			totalPages = Math.floor(totalPages) + 1
+			totalPages = Math.floor(totalPages) + 1;
 		}
 
 		this.setState({
@@ -235,7 +235,11 @@ class OppTable extends Component {
 							>
 								<Info color={grey600} />
 							</IconButton>
-							<IconButton tooltip="Edit" tooltipPosition="bottom-center">
+							<IconButton
+								containerElement={<Link to={`/edit/opp/${_id}`} />}
+								tooltip="Edit"
+								tooltipPosition="bottom-center"
+							>
 								<ModeEdit color={grey600} />
 							</IconButton>
 						</TableRowColumn>
@@ -253,9 +257,9 @@ class OppTable extends Component {
 			);
 		});
 		filteredOpps = filteredOpps.reverse();
-		let updatedTotalPages = filteredOpps.length / RESULTS_PER_PAGE; 
+		let updatedTotalPages = filteredOpps.length / RESULTS_PER_PAGE;
 		if (filteredOpps.length % RESULTS_PER_PAGE) {
-			updatedTotalPages = Math.floor(updatedTotalPages) + 1
+			updatedTotalPages = Math.floor(updatedTotalPages) + 1;
 		}
 		this.setState({
 			opps: filteredOpps,
@@ -339,7 +343,7 @@ class OppTable extends Component {
 		return pageNumbers;
 	};
 	render() {
-		const { opps, page, totalPages, totalOpps } = this.state;
+		const { opps, page, totalOpps } = this.state;
 		if (!opps) {
 			return (
 				<div className="loading-circle">

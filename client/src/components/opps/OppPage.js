@@ -15,7 +15,6 @@ class OppPage extends Component {
 		const { id } = this.props.match.params;
 		await this.props.fetchOpp(id);
 		const height = document.getElementById('descriptions').clientHeight;
-		console.log('height', height);
 		if (height > 425) {
 			this.setState({ showMoreOn: true, contentHidden: true });
 		}
@@ -118,7 +117,6 @@ class OppPage extends Component {
 		);
 	}
 	showBtnClicked = () => {
-		console.log('clicked');
 		this.setState({ contentHidden: !this.state.contentHidden });
 	};
 	render() {
@@ -147,7 +145,6 @@ class OppPage extends Component {
 			notes,
 			tags
 		} = opp;
-		console.log(opp);
 		return (
 			<div className="opp-page-wrapper">
 				<div className="opp-page-header">
