@@ -24,7 +24,7 @@ import { grey400, grey600 } from 'material-ui/styles/colors';
 import IconButton from 'material-ui/IconButton';
 import CircularProgress from 'material-ui/CircularProgress';
 
-const RESULTS_PER_PAGE = 10;
+const RESULTS_PER_PAGE = 20;
 
 class OppTable extends Component {
 	constructor(props) {
@@ -60,11 +60,15 @@ class OppTable extends Component {
 	async componentDidMount() {
 		await this.props.fetchOpps();
 		this.originalOpps = this.props.opps;
+		let totalPages = this.props.opps.length / RESULTS_PER_PAGE; 
+		if (this.props.opps.length % RESULTS_PER_PAGE) {
+			totalPages = Math.floor(totalPages) + 1
+		}
 
 		this.setState({
 			opps: this.props.opps.reverse(),
 			totalOpps: this.props.opps.length,
-			totalPages: Math.floor(this.props.opps.length / RESULTS_PER_PAGE + 1)
+			totalPages: totalPages
 		});
 	}
 	handleSort = (value, reversed, index) => {
@@ -159,87 +163,86 @@ class OppTable extends Component {
 				(page - 1) * RESULTS_PER_PAGE + RESULTS_PER_PAGE
 			);
 		}
-		return croppedRows
-			.map(
-				({ _id, company, jobTitle, status, lastUpdate, priority, appLink }) => {
-					let color;
-					let statusLabel = '';
-					switch (status) {
-						case 1:
-							color = '#EA4335';
-							statusLabel = 'Interested';
-							break;
-						case 2:
-							color = '#FBBC05';
-							statusLabel = 'Applied';
-							break;
-						case 3:
-							color = '#4285F4';
-							statusLabel = 'Interviewing';
-							break;
-						case 4:
-							color = '#34A853';
-							statusLabel = 'Received Offer';
-							break;
-						default:
-							color = 'white';
-					}
-					return (
-						<TableRow key={_id}>
-							<TableRowColumn>{company}</TableRowColumn>
-							<TableRowColumn>{jobTitle}</TableRowColumn>
-							<TableRowColumn>
-								<div
-									style={{
-										backgroundColor: color,
-										padding: '5px',
-										borderRadius: '5px',
-										textAlign: 'center'
-									}}
-								>
-									<span style={{ color: 'white' }}>{statusLabel}</span>
-								</div>
-							</TableRowColumn>
-							<TableRowColumn>
-								{lastUpdate ? lastUpdate.slice(0, 10) : ''}
-							</TableRowColumn>
-							<TableRowColumn>{this.renderStars(priority)}</TableRowColumn>
-							<TableRowColumn
+		return croppedRows.map(
+			({ _id, company, jobTitle, status, lastUpdate, priority, appLink }) => {
+				let color;
+				let statusLabel = '';
+				switch (status) {
+					case 1:
+						color = '#EA4335';
+						statusLabel = 'Interested';
+						break;
+					case 2:
+						color = '#FBBC05';
+						statusLabel = 'Applied';
+						break;
+					case 3:
+						color = '#4285F4';
+						statusLabel = 'Interviewing';
+						break;
+					case 4:
+						color = '#34A853';
+						statusLabel = 'Received Offer';
+						break;
+					default:
+						color = 'white';
+				}
+				return (
+					<TableRow key={_id}>
+						<TableRowColumn>{company}</TableRowColumn>
+						<TableRowColumn>{jobTitle}</TableRowColumn>
+						<TableRowColumn>
+							<div
 								style={{
-									display: 'flex',
-									justifyContent: 'space-around',
-									overflow: 'visible'
+									backgroundColor: color,
+									padding: '5px',
+									borderRadius: '5px',
+									textAlign: 'center'
 								}}
 							>
-								{appLink ? (
-									<IconButton
-										href={appLink}
-										target="_blank"
-										tooltip="Application Link"
-										tooltipPosition="bottom-center"
-									>
-										<LinkIcon color={grey600} />
-									</IconButton>
-								) : (
-									<IconButton disabled={true}>
-										<LinkIcon />
-									</IconButton>
-								)}
+								<span style={{ color: 'white' }}>{statusLabel}</span>
+							</div>
+						</TableRowColumn>
+						<TableRowColumn>
+							{lastUpdate ? lastUpdate.slice(0, 10) : ''}
+						</TableRowColumn>
+						<TableRowColumn>{this.renderStars(priority)}</TableRowColumn>
+						<TableRowColumn
+							style={{
+								display: 'flex',
+								justifyContent: 'space-around',
+								overflow: 'visible'
+							}}
+						>
+							{appLink ? (
 								<IconButton
-									containerElement={<Link to={`/opp/${_id}`} />}
-									tooltip="More Info"
+									href={appLink}
+									target="_blank"
+									tooltip="Application Link"
 									tooltipPosition="bottom-center"
 								>
-									<Info color={grey600} />
+									<LinkIcon color={grey600} />
 								</IconButton>
-								<IconButton tooltip="Edit" tooltipPosition="bottom-center">
-									<ModeEdit color={grey600} />
+							) : (
+								<IconButton disabled={true}>
+									<LinkIcon />
 								</IconButton>
-							</TableRowColumn>
-						</TableRow>
-					);
-				}
-			);
+							)}
+							<IconButton
+								containerElement={<Link to={`/opp/${_id}`} />}
+								tooltip="More Info"
+								tooltipPosition="bottom-center"
+							>
+								<Info color={grey600} />
+							</IconButton>
+							<IconButton tooltip="Edit" tooltipPosition="bottom-center">
+								<ModeEdit color={grey600} />
+							</IconButton>
+						</TableRowColumn>
+					</TableRow>
+				);
+			}
+		);
 	}
 	handleSearch = async event => {
 		let search = event.target.value.toLowerCase();
@@ -250,6 +253,10 @@ class OppTable extends Component {
 			);
 		});
 		filteredOpps = filteredOpps.reverse();
+		let updatedTotalPages = filteredOpps.length / RESULTS_PER_PAGE; 
+		if (filteredOpps.length % RESULTS_PER_PAGE) {
+			updatedTotalPages = Math.floor(updatedTotalPages) + 1
+		}
 		this.setState({
 			opps: filteredOpps,
 			tableHeaders: [
@@ -270,7 +277,7 @@ class OppTable extends Component {
 				{ label: 'Priority', value: 'priority', sortable: true, reversed: 0 }
 			],
 			page: 1,
-			totalPages: Math.floor(filteredOpps.length / RESULTS_PER_PAGE + 1),
+			totalPages: updatedTotalPages,
 			totalOpps: filteredOpps.length
 		});
 	};
@@ -284,25 +291,50 @@ class OppTable extends Component {
 			this.setState({ page: this.state.page + 1 });
 		}
 	};
-	handleNumberClick = (i) => {
-		this.setState({ page: i});
-	}
-	renderPaginationNumbers = () => {
-		let pageNumbers = [];
-		for (let i = 1; i < this.state.totalPages + 1; i++) {
-			if (i === this.state.page) {
-				pageNumbers.push(
-					<span className="page-number clickable" key={i} onClick={() => this.handleNumberClick(i)}>
+	handleNumberClick = i => {
+		this.setState({ page: i });
+	};
+	renderPaginationBar(x, y) {
+		let bar = [];
+		const { page } = this.state;
+		for (let i = x; i < y; i++) {
+			if (i === page) {
+				bar.push(
+					<span
+						className="page-number clickable"
+						key={i}
+						onClick={() => this.handleNumberClick(i)}
+					>
 						<b>{i}</b>
 					</span>
 				);
 			} else {
-				pageNumbers.push(
-					<span className="page-number clickable" key={i} onClick={() => this.handleNumberClick(i)}>
+				bar.push(
+					<span
+						className="page-number clickable"
+						key={i}
+						onClick={() => this.handleNumberClick(i)}
+					>
 						{i}
 					</span>
 				);
 			}
+		}
+		return bar;
+	}
+	renderPaginationNumbers = () => {
+		const { page, totalPages } = this.state;
+		let pageNumbers = [];
+		if (totalPages > 5) {
+			if (page - 2 >= 1 && page + 2 <= totalPages) {
+				pageNumbers = this.renderPaginationBar(page - 2, page + 3);
+			} else if (page >= totalPages - 2) {
+				pageNumbers = this.renderPaginationBar(totalPages - 4, totalPages + 1);
+			} else {
+				pageNumbers = this.renderPaginationBar(1, 6);
+			}
+		} else {
+			pageNumbers = this.renderPaginationBar(1, totalPages + 1);
 		}
 		return pageNumbers;
 	};
@@ -321,7 +353,7 @@ class OppTable extends Component {
 					<SearchIcon style={styles.searchBarIcon} color={grey400} />
 					<TextField
 						style={styles.searchField}
-						hintText="Search"
+						hintText="Search by Company or Job"
 						fullWidth={true}
 						underlineShow={false}
 						onChange={this.handleSearch}
@@ -351,7 +383,12 @@ class OppTable extends Component {
 						onClick={this.handleRightArrow}
 					/>
 					<div className="pagination-page-number">
-						{(page-1) * RESULTS_PER_PAGE + 1}-{(page-1) * RESULTS_PER_PAGE + RESULTS_PER_PAGE < totalOpps ? (page-1) * RESULTS_PER_PAGE + RESULTS_PER_PAGE : totalOpps }  of {totalOpps}
+						{(page - 1) * RESULTS_PER_PAGE + 1}-{(page - 1) * RESULTS_PER_PAGE +
+							RESULTS_PER_PAGE <
+						totalOpps
+							? (page - 1) * RESULTS_PER_PAGE + RESULTS_PER_PAGE
+							: totalOpps}{' '}
+						of {totalOpps}
 					</div>
 				</div>
 			</div>
