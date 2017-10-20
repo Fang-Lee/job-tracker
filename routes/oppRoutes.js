@@ -6,11 +6,20 @@ const keys = require('../config/keys');
 var fs = require('fs');
 var S3FS = require('s3fs');
 const multer = require('multer');
+var upload = multer({
+	dest: 'uploads'
+})
 
 var s3fsImpl = new S3FS('jobtracker-dev', {
+	region: 'us-west-1',
 	accessKeyId: keys.s3AccessKeyId,
 	secretAccessKey: keys.s3SecretAccessKey
 });
+
+const fileFields = [
+	{ name: 'resume', maxCount: 1 },
+	{ name: 'coverLetter', maxCount: 1}
+];
 
 const Opportunity = mongoose.model('opps');
 
@@ -30,7 +39,7 @@ module.exports = app => {
 	// create an opp
 	// files cannot be parsed by body-parser so have to use middleware called multer.
 	// for multer to read files, must be placed inside formData
-	app.post('/api/opp', requireLogin, multer().any(), async (req, res) => {
+	app.put('/api/opp', requireLogin, upload.fields(fileFields), async (req, res) => {
 		console.log('req.body', req.body);
 		console.log('req.files', req.files);
 		const {
@@ -55,14 +64,34 @@ module.exports = app => {
 			tags = ''
 		} = req.body;
 
-		const resume = req.files[0];
+		let resumeFileName = "";
+		let coverLetterFileName = "";
 
 		// upload documents to aws s3
-		if (resume) {
-			s3fsImpl.writeFile(resume.originalName, resume.buffer, err => {
-				if (err) throw err;
-				console.log('document saved!');
-			});
+		if (req.files.resume) {
+			let resume = req.files.resume[0];
+			resumeFileName = `${req.user.id}/${company}/resume/${resume.originalname}`;
+			var stream = fs.createReadStream(resume.path);
+			console.log('stream', stream);
+			s3fsImpl.writeFile(resumeFileName, stream).then(() => {
+				fs.unlink(resume.path, err => {
+					if (err) throw err;
+					console.log('resume saved!');
+				});
+			})
+		}
+
+		if (req.files.coverLetter) {
+			let coverLetter = req.files.coverLetter[0];
+			coverLetterFileName = `${req.user.id}/${company}/cover_letter/${coverLetter.originalname}`
+			var stream = fs.createReadStream(coverLetter.path);
+			console.log('stream', stream);
+			s3fsImpl.writeFile(coverLetterFileName, stream).then(() => {
+				fs.unlink(coverLetter.path, err => {
+					if (err) throw err;
+					console.log('resume saved!');
+				});
+			})
 		}
 
 		// linkify the application link
@@ -97,6 +126,8 @@ module.exports = app => {
 			contactPhone,
 			lastContact,
 			notes,
+			resume: resumeFileName,
+			coverLetter: coverLetterFileName,
 			tags: tags.split(',').map(tag => tag.trim()),
 			_user: req.user.id
 		});

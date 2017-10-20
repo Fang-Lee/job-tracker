@@ -16,6 +16,17 @@
 	margin-bottom: 5px;
 }
 
+.opp-page-header-right {
+	position: relative;
+}
+
+.actions {
+	position: absolute;
+	right: 5px;
+	margin-top: 10px;
+	cursor: pointer;
+}
+
 .company-name {
 	display: inline-block;
 	font-size: 3em;

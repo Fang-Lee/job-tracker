@@ -51,7 +51,7 @@ class OppFormPageOne extends Component {
 	}
 }
 
-const fileMaxSize = 15 * 1000 * 1000; // 15MB
+const fileMaxSize = 3 * 1000 * 1000; // 3MB
 
 function validate(values) {
 	const errors = {};

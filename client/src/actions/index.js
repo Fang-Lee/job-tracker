@@ -13,7 +13,7 @@ export const submitForm = (values, history) => async dispatch => {
 	// files cannot be parsed by body-parser so have to use middleware called multer.	
 	// for multer to read files, must be placed inside formData
 	const formatedValues = formatFormValues(values);
-	const res = await axios.post('/api/opp', formatedValues);
+	const res = await axios.put('/api/opp', formatedValues);
 	console.log('values', formatedValues)
 	console.log(res.data);
 	history.push(res.data.redirect);

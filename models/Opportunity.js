@@ -22,8 +22,8 @@ const opportunitySchema = new Schema({
 	lastContact: Date,
 	notes: String,
 	tags: [{type: String}],
-	resume: FileSchema,
-	coverLetter: FileSchema,
+	resume: String,
+	coverLetter: String,
 	_user: { type: Schema.Types.ObjectId, ref: 'User' }
 });
 

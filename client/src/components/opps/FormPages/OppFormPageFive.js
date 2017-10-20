@@ -31,6 +31,7 @@ class OppFormPageOne extends Component {
 	render() {
 		return (
 			<form onSubmit={this.props.handleSubmit(() => {
+				console.log('file', this.props.formValues.resume);
 				this.props.submitForm(this.props.formValues, this.props.history);
 			})}>
 				<div className="form-fields">{this.renderFields()}</div>

@@ -10,11 +10,36 @@ class EditOppPage extends Component {
 	render() {
 		const { opp } = this.props;
 		if (!opp) {
-			return <div>Loading</div>;
+			return <div>Loading...</div>;
 		}
+		const {
+			company,
+			jobTitle,
+			location,
+			status,
+			salary,
+			origin,
+			appLink,
+			jobDescription,
+			companyDescription,
+			responsibilities,
+			qualifications,
+			lastUpdate,
+			priority,
+			contactName,
+			contactEmail,
+			contactPhone,
+			lastContact,
+			notes,
+			tags
+		} = opp;
 		return (
-			<div>Editing Page {this.props.opp.company}</div>
-		)
+			<div className="edit-page-wrapper">
+				<div className="edit-page-header">
+					<h1>Editing {company}</h1>
+				</div>
+			</div>
+		);
 	}
 }
 

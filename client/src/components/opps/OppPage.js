@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 import { fetchOpp } from '../../actions';
 import './OppPage.css';
 
@@ -8,9 +9,12 @@ import LinearProgress from 'material-ui/LinearProgress';
 import Paper from 'material-ui/Paper';
 import Chip from 'material-ui/Chip';
 import Divider from 'material-ui/Divider';
+import Popover from 'material-ui/Popover';
+import Menu from 'material-ui/Menu';
+import MenuItem from 'material-ui/MenuItem';
 
 class OppPage extends Component {
-	state = { contentHidden: false, showMoreOn: false };
+	state = { contentHidden: false, showMoreOn: false, actionMenuOpen: false };
 	async componentDidMount() {
 		const { id } = this.props.match.params;
 		await this.props.fetchOpp(id);
@@ -19,6 +23,19 @@ class OppPage extends Component {
 			this.setState({ showMoreOn: true, contentHidden: true });
 		}
 	}
+	handleActionMenuOpen = event => {
+		event.preventDefault();
+		console.log('action menu pressed');
+		this.setState({
+			actionMenuOpen: true,
+			anchorEl: event.currentTarget
+		});
+	};
+	handleRequestClose = () => {
+		this.setState({
+			actionMenuOpen: false
+		});
+	};
 	renderStatus(status, priority) {
 		let color;
 		let statusLabel = '';
@@ -77,7 +94,7 @@ class OppPage extends Component {
 			jobDescription,
 			companyDescription,
 			responsibilities,
-			qualifications,
+			qualifications
 		} = opp;
 		return (
 			<Paper id="descriptions" className="descriptions">
@@ -96,7 +113,17 @@ class OppPage extends Component {
 					<div className="company-description-misc">
 						<div>
 							<h3>Location</h3>
-							<div>{location ? location : <div><br /><br /></div>}</div>
+							<div>
+								{location ? (
+									location
+								) : (
+									<div>
+										<br />
+										<br />
+									</div>
+								)}
+							</div>
+							<br />
 						</div>
 						{salary && (
 							<div>
@@ -131,6 +158,7 @@ class OppPage extends Component {
 			);
 		}
 		const {
+			_id,
 			company,
 			jobTitle,
 			status,
@@ -151,7 +179,26 @@ class OppPage extends Component {
 					<div>
 						<h2 className="company-name">{company}</h2> <i>{jobTitle}</i>
 					</div>
-					{this.renderStatus(status, priority)}
+					<div className="opp-page-header-right">
+						{this.renderStatus(status, priority)}
+						<i
+							className="fa fa-ellipsis-h actions"
+							onClick={this.handleActionMenuOpen}
+						/>
+						<Popover
+							open={this.state.actionMenuOpen}
+							anchorEl={this.state.anchorEl}
+							anchorOrigin={{ horizontal: 'right', vertical: 'top' }}
+							targetOrigin={{ horizontal: 'right', vertical: 'top' }}
+							onRequestClose={this.handleRequestClose}
+						>
+							<Menu>
+								<MenuItem><Link to={`/edit/opp/${_id}`}>Edit</Link></MenuItem>
+								<MenuItem primaryText="Archive" />
+								<MenuItem primaryText="Delete" />
+							</Menu>
+						</Popover>
+					</div>
 				</div>
 				<div className="tags">
 					{tags &&
@@ -206,16 +253,24 @@ class OppPage extends Component {
 								</div>
 								<Divider />
 								<div>
-									<i className="fa fa-envelope-o" /><span>{contactEmail}</span>
+									<i className="fa fa-envelope-o" />
+									<span>{contactEmail}</span>
 								</div>
 								<Divider />
 								<div>
-									<i className="fa fa-phone" /><span>{contactPhone}</span>
+									<i className="fa fa-phone" />
+									<span>{contactPhone}</span>
 								</div>
 								<Divider />
 								<div>
 									<i className="fa fa-calendar" />
-									<span>{lastContact ? <span>Last Contact: {lastContact.slice(0, 10)}</span> : ''}</span>
+									<span>
+										{lastContact ? (
+											<span>Last Contact: {lastContact.slice(0, 10)}</span>
+										) : (
+											''
+										)}
+									</span>
 								</div>
 							</div>
 						</Paper>
@@ -229,12 +284,12 @@ class OppPage extends Component {
 					</div>
 				</div>
 				<div className="notes-wrapper">
-						<Paper className="notes-content">
-							<h3>Notes</h3>
-							<Divider />
-							<p>{notes}</p>
-						</Paper>
-					</div>
+					<Paper className="notes-content">
+						<h3>Notes</h3>
+						<Divider />
+						<p>{notes}</p>
+					</Paper>
+				</div>
 			</div>
 		);
 	}
