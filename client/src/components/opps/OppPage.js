@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
-import { fetchOpp } from '../../actions';
+import { Link, withRouter } from 'react-router-dom';
+import { fetchOpp, deleteOpp } from '../../actions';
+
 import './OppPage.css';
 
 import { grey600 } from 'material-ui/styles/colors';
@@ -12,9 +13,18 @@ import Divider from 'material-ui/Divider';
 import Popover from 'material-ui/Popover';
 import Menu from 'material-ui/Menu';
 import MenuItem from 'material-ui/MenuItem';
+import FlatButton from 'material-ui/FlatButton';
+import RaisedButton from 'material-ui/RaisedButton';
+import Dialog from 'material-ui/Dialog';
 
 class OppPage extends Component {
-	state = { contentHidden: false, showMoreOn: false, actionMenuOpen: false };
+	state = {
+		contentHidden: false,
+		showMoreOn: false,
+		actionMenuOpen: false,
+		deleteAlertOpen: false,
+		archiveAlertOpen: false
+	};
 	async componentDidMount() {
 		const { id } = this.props.match.params;
 		await this.props.fetchOpp(id);
@@ -34,6 +44,26 @@ class OppPage extends Component {
 	handleRequestClose = () => {
 		this.setState({
 			actionMenuOpen: false
+		});
+	};
+	handleDeleteAlertOpen = () => {
+		this.setState({
+			deleteAlertOpen: true
+		});
+	};
+	handleDeleteAlertClose = () => {
+		this.setState({
+			deleteAlertOpen: false
+		});
+	};
+	handleArchiveAlertOpen = () => {
+		this.setState({
+			archiveAlertOpen: true
+		});
+	};
+	handleArchiveAlertClose = () => {
+		this.setState({
+			archiveAlertOpen: false
 		});
 	};
 	renderStatus(status, priority) {
@@ -171,8 +201,28 @@ class OppPage extends Component {
 			contactPhone,
 			lastContact,
 			notes,
+			resumeLink,
+			coverLetterLink,
 			tags
 		} = opp;
+		console.log(opp);
+		const deleteActions = [
+			<FlatButton
+				label="Cancel"
+				primary={true}
+				onClick={this.handleDeleteAlertClose}
+			/>,
+			<RaisedButton
+				label="Delete"
+				labelColor="#fff"
+				backgroundColor="#EA4335"
+				onClick={() => {
+					this.handleDeleteAlertClose();
+					console.log('deleting opp');
+					this.props.deleteOpp(_id, this.props.history);
+				}}
+			/>
+		];
 		return (
 			<div className="opp-page-wrapper">
 				<div className="opp-page-header">
@@ -183,9 +233,11 @@ class OppPage extends Component {
 						{this.renderStatus(status, priority)}
 						<i
 							className="fa fa-ellipsis-h actions"
+							name="actionMenu"
 							onClick={this.handleActionMenuOpen}
 						/>
 						<Popover
+							name="actionMenu"
 							open={this.state.actionMenuOpen}
 							anchorEl={this.state.anchorEl}
 							anchorOrigin={{ horizontal: 'right', vertical: 'top' }}
@@ -193,11 +245,29 @@ class OppPage extends Component {
 							onRequestClose={this.handleRequestClose}
 						>
 							<Menu>
-								<MenuItem><Link to={`/edit/opp/${_id}`}>Edit</Link></MenuItem>
+								<MenuItem>
+									<Link to={`/edit/opp/${_id}`}>
+										<div className="action-menu-items">Edit</div>
+									</Link>
+								</MenuItem>
 								<MenuItem primaryText="Archive" />
-								<MenuItem primaryText="Delete" />
+								<MenuItem
+									onClick={() => {
+										this.handleDeleteAlertOpen();
+										this.handleRequestClose();
+									}}
+									primaryText="Delete"
+								/>
 							</Menu>
 						</Popover>
+						<Dialog
+							actions={deleteActions}
+							modal={false}
+							open={this.state.deleteAlertOpen}
+							onRequestClose={this.handleDeleteAlertClose}
+						>
+							Delete this opportunity?
+						</Dialog>
 					</div>
 				</div>
 				<div className="tags">
@@ -279,7 +349,24 @@ class OppPage extends Component {
 						<Paper className="documents-content">
 							<h3>Documents</h3>
 							<Divider />
-							<p>FILES GO HERE</p>
+							<div className="file-link-wrapper">
+								{resumeLink && (
+									<a href={resumeLink} target="_blank">
+										<div className="file-link">
+											<i className="fa fa-file-text-o fa-4x" />
+											<p>Resume</p>
+										</div>
+									</a>
+								)}
+								{coverLetterLink && (
+									<a href={coverLetterLink} target="_blank">
+										<div className="file-link">
+											<i className="fa fa-file-text-o fa-4x" />
+											<p>Cover Letter</p>
+										</div>
+									</a>
+								)}
+							</div>
 						</Paper>
 					</div>
 				</div>
@@ -299,4 +386,4 @@ function mapStateToProps({ opps }, ownProps) {
 	return { opp: opps[ownProps.match.params.id] };
 }
 
-export default connect(mapStateToProps, { fetchOpp })(OppPage);
+export default connect(mapStateToProps, { fetchOpp, deleteOpp })(withRouter(OppPage));

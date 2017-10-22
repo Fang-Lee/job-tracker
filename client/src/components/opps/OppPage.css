@@ -1,3 +1,8 @@
+a {
+	color: inherit;
+	text-decoration: none;
+}
+
 .loading-bar {
 	position: absolute !important;
 	width: 100vw !important;
@@ -25,6 +30,11 @@
 	right: 5px;
 	margin-top: 10px;
 	cursor: pointer;
+}
+
+.action-menu-items {
+	margin: 0 -16px;
+	padding: 0 16px;
 }
 
 .company-name {
@@ -176,6 +186,19 @@
 
 .contact-info > div > i {
 	margin-right: 15px;
+}
+
+.file-link-wrapper {
+	display: flex;
+	justify-content: space-around;
+}
+
+.file-link {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	margin-top: 10px;
+	padding: 20px;
 }
 
 .notes-wrapper {

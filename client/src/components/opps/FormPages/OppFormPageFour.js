@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { reduxForm, Field } from 'redux-form';
+import { connect } from 'react-redux';
 import './OppFormPages.css';
 
 import FlatButton from 'material-ui/FlatButton';
@@ -12,8 +13,10 @@ const FileInput = ({
 	meta: { error, touched },
 	...props
 }) => (
-	<div>
+	<div className="file-input-wrapper">
+		Upload File
 		<input
+			className="file-input"
 			onChange={adaptFileEventToValue(onChange)}
 			onBlur={adaptFileEventToValue(onBlur)}
 			type="file"
@@ -32,10 +35,12 @@ class OppFormPageOne extends Component {
 					<div>
 						<h4>Resume:</h4>
 						<Field name="resume" component={FileInput} />
+						{this.props.formValues.resume && <p>{this.props.formValues.resume.name}</p>}
 					</div>
 					<div>
 						<h4>Cover Letter:</h4>
 						<Field name="coverLetter" component={FileInput} />
+						{this.props.formValues.coverLetter && <p>{this.props.formValues.coverLetter.name}</p>}
 					</div>
 				</div>
 				<div className="nav-buttons">
@@ -69,9 +74,15 @@ function validate(values) {
 	return errors;
 }
 
+function mapStateToProps(state) {
+	return {
+		formValues: state.form.oppForm.values
+	};
+}
+
 export default reduxForm({
 	destroyOnUnmount: false,
 	forceUnregisterOnUnmount: true,
 	form: 'oppForm',
 	validate
-})(OppFormPageOne);
+})(connect(mapStateToProps)(OppFormPageOne));

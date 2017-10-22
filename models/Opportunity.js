@@ -24,6 +24,8 @@ const opportunitySchema = new Schema({
 	tags: [{type: String}],
 	resume: String,
 	coverLetter: String,
+	resumeLink: String,
+	coverLetterLink: String,
 	_user: { type: Schema.Types.ObjectId, ref: 'User' }
 });
 
