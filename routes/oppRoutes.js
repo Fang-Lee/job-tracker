@@ -29,6 +29,7 @@ const fileFields = [
 ];
 
 const Opportunity = mongoose.model('opps');
+const User = mongoose.model('users');
 
 module.exports = app => {
 	// fetch all opps
@@ -79,6 +80,8 @@ module.exports = app => {
 			let coverLetterFileName = '';
 			let resumeLink;
 			let coverLetterLink;
+			let resumeFileSize = 0;
+			let coverLetterFileSize = 0;
 
 			// upload documents to aws s3
 			if (req.files.resume) {
@@ -86,6 +89,7 @@ module.exports = app => {
 				resumeFileName = `${req.user
 					.id}/${company}/resume/${resume.originalname}`;
 				resumeLink = `https://s3-us-west-1.amazonaws.com/${keys.s3Bucket}/${resumeFileName}`;
+				resumeFileSize = resume.size;
 				var stream = fs.createReadStream(resume.path);
 				console.log('stream', stream);
 				await s3fsImpl.writeFile(resumeFileName, stream).then(() => {
@@ -101,6 +105,7 @@ module.exports = app => {
 				coverLetterFileName = `${req.user
 					.id}/${company}/cover_letter/${coverLetter.originalname}`;
 				coverLetterLink = `https://s3-us-west-1.amazonaws.com/${keys.s3Bucket}/${coverLetterFileName}`;
+				coverLetterFileSize = coverLetter.size;
 				var stream = fs.createReadStream(coverLetter.path);
 				console.log('stream', stream);
 				s3fsImpl.writeFile(coverLetterFileName, stream).then(() => {
@@ -147,9 +152,18 @@ module.exports = app => {
 				coverLetter: coverLetterFileName,
 				resumeLink,
 				coverLetterLink,
+				filesSize: resumeFileSize + coverLetterFileSize,
 				tags: tags.split(',').map(tag => tag.trim()),
 				_user: req.user.id
 			});
+
+			try {
+				const user = await User.findByIdAndUpdate(req.user.id, {
+					$inc: { totalStorage: resumeFileSize + coverLetterFileSize }
+				});
+			} catch (err) {
+				return res.status(500).send(err);
+			}
 
 			try {
 				await opp.save();
@@ -163,23 +177,41 @@ module.exports = app => {
 	);
 
 	app.delete('/api/delete/opp/:id', requireLogin, async (req, res) => {
-		const deletedOpp = await Opportunity.findByIdAndRemove(req.params.id);
-		console.log('this opp was deleted', deletedOpp);
-		if (deletedOpp.resume) {
-			var resumeParams = { Bucket: keys.s3Bucket, Key: deletedOpp.resume };
-			s3.deleteObject(resumeParams, function(err, data) {
-				if (err) console.log('error deleting resume from s3', err);
-				else console.log('successfully deleted resume from s3');
-			});
-		}
-		if (deletedOpp.coverLetter) {
-			var coverLetterParams = { Bucket: keys.s3Bucket, Key: deletedOpp.coverLetter };
-			s3.deleteObject(coverLetterParams, function(err, data) {
-				if (err) console.log('error deleting cover letter from s3', err);
-				else console.log('successfully deleted cover letter from s3');
-			});
-		}
-
-		res.send({ opp: deletedOpp, redirect: '/dashboard' });
+		try {
+			const deletedOpp = await Opportunity.findByIdAndRemove(req.params.id);
+			console.log('this opp was deleted', deletedOpp);
+			if (deletedOpp.resume) {
+				var resumeParams = { Bucket: keys.s3Bucket, Key: deletedOpp.resume };
+				s3.deleteObject(resumeParams, function(err, data) {
+					if (err) console.log('error deleting resume from s3', err);
+					else console.log('successfully deleted resume from s3');
+				});
+			}
+			if (deletedOpp.coverLetter) {
+				var coverLetterParams = {
+					Bucket: keys.s3Bucket,
+					Key: deletedOpp.coverLetter
+				};
+				s3.deleteObject(coverLetterParams, function(err, data) {
+					if (err) console.log('error deleting cover letter from s3', err);
+					else console.log('successfully deleted cover letter from s3');
+				});
+			}
+			const removeFileSize = deletedOpp.filesSize * -1;
+			try {
+				const user = await User.findByIdAndUpdate(req.user.id, {
+					$inc: { totalStorage: removeFileSize }
+				});
+			} catch (err) {
+				return res.status(500).send(err);
+			}
+			res.send({ opp: deletedOpp, redirect: '/dashboard' });
+		} catch (err) {
+			return res.status(500).send(err);
+		}	
 	});
+
+	// app.post('/api/archive/opp/:id', requireLogin, async (req,res) => {
+	// 	const updatedOpp = await Opportunity.findByIdAndUpdate(req.params.id, )
+	// })
 };
