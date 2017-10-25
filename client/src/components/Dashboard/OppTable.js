@@ -12,6 +12,8 @@ import {
 	TableRow,
 	TableRowColumn
 } from 'material-ui/Table';
+import SelectField from 'material-ui/SelectField';
+import MenuItem from 'material-ui/MenuItem';
 import TextField from 'material-ui/TextField';
 import Grade from 'material-ui/svg-icons/action/grade';
 import Info from 'material-ui/svg-icons/action/info';
@@ -25,49 +27,66 @@ import IconButton from 'material-ui/IconButton';
 import CircularProgress from 'material-ui/CircularProgress';
 
 const RESULTS_PER_PAGE = 20;
+const ORIGINAL_TABLE_HEADERS = [
+	{ label: 'Company', value: 'company', sortable: true, reversed: 0 },
+	{
+		label: 'Job Title',
+		value: 'jobTitle',
+		sortable: true,
+		reversed: 0
+	},
+	{ label: 'Status', value: 'status', sortable: true, reversed: 0 },
+	{
+		label: 'Last Update',
+		value: 'lastUpdate',
+		sortable: false,
+		reversed: 0
+	},
+	{ label: 'Priority', value: 'priority', sortable: true, reversed: 0 }
+];
+
+function calcTotalPages(opps) {
+	let totalPages = opps / RESULTS_PER_PAGE;
+	if (opps % RESULTS_PER_PAGE) {
+		totalPages = Math.floor(totalPages) + 1;
+	}
+	return totalPages;
+}
 
 class OppTable extends Component {
 	constructor(props) {
 		super(props);
 		this.originalOpps = [];
+		this.activeOpps = [];
+		this.archivedOpps = [];
 		this.state = {
-			tableHeaders: [
-				{ label: 'Company', value: 'company', sortable: true, reversed: 0 },
-				{
-					label: 'Job Title',
-					value: 'jobTitle',
-					sortable: true,
-					reversed: 0
-				},
-				{ label: 'Status', value: 'status', sortable: true, reversed: 0 },
-				{
-					label: 'Last Update',
-					value: 'lastUpdate',
-					sortable: false,
-					reversed: 0
-				},
-				{ label: 'Priority', value: 'priority', sortable: true, reversed: 0 }
-			],
+			tableHeaders: ORIGINAL_TABLE_HEADERS.slice(),
 			opps: null,
 			tableRows: [],
 			search: '',
 			page: 1,
 			totalOpps: 0,
-			totalPages: 0
+			totalPages: 0,
+			category: 1
 		};
 	}
 
 	async componentDidMount() {
 		await this.props.fetchOpps();
-		this.originalOpps = this.props.opps;
-		let totalPages = this.props.opps.length / RESULTS_PER_PAGE;
-		if (this.props.opps.length % RESULTS_PER_PAGE) {
-			totalPages = Math.floor(totalPages) + 1;
-		}
+		this.originalOpps = this.props.opps.slice().reverse();
+		this.activeOpps = this.props.opps
+			.slice()
+			.reverse()
+			.filter(opp => opp.status < 5);
+		this.archivedOpps = this.props.opps
+			.slice()
+			.reverse()
+			.filter(opp => opp.status > 4);
+		let totalPages = calcTotalPages(this.activeOpps.length);
 
 		this.setState({
-			opps: this.props.opps.reverse(),
-			totalOpps: this.props.opps.length,
+			opps: this.activeOpps,
+			totalOpps: this.activeOpps.length,
 			totalPages: totalPages
 		});
 	}
@@ -92,23 +111,7 @@ class OppTable extends Component {
 		if (value === 'priority') {
 			sortedOpps = sortedOpps.reverse();
 		}
-		let updatedHeaders = [
-			{ label: 'Company', value: 'company', sortable: true, reversed: 0 },
-			{
-				label: 'Job Title',
-				value: 'jobTitle',
-				sortable: true,
-				reversed: 0
-			},
-			{ label: 'Status', value: 'status', sortable: true, reversed: 0 },
-			{
-				label: 'Last Update',
-				value: 'lastUpdate',
-				sortable: false,
-				reversed: 0
-			},
-			{ label: 'Priority', value: 'priority', sortable: true, reversed: 0 }
-		];
+		let updatedHeaders = ORIGINAL_TABLE_HEADERS.slice();
 		updatedHeaders[index] = selectedCol;
 		this.setState({ opps: sortedOpps, tableHeaders: updatedHeaders, page: 1 });
 		this.renderTableRows();
@@ -184,6 +187,10 @@ class OppTable extends Component {
 						color = '#34A853';
 						statusLabel = 'Received Offer';
 						break;
+					case 5:
+						color = grey600;
+						statusLabel = 'Archived';
+						break;
 					default:
 						color = 'white';
 				}
@@ -250,7 +257,7 @@ class OppTable extends Component {
 	}
 	handleSearch = async event => {
 		let search = event.target.value.toLowerCase();
-		let filteredOpps = this.originalOpps.filter(opp => {
+		let filteredOpps = this.activeOpps.filter(opp => {
 			return (
 				opp.company.toLowerCase().includes(search) ||
 				opp.jobTitle.toLowerCase().includes(search)
@@ -263,23 +270,7 @@ class OppTable extends Component {
 		}
 		this.setState({
 			opps: filteredOpps,
-			tableHeaders: [
-				{ label: 'Company', value: 'company', sortable: true, reversed: 0 },
-				{
-					label: 'Job Title',
-					value: 'jobTitle',
-					sortable: true,
-					reversed: 0
-				},
-				{ label: 'Status', value: 'status', sortable: true, reversed: 0 },
-				{
-					label: 'Last Update',
-					value: 'lastUpdate',
-					sortable: false,
-					reversed: 0
-				},
-				{ label: 'Priority', value: 'priority', sortable: true, reversed: 0 }
-			],
+			tableHeaders: ORIGINAL_TABLE_HEADERS.slice(),
 			page: 1,
 			totalPages: updatedTotalPages,
 			totalOpps: filteredOpps.length
@@ -342,6 +333,41 @@ class OppTable extends Component {
 		}
 		return pageNumbers;
 	};
+	handleCateogryChange = (event, index, value) => {
+		console.log('changed category to', value);
+		let opps = [];
+		switch (value) {
+			case 0:
+				this.setState({
+					opps: this.originalOpps,
+					totalOpps: this.originalOpps.length,
+					totalPages: calcTotalPages(this.originalOpps.length),
+					tableHeaders: ORIGINAL_TABLE_HEADERS.slice(),
+					page: 1
+				});
+				break;
+			case 1:
+				this.setState({
+					opps: this.activeOpps,
+					totalOpps: this.activeOpps.length,
+					totalPages: calcTotalPages(this.activeOpps.length),
+					tableHeaders: ORIGINAL_TABLE_HEADERS.slice(),
+					page: 1
+				});
+				break;
+			case 2:
+				this.setState({
+					opps: this.archivedOpps,
+					totalOpps: this.archivedOpps.length,
+					totalPages: calcTotalPages(this.archivedOpps.length),
+					tableHeaders: ORIGINAL_TABLE_HEADERS.slice(),
+					page: 1
+				});
+			default:
+				return;
+		}
+		this.setState({ category: value });
+	};
 	render() {
 		const { opps, page, totalOpps } = this.state;
 		if (!opps) {
@@ -375,6 +401,19 @@ class OppTable extends Component {
 					</TableBody>
 				</Table>
 				<div className="pagination-wrapper">
+					<div className="pagination-category">
+						<span>Showing </span>
+						<SelectField
+							className="category-select-field"
+							value={this.state.category}
+							onChange={this.handleCateogryChange}
+						>
+							<MenuItem value={1} primaryText="active" />
+							<MenuItem value={2} primaryText="archived" />
+							<MenuItem value={0} primaryText="all" />
+						</SelectField>{' '}
+						<span>opportunities</span>
+					</div>
 					<i
 						className="fa fa-chevron-left nav-arrows clickable"
 						onClick={this.handleLeftArrow}

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link, withRouter } from 'react-router-dom';
-import { fetchOpp, deleteOpp } from '../../actions';
+import { fetchOpp, deleteOpp, archiveOpp } from '../../actions';
 
 import './OppPage.css';
 
@@ -149,16 +149,47 @@ class OppPage extends Component {
 								) : (
 									<div>
 										<br />
+									</div>
+								)}
+							</div>
+							<br />
+						</div>
+						{salary ? (
+							<div>
+								<h3>Salary</h3>
+								<p>{salary}</p>
+							</div>
+						) : (
+							<div>
+								<br />
+							</div>
+						)}
+					</div>
+					<Divider />
+					<div className="company-description-misc">
+						<div>
+							<h3>Oppurtunity Source</h3>
+							<div>
+								{origin ? (
+									origin
+								) : (
+									<div>
 										<br />
 									</div>
 								)}
 							</div>
 							<br />
 						</div>
-						{salary && (
+						{salary ? (
 							<div>
-								<h3>Salary</h3>
-								<p>{salary}</p>
+								<h3>Application Link</h3>
+								<p>
+									<a href={appLink}>Link</a>
+								</p>
+							</div>
+						) : (
+							<div>
+								<br />
 							</div>
 						)}
 					</div>
@@ -223,6 +254,23 @@ class OppPage extends Component {
 				}}
 			/>
 		];
+		const archiveActions = [
+			<FlatButton
+				label="Cancel"
+				primary={true}
+				onClick={this.handleDeleteAlertClose}
+			/>,
+			<RaisedButton
+				label="Archive"
+				labelColor="#fff"
+				backgroundColor="#EA4335"
+				onClick={() => {
+					this.handleDeleteAlertClose();
+					console.log('archiving opp');
+					this.props.archiveOpp(_id, this.props.history);
+				}}
+			/>
+		];
 		return (
 			<div className="opp-page-wrapper">
 				<div className="opp-page-header">
@@ -250,7 +298,13 @@ class OppPage extends Component {
 										<div className="action-menu-items">Edit</div>
 									</Link>
 								</MenuItem>
-								<MenuItem primaryText="Archive" />
+								<MenuItem
+									onClick={() => {
+										this.handleArchiveAlertOpen();
+										this.handleRequestClose();
+									}}
+									primaryText="Archive"
+								/>
 								<MenuItem
 									onClick={() => {
 										this.handleDeleteAlertOpen();
@@ -267,6 +321,14 @@ class OppPage extends Component {
 							onRequestClose={this.handleDeleteAlertClose}
 						>
 							Delete this opportunity?
+						</Dialog>
+						<Dialog
+							actions={archiveActions}
+							modal={false}
+							open={this.state.archiveAlertOpen}
+							onRequestClose={this.handleArchiveAlertClose}
+						>
+							Archive this opportunity?
 						</Dialog>
 					</div>
 				</div>
@@ -386,4 +448,6 @@ function mapStateToProps({ opps }, ownProps) {
 	return { opp: opps[ownProps.match.params.id] };
 }
 
-export default connect(mapStateToProps, { fetchOpp, deleteOpp })(withRouter(OppPage));
+export default connect(mapStateToProps, { fetchOpp, deleteOpp, archiveOpp })(
+	withRouter(OppPage)
+);

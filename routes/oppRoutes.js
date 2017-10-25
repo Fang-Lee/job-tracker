@@ -207,11 +207,18 @@ module.exports = app => {
 			}
 			res.send({ opp: deletedOpp, redirect: '/dashboard' });
 		} catch (err) {
-			return res.status(500).send(err);
-		}	
+			res.status(500).send(err);
+		}
 	});
 
-	// app.post('/api/archive/opp/:id', requireLogin, async (req,res) => {
-	// 	const updatedOpp = await Opportunity.findByIdAndUpdate(req.params.id, )
-	// })
+	app.post('/api/archive/opp/:id', requireLogin, async (req, res) => {
+		try {
+			const updatedOpp = await Opportunity.findByIdAndUpdate(req.params.id, {
+				$set: { status: 5 }
+			});
+			res.send({redirect: '/dashboard'});
+		} catch (err) {
+			res.status(500).send(err);
+		}
+	});
 };

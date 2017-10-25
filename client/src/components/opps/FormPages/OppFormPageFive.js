@@ -12,6 +12,7 @@ import RaisedButton from 'material-ui/RaisedButton';
 const pageFiveFormFields = formFields.slice(21);
 
 class OppFormPageOne extends Component {
+	state = { submitted: false };
 	renderFields() {
 		return pageFiveFormFields.map(
 			({ type, component, name, label, style, hint, children }) => {
@@ -28,12 +29,18 @@ class OppFormPageOne extends Component {
 			}
 		);
 	}
+	handleSubmitBtnClicked = () => {
+		this.setState({ submitted: true });
+	}
 	render() {
 		return (
-			<form onSubmit={this.props.handleSubmit(() => {
-				console.log('file', this.props.formValues.resume);
-				this.props.submitForm(this.props.formValues, this.props.history);
-			})}>
+			<form
+				onSubmit={this.props.handleSubmit(() => {
+					this.handleSubmitBtnClicked();
+					console.log('file', this.props.formValues.resume);
+					this.props.submitForm(this.props.formValues, this.props.history);
+				})}
+			>
 				<div className="form-fields">{this.renderFields()}</div>
 				<div className="nav-buttons">
 					<FlatButton
@@ -41,7 +48,22 @@ class OppFormPageOne extends Component {
 						onClick={this.props.handlePrev}
 						style={{ marginRight: 12 }}
 					/>
-					<RaisedButton type="submit" label="Submit" backgroundColor='#34A853' labelColor="#fff" />
+					{!this.state.submitted ? (
+						<RaisedButton
+							type="submit"
+							label="Submit"
+							backgroundColor="#34A853"
+							labelColor="#fff"
+						/>
+					) : (
+						<RaisedButton
+							type="submit"
+							label="Submit"
+							backgroundColor="#34A853"
+							labelColor="#fff"
+							disabled={true}
+						/>
+					)}
 				</div>
 			</form>
 		);

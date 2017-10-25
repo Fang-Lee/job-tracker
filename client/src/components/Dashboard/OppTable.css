@@ -15,6 +15,22 @@
 	padding: 20px;
 }
 
+.pagination-category {
+	position: absolute;
+	font-size: 0.8em;
+	left: 5px;
+	top: 7px;
+	display: flex;
+	align-items: center;
+}
+
+.category-select-field {
+	width: 117px !important;
+	margin-left: 4px;
+	text-align: center !important;
+	font-size: 1em !important;
+}
+
 .pagination-page-number {
 	position: absolute;
 	right: 5px;
