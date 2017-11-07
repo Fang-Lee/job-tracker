@@ -26,7 +26,8 @@ const opportunitySchema = new Schema({
 	coverLetter: String,
 	resumeLink: String,
 	coverLetterLink: String,
-	filesSize: { type: Number, default: 0 },
+	resumeSize: { type: Number, default: 0 },
+	coverLetterSize: { type: Number, default: 0 },
 	_user: { type: Schema.Types.ObjectId, ref: 'User' }
 });
 

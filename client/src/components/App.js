@@ -10,7 +10,6 @@ import { grey700, grey800 } from "material-ui/styles/colors";
 import Header from "./Header/Header";
 import Landing from "./Landing/Landing";
 import Dashboard from "./Dashboard/Dashboard";
-import OppForm from "./opps/OppForm";
 import OppPage from "./opps/OppPage";
 import OppForm2 from './opps/OppForm2';
 import EditOppPage from './opps/EditOppPage';

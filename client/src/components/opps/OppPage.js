@@ -207,6 +207,16 @@ class OppPage extends Component {
 	showBtnClicked = () => {
 		this.setState({ contentHidden: !this.state.contentHidden });
 	};
+	renderTags = tags => {
+		if (typeof tags === 'string') {
+			tags = tags.split(',');
+		}
+		return tags.map((tag, index) => (
+			<Chip key={index} className="tag-chip">
+				{tag}
+			</Chip>
+		));
+	};
 	render() {
 		const { opp } = this.props;
 		if (!opp) {
@@ -223,9 +233,6 @@ class OppPage extends Component {
 			company,
 			jobTitle,
 			status,
-			origin,
-			appLink,
-			lastUpdate,
 			priority,
 			contactName,
 			contactEmail,
@@ -332,14 +339,7 @@ class OppPage extends Component {
 						</Dialog>
 					</div>
 				</div>
-				<div className="tags">
-					{tags &&
-						tags.map((tag, index) => (
-							<Chip key={index} className="tag-chip">
-								{tag}
-							</Chip>
-						))}
-				</div>
+				<div className="tags">{tags && this.renderTags(tags)}</div>
 				<div>
 					{this.state.showMoreOn ? (
 						this.state.contentHidden ? (

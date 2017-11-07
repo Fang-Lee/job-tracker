@@ -31,23 +31,31 @@ class OppFormPageOne extends Component {
 	}
 	handleSubmitBtnClicked = () => {
 		this.setState({ submitted: true });
-	}
+	};
 	render() {
 		return (
 			<form
 				onSubmit={this.props.handleSubmit(() => {
 					this.handleSubmitBtnClicked();
-					console.log('file', this.props.formValues.resume);
 					this.props.submitForm(this.props.formValues, this.props.history);
 				})}
 			>
 				<div className="form-fields">{this.renderFields()}</div>
 				<div className="nav-buttons">
-					<FlatButton
-						label="Back"
-						onClick={this.props.handlePrev}
-						style={{ marginRight: 12 }}
-					/>
+					{!this.state.submitted ? (
+						<FlatButton
+							label="Back"
+							onClick={this.props.handlePrev}
+							style={{ marginRight: 12 }}
+						/>
+					) : (
+						<FlatButton
+							label="Back"
+							onClick={this.props.handlePrev}
+							style={{ marginRight: 12 }}
+							disabled={true}
+						/>
+					)}
 					{!this.state.submitted ? (
 						<RaisedButton
 							type="submit"

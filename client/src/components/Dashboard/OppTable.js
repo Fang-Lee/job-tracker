@@ -60,7 +60,23 @@ class OppTable extends Component {
 		this.activeOpps = [];
 		this.archivedOpps = [];
 		this.state = {
-			tableHeaders: ORIGINAL_TABLE_HEADERS.slice(),
+			tableHeaders: [
+				{ label: 'Company', value: 'company', sortable: true, reversed: 0 },
+				{
+					label: 'Job Title',
+					value: 'jobTitle',
+					sortable: true,
+					reversed: 0
+				},
+				{ label: 'Status', value: 'status', sortable: true, reversed: 0 },
+				{
+					label: 'Last Update',
+					value: 'lastUpdate',
+					sortable: false,
+					reversed: 0
+				},
+				{ label: 'Priority', value: 'priority', sortable: true, reversed: 0 }
+			],
 			opps: null,
 			tableRows: [],
 			search: '',
@@ -111,7 +127,23 @@ class OppTable extends Component {
 		if (value === 'priority') {
 			sortedOpps = sortedOpps.reverse();
 		}
-		let updatedHeaders = ORIGINAL_TABLE_HEADERS.slice();
+		let updatedHeaders = [
+			{ label: 'Company', value: 'company', sortable: true, reversed: 0 },
+			{
+				label: 'Job Title',
+				value: 'jobTitle',
+				sortable: true,
+				reversed: 0
+			},
+			{ label: 'Status', value: 'status', sortable: true, reversed: 0 },
+			{
+				label: 'Last Update',
+				value: 'lastUpdate',
+				sortable: false,
+				reversed: 0
+			},
+			{ label: 'Priority', value: 'priority', sortable: true, reversed: 0 }
+		];
 		updatedHeaders[index] = selectedCol;
 		this.setState({ opps: sortedOpps, tableHeaders: updatedHeaders, page: 1 });
 		this.renderTableRows();
@@ -270,7 +302,23 @@ class OppTable extends Component {
 		}
 		this.setState({
 			opps: filteredOpps,
-			tableHeaders: ORIGINAL_TABLE_HEADERS.slice(),
+			tableHeaders: [
+				{ label: 'Company', value: 'company', sortable: true, reversed: 0 },
+				{
+					label: 'Job Title',
+					value: 'jobTitle',
+					sortable: true,
+					reversed: 0
+				},
+				{ label: 'Status', value: 'status', sortable: true, reversed: 0 },
+				{
+					label: 'Last Update',
+					value: 'lastUpdate',
+					sortable: false,
+					reversed: 0
+				},
+				{ label: 'Priority', value: 'priority', sortable: true, reversed: 0 }
+			],
 			page: 1,
 			totalPages: updatedTotalPages,
 			totalOpps: filteredOpps.length
@@ -334,39 +382,103 @@ class OppTable extends Component {
 		return pageNumbers;
 	};
 	handleCateogryChange = (event, index, value) => {
-		console.log('changed category to', value);
-		let opps = [];
 		switch (value) {
 			case 0:
 				this.setState({
+					category: value,
 					opps: this.originalOpps,
 					totalOpps: this.originalOpps.length,
 					totalPages: calcTotalPages(this.originalOpps.length),
-					tableHeaders: ORIGINAL_TABLE_HEADERS.slice(),
+					tableHeaders: [
+						{ label: 'Company', value: 'company', sortable: true, reversed: 0 },
+						{
+							label: 'Job Title',
+							value: 'jobTitle',
+							sortable: true,
+							reversed: 0
+						},
+						{ label: 'Status', value: 'status', sortable: true, reversed: 0 },
+						{
+							label: 'Last Update',
+							value: 'lastUpdate',
+							sortable: false,
+							reversed: 0
+						},
+						{
+							label: 'Priority',
+							value: 'priority',
+							sortable: true,
+							reversed: 0
+						}
+					],
 					page: 1
 				});
 				break;
 			case 1:
 				this.setState({
+					category: value,
 					opps: this.activeOpps,
 					totalOpps: this.activeOpps.length,
 					totalPages: calcTotalPages(this.activeOpps.length),
-					tableHeaders: ORIGINAL_TABLE_HEADERS.slice(),
+					tableHeaders: [
+						{ label: 'Company', value: 'company', sortable: true, reversed: 0 },
+						{
+							label: 'Job Title',
+							value: 'jobTitle',
+							sortable: true,
+							reversed: 0
+						},
+						{ label: 'Status', value: 'status', sortable: true, reversed: 0 },
+						{
+							label: 'Last Update',
+							value: 'lastUpdate',
+							sortable: false,
+							reversed: 0
+						},
+						{
+							label: 'Priority',
+							value: 'priority',
+							sortable: true,
+							reversed: 0
+						}
+					],
 					page: 1
 				});
 				break;
 			case 2:
 				this.setState({
+					category: value,
 					opps: this.archivedOpps,
 					totalOpps: this.archivedOpps.length,
 					totalPages: calcTotalPages(this.archivedOpps.length),
-					tableHeaders: ORIGINAL_TABLE_HEADERS.slice(),
+					tableHeaders: [
+						{ label: 'Company', value: 'company', sortable: true, reversed: 0 },
+						{
+							label: 'Job Title',
+							value: 'jobTitle',
+							sortable: true,
+							reversed: 0
+						},
+						{ label: 'Status', value: 'status', sortable: true, reversed: 0 },
+						{
+							label: 'Last Update',
+							value: 'lastUpdate',
+							sortable: false,
+							reversed: 0
+						},
+						{
+							label: 'Priority',
+							value: 'priority',
+							sortable: true,
+							reversed: 0
+						}
+					],
 					page: 1
 				});
+				break;
 			default:
 				return;
 		}
-		this.setState({ category: value });
 	};
 	render() {
 		const { opps, page, totalOpps } = this.state;
