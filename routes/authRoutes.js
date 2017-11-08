@@ -1,5 +1,6 @@
 const passport = require('passport');
 
+
 module.exports = app => {
 	// route to authorize login
 	app.get(

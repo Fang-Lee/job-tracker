@@ -243,7 +243,6 @@ class OppPage extends Component {
 			coverLetterLink,
 			tags
 		} = opp;
-		console.log(opp);
 		const deleteActions = [
 			<FlatButton
 				label="Cancel"

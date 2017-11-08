@@ -52,7 +52,6 @@ class EditOppPage extends Component {
 			return <div>Loading...</div>;
 		}
 		const { company } = opp;
-		console.log(this.props.formValues);
 		const { values } = this.props.formValues;
 		return (
 			<div className="edit-page-wrapper">
@@ -62,7 +61,6 @@ class EditOppPage extends Component {
 				<div className="edit-page-body">
 					<form
 						onSubmit={this.props.handleSubmit(() => {
-							console.log('edited', this.props.formValues.values);
 							this.handleSubmitBtnClicked();
 							this.props.editOpp(
 								this.props.formValues.values,

@@ -27,23 +27,6 @@ import IconButton from 'material-ui/IconButton';
 import CircularProgress from 'material-ui/CircularProgress';
 
 const RESULTS_PER_PAGE = 20;
-const ORIGINAL_TABLE_HEADERS = [
-	{ label: 'Company', value: 'company', sortable: true, reversed: 0 },
-	{
-		label: 'Job Title',
-		value: 'jobTitle',
-		sortable: true,
-		reversed: 0
-	},
-	{ label: 'Status', value: 'status', sortable: true, reversed: 0 },
-	{
-		label: 'Last Update',
-		value: 'lastUpdate',
-		sortable: false,
-		reversed: 0
-	},
-	{ label: 'Priority', value: 'priority', sortable: true, reversed: 0 }
-];
 
 function calcTotalPages(opps) {
 	let totalPages = opps / RESULTS_PER_PAGE;

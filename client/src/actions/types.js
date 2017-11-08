@@ -4,3 +4,4 @@ export const FETCH_OPP = 'fetch_opp';
 export const DELETE_OPP = 'delete_opp';
 export const ARCHIVE_OPP = 'archive_opp';
 export const FETCH_EDIT_OPP = 'fetch_edit_opp';
+export const FETCH_FILE = 'fetch_file';

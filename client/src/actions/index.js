@@ -22,8 +22,6 @@ export const submitForm = (values, history) => async dispatch => {
 	// for multer to read files, must be placed inside formData
 	const formatedValues = formatFormValues(values);
 	const res = await axios.put('/api/opp', formatedValues);
-	console.log('values', formatedValues);
-	console.log(res.data);
 	history.push(res.data.redirect);
 	dispatch({ type: FETCH_USER, payload: res.data });
 };
@@ -47,7 +45,6 @@ export const fetchOppForEdit = id => async dispatch => {
 
 export const editOpp = (values, history) => async dispatch => {
 	const formatedValues = formatFormValues(values);
-	console.log('values going through action creator', values);
 	const res = await axios.post(`/api/edit`, formatedValues);
 	history.push(res.data.redirect);
 	dispatch({ type: FETCH_USER, payload: res.data });
@@ -55,17 +52,18 @@ export const editOpp = (values, history) => async dispatch => {
 
 export const deleteOpp = (id, history) => async dispatch => {
 	const res = await axios.delete(`/api/delete/opp/${id}`);
-	console.log('res from delete', res);
 	history.push(res.data.redirect);
 	dispatch({ type: DELETE_OPP, payload: res.data.opp });
 };
 
 export const archiveOpp = (id, history) => async dispatch => {
 	const res = await axios.post(`/api/archive/opp/${id}`);
-	console.log('res from archive', res);
 	history.push(res.data.redirect);
 	dispatch({ type: ARCHIVE_OPP, payload: res.data });
 };
 
-// load opp to initial state for editing
-// export const loadOppForEdit
+// export const getFile = path => async dispatch => {
+// 	console.log('path', path);
+// 	const res = await axios.get(`/api/file`, { params: { path: path }});
+// 	dispatch({ type: FETCH_FILE, payload: res.data });
+// }

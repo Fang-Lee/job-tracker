@@ -91,7 +91,6 @@ module.exports = app => {
 				resumeLink = `https://s3-us-west-1.amazonaws.com/${keys.s3Bucket}/${resumeFileName}`;
 				resumeFileSize = resume.size;
 				var stream = fs.createReadStream(resume.path);
-				console.log('stream', stream);
 				await s3fsImpl.writeFile(resumeFileName, stream).then(() => {
 					fs.unlink(resume.path, err => {
 						if (err) throw err;
@@ -119,13 +118,9 @@ module.exports = app => {
 			// linkify the application link
 			let appLinkHref = '';
 			if (appLink) {
-				console.log('app link', appLink);
 				const linkInfo = linkify.find(appLink);
-				console.log('link info', linkInfo);
 				if (linkInfo.length > 0) {
-					console.log('link info', linkInfo);
 					appLinkHref = linkInfo[0].href;
-					console.log(appLinkHref);
 				}
 			}
 
@@ -274,13 +269,9 @@ module.exports = app => {
 			// linkify the application link
 			let appLinkHref = '';
 			if (appLink) {
-				console.log('app link', appLink);
 				const linkInfo = linkify.find(appLink);
-				console.log('link info', linkInfo);
 				if (linkInfo.length > 0) {
-					console.log('link info', linkInfo);
 					appLinkHref = linkInfo[0].href;
-					console.log(appLinkHref);
 				}
 			}
 
