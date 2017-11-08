@@ -38,7 +38,6 @@ export const fetchOpp = id => async dispatch => {
 
 export const fetchOppForEdit = id => async dispatch => {
 	const res = await axios.get(`/api/opp/${id}`);
-	console.log('fetch for edit res', res.data);
 	const formatedPayload = formatEditForm(res.data);
 	dispatch({ type: FETCH_EDIT_OPP, payload: formatedPayload });
 };

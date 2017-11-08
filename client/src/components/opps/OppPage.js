@@ -35,7 +35,6 @@ class OppPage extends Component {
 	}
 	handleActionMenuOpen = event => {
 		event.preventDefault();
-		console.log('action menu pressed');
 		this.setState({
 			actionMenuOpen: true,
 			anchorEl: event.currentTarget
