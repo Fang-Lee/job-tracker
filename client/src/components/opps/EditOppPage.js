@@ -1,20 +1,21 @@
-import React, { Component } from 'react';
-import { reduxForm, Field } from 'redux-form';
-import { connect } from 'react-redux';
-import { fetchOppForEdit, editOpp } from '../../actions';
+import React, { Component } from "react";
+import { Link } from "react-router-dom";
+import { reduxForm, Field } from "redux-form";
+import { connect } from "react-redux";
+import { fetchOppForEdit, editOpp } from "../../actions";
 import {
 	renderTextField,
 	renderSelectField,
 	renderDatePicker,
 	renderTextAreaField
-} from '../../utils/formElements';
-import { withRouter } from 'react-router-dom';
-import './EditOppPage.css';
+} from "../../utils/formElements";
+import { withRouter } from "react-router-dom";
+import "./EditOppPage.css";
 
-import { Card, CardHeader, CardText } from 'material-ui/Card';
-import MenuItem from 'material-ui/MenuItem';
-import FlatButton from 'material-ui/FlatButton';
-import RaisedButton from 'material-ui/RaisedButton';
+import { Card, CardHeader, CardText } from "material-ui/Card";
+import MenuItem from "material-ui/MenuItem";
+import FlatButton from "material-ui/FlatButton";
+import RaisedButton from "material-ui/RaisedButton";
 
 const adaptFileEventToValue = delegate => e => delegate(e.target.files[0]);
 
@@ -48,10 +49,11 @@ class EditOppPage extends Component {
 	};
 	render() {
 		const { opp, formValues } = this.props;
+		console.log(this.props.opp);
 		if (!opp || !formValues) {
 			return <div>Loading...</div>;
 		}
-		const { company } = opp;
+		const { _id, company } = opp;
 		const { values } = this.props.formValues;
 		return (
 			<div className="edit-page-wrapper">
@@ -166,7 +168,7 @@ class EditOppPage extends Component {
 											label="Job Description"
 											component={renderTextAreaField}
 											type="text"
-											style={{ width: '100%' }}
+											style={{ width: "100%" }}
 										/>
 									</div>
 									<div className="edit-input-row">
@@ -175,7 +177,7 @@ class EditOppPage extends Component {
 											label="Responsibilities"
 											component={renderTextAreaField}
 											type="text"
-											style={{ width: '100%' }}
+											style={{ width: "100%" }}
 										/>
 									</div>
 									<div className="edit-input-row">
@@ -184,7 +186,7 @@ class EditOppPage extends Component {
 											label="Qualifications"
 											component={renderTextAreaField}
 											type="text"
-											style={{ width: '100%' }}
+											style={{ width: "100%" }}
 										/>
 									</div>
 									<div className="edit-input-row">
@@ -193,7 +195,7 @@ class EditOppPage extends Component {
 											label="Company Description"
 											component={renderTextAreaField}
 											type="text"
-											style={{ width: '100%' }}
+											style={{ width: "100%" }}
 										/>
 									</div>
 									<div className="edit-input-row">
@@ -202,7 +204,7 @@ class EditOppPage extends Component {
 											label="Summary Tags"
 											component={renderTextAreaField}
 											type="text"
-											style={{ width: '100%' }}
+											style={{ width: "100%" }}
 										/>
 									</div>
 								</div>
@@ -258,18 +260,22 @@ class EditOppPage extends Component {
 										<div className="edit-file-upload">
 											<h4>Resume: </h4>
 											<p>
-												{values.resume.name
+												{values.resume
 													? values.resume.name
-													: values.resumeFileName}
+														? values.resume.name
+														: values.resumeFileName
+													: ""}
 											</p>
 											<Field name="resume" component={FileInput} />
 										</div>
 										<div className="edit-file-upload">
 											<h4>Cover Letter: </h4>
 											<p>
-												{values.coverLetter.name
+												{values.coverLetter
 													? values.coverLetter.name
-													: values.coverLetterFileName}
+														? values.coverLetter.name
+														: values.coverLetterFileName
+													: ""}
 											</p>
 											<Field name="coverLetter" component={FileInput} />
 										</div>
@@ -291,14 +297,16 @@ class EditOppPage extends Component {
 											label="Notes"
 											component={renderTextAreaField}
 											type="text"
-											style={{ width: '100%' }}
+											style={{ width: "100%" }}
 										/>
 									</div>
 								</div>
 							</CardText>
 						</Card>
 						<div className="edit-page-btns">
-							<FlatButton label="Cancel" style={{ marginRight: 12 }} />
+							<Link to={`/opp/${_id}`}>
+									<FlatButton label="Cancel" style={{ marginRight: 12 }} />
+							</Link>
 							{!this.state.submitted ? (
 								<RaisedButton
 									type="submit"
@@ -333,7 +341,7 @@ function mapStateToProps({ opps, form }, ownProps) {
 
 export default connect(mapStateToProps, { fetchOppForEdit, editOpp })(
 	reduxForm({
-		form: 'oppEditForm',
+		form: "oppEditForm",
 		enableReinitialize: true
 	})(withRouter(EditOppPage))
 );

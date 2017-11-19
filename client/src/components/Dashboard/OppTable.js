@@ -211,8 +211,8 @@ class OppTable extends Component {
 				}
 				return (
 					<TableRow key={_id}>
-						<TableRowColumn>{company}</TableRowColumn>
-						<TableRowColumn>{jobTitle}</TableRowColumn>
+						<TableRowColumn><Link to={`/opp/${_id}`}>{company}</Link></TableRowColumn>
+						<TableRowColumn><Link to={`/opp/${_id}`}>{jobTitle}</Link></TableRowColumn>
 						<TableRowColumn>
 							<div
 								style={{

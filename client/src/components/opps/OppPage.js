@@ -179,7 +179,7 @@ class OppPage extends Component {
 							</div>
 							<br />
 						</div>
-						{salary ? (
+						{appLink ? (
 							<div>
 								<h3>Application Link</h3>
 								<p>
@@ -263,7 +263,7 @@ class OppPage extends Component {
 			<FlatButton
 				label="Cancel"
 				primary={true}
-				onClick={this.handleDeleteAlertClose}
+				onClick={this.handleArchiveAlertClose}
 			/>,
 			<RaisedButton
 				label="Archive"

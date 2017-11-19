@@ -66,6 +66,7 @@ export const renderDatePicker = ({ input, label, meta, ...custom }) => (
 			floatingLabelText={label}
 			container="inline"
 			onChange={(event, date) => input.onChange(date)}
+			autoOk={true}
 		/>
 	</MuiThemeProvider>
 );

@@ -1,11 +1,12 @@
-import React, { Component } from 'react';
-import { reduxForm, Field } from 'redux-form';
-import formFields from '../formFields';
-import './OppFormPages.css';
+import React, { Component } from "react";
+import { Link } from 'react-router-dom';
+import { reduxForm, Field } from "redux-form";
+import formFields from "../formFields";
+import "./OppFormPages.css";
 
-import MenuItem from 'material-ui/MenuItem';
-import FlatButton from 'material-ui/FlatButton';
-import RaisedButton from 'material-ui/RaisedButton';
+import MenuItem from "material-ui/MenuItem";
+import FlatButton from "material-ui/FlatButton";
+import RaisedButton from "material-ui/RaisedButton";
 
 const pageOneFormFields = formFields.slice(1, 10);
 
@@ -14,13 +15,13 @@ class OppFormPageOne extends Component {
 		return pageOneFormFields.map(
 			({ type, component, name, label, style, hint, children }) => {
 				switch (type) {
-					case 'subHeader':
+					case "subHeader":
 						return (
 							<h3 key={label} style={style}>
 								{label}
 							</h3>
 						);
-					case 'selectField':
+					case "selectField":
 						const menuItems = children.map(({ value, textLabel }) => (
 							<MenuItem key={value} value={value} primaryText={textLabel} />
 						));
@@ -35,7 +36,7 @@ class OppFormPageOne extends Component {
 								{menuItems}
 							</Field>
 						);
-					case 'datePicker':
+					case "datePicker":
 						return (
 							<Field
 								key={name}
@@ -65,11 +66,9 @@ class OppFormPageOne extends Component {
 			<form onSubmit={this.props.handleSubmit}>
 				<div className="form-fields">{this.renderFields()}</div>
 				<div className="nav-buttons">
-					<FlatButton
-						label="Back"
-						disabled={true}
-						style={{ marginRight: 12 }}
-					/>
+					<Link to="/dashboard">
+						<FlatButton label="Cancel" style={{ marginRight: 12 }} />
+					</Link>
 					<RaisedButton type="submit" label="Next" primary={true} />
 				</div>
 			</form>
@@ -80,11 +79,11 @@ class OppFormPageOne extends Component {
 function validate(values) {
 	const errors = {};
 
-	const requiredFields = ['company', 'jobTitle', 'status'];
+	const requiredFields = ["company", "jobTitle", "status"];
 
 	requiredFields.forEach(field => {
 		if (!values[field]) {
-			errors[field] = '*Required';
+			errors[field] = "*Required";
 		}
 	});
 
@@ -94,6 +93,6 @@ function validate(values) {
 export default reduxForm({
 	destroyOnUnmount: false,
 	forceUnregisterOnUnmount: true,
-	form: 'oppForm',
+	form: "oppForm",
 	validate
 })(OppFormPageOne);
