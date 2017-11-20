@@ -166,24 +166,19 @@ class OppPage extends Component {
 					</div>
 					<Divider />
 					<div className="company-description-misc">
-						<div>
-							<h3>Oppurtunity Source</h3>
+						{origin && (
 							<div>
-								{origin ? (
-									origin
-								) : (
-									<div>
-										<br />
-									</div>
-								)}
+								<h3>Opportunity Source</h3>
+								<p>
+									{origin}
+								</p>
 							</div>
-							<br />
-						</div>
+						)}
 						{appLink ? (
 							<div>
 								<h3>Application Link</h3>
 								<p>
-									<a href={appLink}>Link</a>
+									<a href={appLink} target="_blank">Link</a>
 								</p>
 							</div>
 						) : (
