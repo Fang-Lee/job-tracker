@@ -116,6 +116,7 @@ class OppPage extends Component {
 	renderDescriptions() {
 		const { opp } = this.props;
 		const {
+			_id,
 			location,
 			salary,
 			origin,
@@ -125,6 +126,20 @@ class OppPage extends Component {
 			responsibilities,
 			qualifications
 		} = opp;
+		if (
+			!jobDescription &&
+			!companyDescription &&
+			!responsibilities &&
+			!qualifications
+		) {
+			return (
+				<Paper id="descriptions" className="descriptions add-descriptions">
+					<Link to={`/edit/opp/${_id}`} className="add-descriptions-link">
+						Add Company/Job Description
+					</Link>
+				</Paper>
+			);
+		}
 		return (
 			<Paper id="descriptions" className="descriptions">
 				<div className="job-description">
@@ -140,54 +155,16 @@ class OppPage extends Component {
 				</div>
 				<div className="company-description">
 					<div className="company-description-misc">
-						<div>
-							<h3>Location</h3>
+						{salary && (
 							<div>
-								{location ? (
-									location
-								) : (
-									<div>
-										<br />
-									</div>
-								)}
-							</div>
-							<br />
-						</div>
-						{salary ? (
-							<div>
-								<h3>Salary</h3>
-								<p>{salary}</p>
-							</div>
-						) : (
-							<div>
-								<br />
+								<div>
+									<h3>Salary</h3>
+									<p>{salary}</p>
+								</div>
+								<Divider />
 							</div>
 						)}
 					</div>
-					<Divider />
-					<div className="company-description-misc">
-						{origin && (
-							<div>
-								<h3>Opportunity Source</h3>
-								<p>
-									{origin}
-								</p>
-							</div>
-						)}
-						{appLink ? (
-							<div>
-								<h3>Application Link</h3>
-								<p>
-									<a href={appLink} target="_blank">Link</a>
-								</p>
-							</div>
-						) : (
-							<div>
-								<br />
-							</div>
-						)}
-					</div>
-					<Divider />
 					<h3>Company Description</h3>
 					<p className="overflow-scroll">
 						{this.renderText(companyDescription)}
@@ -226,6 +203,7 @@ class OppPage extends Component {
 			_id,
 			company,
 			jobTitle,
+			location,
 			status,
 			priority,
 			contactName,
@@ -239,7 +217,6 @@ class OppPage extends Component {
 			coverLetterLink,
 			tags
 		} = opp;
-		console.log('opp', opp);
 		const deleteActions = [
 			<FlatButton
 				label="Cancel"
@@ -277,8 +254,14 @@ class OppPage extends Component {
 		return (
 			<div className="opp-page-wrapper">
 				<div className="opp-page-header">
-					<div>
-						<h2 className="company-name">{company}</h2> <i>{jobTitle}</i>
+					<div className="company-job-header">
+						<h2 className="company-name">{company}</h2>
+						<div className="location-title">
+							<i>
+								{jobTitle}{' '}
+								{location && `${String.fromCharCode(183)} ${location}`}{' '}
+							</i>
+						</div>
 					</div>
 					<div className="opp-page-header-right">
 						{this.renderStatus(status, priority)}
@@ -407,24 +390,36 @@ class OppPage extends Component {
 						<Paper className="documents-content">
 							<h3>Documents</h3>
 							<Divider />
-							<div className="file-link-wrapper">
-								{resumeLink && (
-									<a href={resumeLink} target="_blank">
-										<div className="file-link">
-											<i className="fa fa-file-text-o fa-4x" />
-											<p className="file-label">Resume: {resume.split('/').slice(-1)[0]}</p>
-										</div>
-									</a>
-								)}
-								{coverLetterLink && (
-									<a href={coverLetterLink} target="_blank">
-										<div className="file-link">
-											<i className="fa fa-file-text-o fa-4x" />
-											<p className="file-label">Cover Letter: {coverLetter.split('/').slice(-1)[0]}</p>
-										</div>
-									</a>
-								)}
-							</div>
+							{!resumeLink && !coverLetterLink ? (
+								<div className="file-link-wrapper">
+									<Link to={`/edit/opp/${_id}`} className="add-files-link">
+										Upload Resume/Cover Letter
+									</Link>
+								</div>
+							) : (
+								<div className="file-link-wrapper">
+									{resumeLink && (
+										<a href={resumeLink} target="_blank">
+											<div className="file-link">
+												<i className="fa fa-file-text-o fa-4x" />
+												<p className="file-label">
+													Resume: {resume.split('/').slice(-1)[0]}
+												</p>
+											</div>
+										</a>
+									)}
+									{coverLetterLink && (
+										<a href={coverLetterLink} target="_blank">
+											<div className="file-link">
+												<i className="fa fa-file-text-o fa-4x" />
+												<p className="file-label">
+													Cover Letter: {coverLetter.split('/').slice(-1)[0]}
+												</p>
+											</div>
+										</a>
+									)}
+								</div>
+							)}
 						</Paper>
 					</div>
 				</div>

@@ -37,10 +37,22 @@ a {
 	padding: 0 16px;
 }
 
+.company-job-header {
+	display: flex;
+	flex-direction: column;
+	margin: 40px 10px 20px 0;
+}
+
 .company-name {
 	display: inline-block;
 	font-size: 3em;
-	margin: 40px 10px 20px 0;
+	margin: 10px 10px 10px 0;
+}
+
+.location-title {
+	display: flex;
+	flex-direction: column;
+	margin: 0;
 }
 
 .opp-status {
@@ -122,7 +134,13 @@ a {
 
 .descriptions {
 	display: flex;
-	padding: 10px;
+	justify-content: center;
+	padding: 30px;
+}
+
+.add-descriptions-link {
+	text-decoration: underline;
+	cursor: pointer;
 }
 
 .job-description {
@@ -205,6 +223,11 @@ a {
 	text-align: center;
 	line-height: 1.5;
 	font-size: 0.8em;
+}
+
+.add-files-link {
+	margin: 50px;
+	text-decoration: underline;
 }
 
 .notes-wrapper {
