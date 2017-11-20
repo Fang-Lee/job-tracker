@@ -201,6 +201,12 @@ a {
 	padding: 20px;
 }
 
+.file-label {
+	text-align: center;
+	line-height: 1.5;
+	font-size: 0.8em;
+}
+
 .notes-wrapper {
 	margin-top: 20px;
 	margin-bottom: 50px;

@@ -102,7 +102,7 @@ class OppForm extends Component {
 		}
 		return (
 			<div className="opp-form">
-				<h1>Add a new oppurtunity</h1>
+				<h1>Add a new opportunity</h1>
 				<br />
 				<Paper className="form-wrapper">
 					<form

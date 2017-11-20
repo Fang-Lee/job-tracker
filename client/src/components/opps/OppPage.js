@@ -238,10 +238,13 @@ class OppPage extends Component {
 			contactPhone,
 			lastContact,
 			notes,
+			resume,
+			coverLetter,
 			resumeLink,
 			coverLetterLink,
 			tags
 		} = opp;
+		console.log('opp', opp);
 		const deleteActions = [
 			<FlatButton
 				label="Cancel"
@@ -414,7 +417,7 @@ class OppPage extends Component {
 									<a href={resumeLink} target="_blank">
 										<div className="file-link">
 											<i className="fa fa-file-text-o fa-4x" />
-											<p>Resume</p>
+											<p className="file-label">Resume: {resume.split('/').slice(-1)[0]}</p>
 										</div>
 									</a>
 								)}
@@ -422,7 +425,7 @@ class OppPage extends Component {
 									<a href={coverLetterLink} target="_blank">
 										<div className="file-link">
 											<i className="fa fa-file-text-o fa-4x" />
-											<p>Cover Letter</p>
+											<p className="file-label">Cover Letter: {coverLetter.split('/').slice(-1)[0]}</p>
 										</div>
 									</a>
 								)}

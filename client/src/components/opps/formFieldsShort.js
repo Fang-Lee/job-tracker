@@ -2,7 +2,6 @@ import {
 	renderTextField,
 	renderTextAreaField,
 	renderSelectField,
-	renderDatePicker
 } from '../../utils/formElements';
 
 const styles = {
