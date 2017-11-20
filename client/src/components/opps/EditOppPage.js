@@ -49,7 +49,6 @@ class EditOppPage extends Component {
 	};
 	render() {
 		const { opp, formValues } = this.props;
-		console.log(this.props.opp);
 		if (!opp || !formValues) {
 			return <div>Loading...</div>;
 		}
@@ -100,20 +99,6 @@ class EditOppPage extends Component {
 											type="text"
 										/>
 										<Field
-											name="salary"
-											label="Salary"
-											component={renderTextField}
-											type="text"
-										/>
-									</div>
-									<div className="edit-input-row">
-										<Field
-											name="origin"
-											label="Opportunity Source"
-											component={renderTextField}
-											type="text"
-										/>
-										<Field
 											name="appLink"
 											label="Application Link"
 											component={renderTextField}
@@ -143,14 +128,24 @@ class EditOppPage extends Component {
 											<MenuItem value={3} primaryText="High" />
 										</Field>
 									</div>
-									<div>
+									<div className="edit-input-row">
 										<Field
-											name="lastUpdate"
-											label="Last Update"
-											component={renderDatePicker}
+											name="salary"
+											label="Salary"
+											component={renderTextField}
 											type="text"
 										/>
 									</div>
+									<div className="edit-input-row">
+										<Field
+											name="tags"
+											label="Summary Tags"
+											component={renderTextAreaField}
+											type="text"
+											style={{ width: "100%" }}
+										/>
+									</div>
+									
 								</div>
 							</CardText>
 						</Card>
@@ -193,15 +188,6 @@ class EditOppPage extends Component {
 										<Field
 											name="companyDescription"
 											label="Company Description"
-											component={renderTextAreaField}
-											type="text"
-											style={{ width: "100%" }}
-										/>
-									</div>
-									<div className="edit-input-row">
-										<Field
-											name="tags"
-											label="Summary Tags"
 											component={renderTextAreaField}
 											type="text"
 											style={{ width: "100%" }}

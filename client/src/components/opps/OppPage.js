@@ -16,6 +16,7 @@ import MenuItem from 'material-ui/MenuItem';
 import FlatButton from 'material-ui/FlatButton';
 import RaisedButton from 'material-ui/RaisedButton';
 import Dialog from 'material-ui/Dialog';
+import Snackbar from 'material-ui/Snackbar';
 
 class OppPage extends Component {
 	state = {
@@ -23,7 +24,9 @@ class OppPage extends Component {
 		showMoreOn: false,
 		actionMenuOpen: false,
 		deleteAlertOpen: false,
-		archiveAlertOpen: false
+		archiveAlertOpen: false,
+		snackbarOpen: true,
+		snackbarMessage: 'Successfully Edited'
 	};
 	async componentDidMount() {
 		const { id } = this.props.match.params;
@@ -63,6 +66,16 @@ class OppPage extends Component {
 	handleArchiveAlertClose = () => {
 		this.setState({
 			archiveAlertOpen: false
+		});
+	};
+	handleSnackbarOpen = () => {
+		this.setState({
+			snackbarOpen: true
+		});
+	};
+	handleSnackbarClose = () => {
+		this.setState({
+			snackbarOpen: false
 		});
 	};
 	renderStatus(status, priority) {
@@ -117,10 +130,7 @@ class OppPage extends Component {
 		const { opp } = this.props;
 		const {
 			_id,
-			location,
 			salary,
-			origin,
-			appLink,
 			jobDescription,
 			companyDescription,
 			responsibilities,
@@ -189,6 +199,7 @@ class OppPage extends Component {
 		));
 	};
 	render() {
+		console.log('state', this.state);
 		const { opp } = this.props;
 		if (!opp) {
 			return (
@@ -430,13 +441,30 @@ class OppPage extends Component {
 						<p>{notes}</p>
 					</Paper>
 				</div>
+				{this.props.location.state ? (
+					this.props.location.state.snackbarOpen ? (
+						<Snackbar
+							open={this.state.snackbarOpen && this.props.location.state.snackbarOpen}
+							message={this.state.snackbarMessage}
+							autoHideDuration={3000}
+							onRequestClose={this.handleSnackbarClose}
+						/>
+					) : (
+						''
+					)
+				) : (
+					''
+				)}
 			</div>
 		);
 	}
 }
 
-function mapStateToProps({ opps }, ownProps) {
-	return { opp: opps[ownProps.match.params.id] };
+function mapStateToProps(state, ownProps) {
+	return {
+		opp: state.opps[ownProps.match.params.id],
+		snackbarOpen: state.snackbarOpen
+	};
 }
 
 export default connect(mapStateToProps, { fetchOpp, deleteOpp, archiveOpp })(

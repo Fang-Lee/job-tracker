@@ -6,6 +6,8 @@ const keys = require('../config/keys');
 const fs = require('fs');
 const S3FS = require('s3fs');
 const multer = require('multer');
+var moment = require('moment');
+var momentTz = require('moment-timezone');
 const upload = multer({
 	dest: 'uploads'
 });
@@ -52,8 +54,8 @@ module.exports = app => {
 		requireLogin,
 		upload.fields(fileFields),
 		async (req, res) => {
-			console.log('req.body', req.body);
-			console.log('req.files', req.files);
+			moment.locale();
+			console.log(typeof(moment().format('L')));
 			const {
 				company,
 				jobTitle,
@@ -66,7 +68,7 @@ module.exports = app => {
 				companyDescription,
 				responsibilities,
 				qualifications,
-				lastUpdate,
+				lastUpdate = moment().format('L'),
 				priority,
 				contactName,
 				contactEmail,
@@ -177,9 +179,7 @@ module.exports = app => {
 		requireLogin,
 		upload.fields(fileFields),
 		async (req, res) => {
-			console.log('req.body', req.body);
-			console.log('req.files', req.files);
-
+			moment.locale();
 			const {
 				company = '',
 				jobTitle = '',
@@ -192,7 +192,6 @@ module.exports = app => {
 				companyDescription = '',
 				responsibilities = '',
 				qualifications = '',
-				lastUpdate,
 				priority,
 				contactName = '',
 				contactEmail = '',
@@ -288,6 +287,7 @@ module.exports = app => {
 				responsibilities,
 				qualifications,
 				priority,
+				lastUpdate: moment().format('L'),
 				contactName,
 				contactEmail,
 				contactPhone,
@@ -297,10 +297,6 @@ module.exports = app => {
 
 			if (lastContact) {
 				edits.lastContact = lastContact;
-			}
-
-			if (lastUpdate) {
-				edits.lastUpdate = lastUpdate;
 			}
 
 			if (req.files.resume) {

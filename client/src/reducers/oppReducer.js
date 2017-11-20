@@ -3,6 +3,7 @@ import {
 	FETCH_OPPS,
 	FETCH_OPP,
 	DELETE_OPP,
+	EDIT_OPP,
 	ARCHIVE_OPP,
 	FETCH_EDIT_OPP,
 } from '../actions/types';
@@ -11,6 +12,7 @@ export default function(state = [], action) {
 	switch (action.type) {
 		case FETCH_OPPS:
 		case ARCHIVE_OPP:
+		case EDIT_OPP:
 			return action.payload;
 		case FETCH_OPP:
 		case FETCH_EDIT_OPP:

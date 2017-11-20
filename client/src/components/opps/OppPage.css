@@ -40,7 +40,7 @@ a {
 .company-job-header {
 	display: flex;
 	flex-direction: column;
-	margin: 40px 10px 20px 0;
+	margin: 40px 10px 0 0;
 }
 
 .company-name {

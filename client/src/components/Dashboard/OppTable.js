@@ -55,8 +55,8 @@ class OppTable extends Component {
 				{
 					label: 'Last Update',
 					value: 'lastUpdate',
-					sortable: false,
-					reversed: 0
+					sortable: true,
+					reversed: 1
 				},
 				{ label: 'Priority', value: 'priority', sortable: true, reversed: 0 }
 			],
@@ -72,15 +72,29 @@ class OppTable extends Component {
 
 	async componentDidMount() {
 		await this.props.fetchOpps();
-		this.originalOpps = this.props.opps.slice().reverse();
+		this.originalOpps = this.props.opps.slice().sort(function(a, b) {
+			let x = Date.parse(a.lastUpdate);
+			let y = Date.parse(b.lastUpdate);
+			return x > y ? 1 : y > x ? -1 : 0;
+		});
 		this.activeOpps = this.props.opps
 			.slice()
-			.reverse()
-			.filter(opp => opp.status < 5);
+			.filter(opp => opp.status < 5)
+			.sort(function(a, b) {
+				let x = Date.parse(a.lastUpdate);
+				let y = Date.parse(b.lastUpdate);
+				return x > y ? 1 : y > x ? -1 : 0;
+			})
+			.reverse();
 		this.archivedOpps = this.props.opps
 			.slice()
-			.reverse()
-			.filter(opp => opp.status > 4);
+			.filter(opp => opp.status > 4)
+			.sort(function(a, b) {
+				let x = Date.parse(a.lastUpdate);
+				let y = Date.parse(b.lastUpdate);
+				return x > y ? 1 : y > x ? -1 : 0;
+			})
+			.reverse();
 		let totalPages = calcTotalPages(this.activeOpps.length);
 
 		this.setState({
@@ -90,14 +104,20 @@ class OppTable extends Component {
 		});
 	}
 	handleSort = (value, reversed, index) => {
+		console.log(value, reversed, index);
 		let sortedOpps = this.state.opps;
 		let selectedCol = this.state.tableHeaders[index];
 		sortedOpps.sort(function(a, b) {
 			let x = a[value];
 			let y = b[value];
+			console.log(value);
 			if (typeof x === 'string') {
 				x = x.toLowerCase();
 				y = y.toLowerCase();
+			}
+			if (value === 'lastUpdate') {
+				x = Date.parse(x);
+				y = Date.parse(y);
 			}
 			return x > y ? 1 : y > x ? -1 : 0;
 		});
@@ -108,6 +128,9 @@ class OppTable extends Component {
 			selectedCol.reversed = 2;
 		}
 		if (value === 'priority') {
+			sortedOpps = sortedOpps.reverse();
+		}
+		if (value === 'lastUpdate') {
 			sortedOpps = sortedOpps.reverse();
 		}
 		let updatedHeaders = [
@@ -122,7 +145,7 @@ class OppTable extends Component {
 			{
 				label: 'Last Update',
 				value: 'lastUpdate',
-				sortable: false,
+				sortable: true,
 				reversed: 0
 			},
 			{ label: 'Priority', value: 'priority', sortable: true, reversed: 0 }
@@ -211,8 +234,12 @@ class OppTable extends Component {
 				}
 				return (
 					<TableRow key={_id}>
-						<TableRowColumn><Link to={`/opp/${_id}`}>{company}</Link></TableRowColumn>
-						<TableRowColumn><Link to={`/opp/${_id}`}>{jobTitle}</Link></TableRowColumn>
+						<TableRowColumn>
+							<Link to={`/opp/${_id}`}>{company}</Link>
+						</TableRowColumn>
+						<TableRowColumn>
+							<Link to={`/opp/${_id}`}>{jobTitle}</Link>
+						</TableRowColumn>
 						<TableRowColumn>
 							<div
 								style={{
@@ -297,7 +324,7 @@ class OppTable extends Component {
 				{
 					label: 'Last Update',
 					value: 'lastUpdate',
-					sortable: false,
+					sortable: true,
 					reversed: 0
 				},
 				{ label: 'Priority', value: 'priority', sortable: true, reversed: 0 }
@@ -384,7 +411,7 @@ class OppTable extends Component {
 						{
 							label: 'Last Update',
 							value: 'lastUpdate',
-							sortable: false,
+							sortable: true,
 							reversed: 0
 						},
 						{
@@ -415,7 +442,7 @@ class OppTable extends Component {
 						{
 							label: 'Last Update',
 							value: 'lastUpdate',
-							sortable: false,
+							sortable: true,
 							reversed: 0
 						},
 						{
@@ -446,7 +473,7 @@ class OppTable extends Component {
 						{
 							label: 'Last Update',
 							value: 'lastUpdate',
-							sortable: false,
+							sortable: true,
 							reversed: 0
 						},
 						{

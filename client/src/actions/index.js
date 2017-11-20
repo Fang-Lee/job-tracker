@@ -5,6 +5,7 @@ import {
 	FETCH_OPP,
 	FETCH_EDIT_OPP,
 	DELETE_OPP,
+	EDIT_OPP,
 	ARCHIVE_OPP
 } from './types';
 import { formatFormValues } from '../utils/formatFormValues';
@@ -45,13 +46,13 @@ export const fetchOppForEdit = id => async dispatch => {
 export const editOpp = (values, history) => async dispatch => {
 	const formatedValues = formatFormValues(values);
 	const res = await axios.post(`/api/edit`, formatedValues);
-	history.push(res.data.redirect);
-	dispatch({ type: FETCH_USER, payload: res.data });
+	history.push(res.data.redirect, { snackbarOpen: true });
+	dispatch({ type: EDIT_OPP, payload: res.data });
 }
 
 export const deleteOpp = (id, history) => async dispatch => {
 	const res = await axios.delete(`/api/delete/opp/${id}`);
-	history.push(res.data.redirect);
+	history.push(res.data.redirect, {snackbarOpen: true});
 	dispatch({ type: DELETE_OPP, payload: res.data.opp });
 };
 

@@ -14,7 +14,7 @@ const opportunitySchema = new Schema({
 	companyDescription: String,
 	responsibilities: String,
 	qualifications: String,
-	lastUpdate: Date,
+	lastUpdate: String,
 	priority: { type: Number, default: 0 },
 	contactName: String,
 	contactEmail: String,
