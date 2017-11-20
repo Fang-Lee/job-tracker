@@ -104,13 +104,11 @@ class OppTable extends Component {
 		});
 	}
 	handleSort = (value, reversed, index) => {
-		console.log(value, reversed, index);
 		let sortedOpps = this.state.opps;
 		let selectedCol = this.state.tableHeaders[index];
 		sortedOpps.sort(function(a, b) {
 			let x = a[value];
 			let y = b[value];
-			console.log(value);
 			if (typeof x === 'string') {
 				x = x.toLowerCase();
 				y = y.toLowerCase();
