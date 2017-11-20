@@ -27,3 +27,56 @@
 	color: red;
 	margin-bottom: 20px;
 }
+
+.form-wrapper {
+	padding: 20px 50px;
+}
+
+.file-upload-wrapper {
+	display: flex;
+	justify-content: center;
+}
+
+.file-upload-wrapper > div {
+	width: 45%;
+}
+
+.documents-upload-wrapper {
+	width: 100%;
+}
+
+.file-input-wrapper {
+    height: 20px;
+    width: 100px;
+    text-align: center;
+    padding-top: 4px;
+    padding-bottom: 2px;
+    overflow: hidden;
+    position: relative;
+    cursor: pointer;
+    /*Using a background color, but you can use a background image to represent a button*/
+    background-color: #fff;
+    border: 1px solid black;
+    border-radius: 7%;
+}
+.file-input {
+    cursor: pointer;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    right: 0;
+    z-index: 99;
+    /*This makes the button huge. If you want a bigger button, increase the font size*/
+    font-size: 50px;
+    /*Opacity settings for all browsers*/
+    opacity: 0;
+    -moz-opacity: 0;
+    filter: progid:DXImageTransform.Microsoft.Alpha(opacity=0);
+}
+
+.submitted-screen {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+}

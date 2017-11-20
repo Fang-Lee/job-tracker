@@ -5,9 +5,11 @@ import { Link, withRouter } from 'react-router-dom';
 import * as actions from '../../actions';
 import './OppForm.css';
 
-import formFields from './formFields';
+import formFieldsShort from './formFieldsShort';
 import MenuItem from 'material-ui/MenuItem';
 import RaisedButton from 'material-ui/RaisedButton';
+import Paper from 'material-ui/Paper';
+import CircularProgress from 'material-ui/CircularProgress';
 import { white, red500, green500 } from 'material-ui/styles/colors';
 
 const adaptFileEventToValue = delegate => e => delegate(e.target.files[0]);
@@ -18,20 +20,25 @@ const FileInput = ({
 	...props
 }) => (
 	<div>
-		<input
-			onChange={adaptFileEventToValue(onChange)}
-			onBlur={adaptFileEventToValue(onBlur)}
-			type="file"
-			{...inputProps}
-			{...props}
-		/>
+		<div className="file-input-wrapper">
+			Upload File
+			<input
+				className="file-input"
+				onChange={adaptFileEventToValue(onChange)}
+				onBlur={adaptFileEventToValue(onBlur)}
+				type="file"
+				{...inputProps}
+				{...props}
+			/>
+		</div>
 		<div className="error-text">{touched && error}</div>
 	</div>
 );
 
 class OppForm extends Component {
+	state = { submitted: false };
 	renderFields() {
-		return formFields.map(
+		return formFieldsShort.map(
 			({ type, component, name, label, style, hint, children }) => {
 				switch (type) {
 					case 'subHeader':
@@ -80,42 +87,87 @@ class OppForm extends Component {
 			}
 		);
 	}
+	handleSubmitBtnClicked = () => {
+		this.setState({ submitted: true });
+	};
 	render() {
+		console.log(this.props);
+		if (this.state.submitted) {
+			return (
+				<div className="submitted-screen">
+					<h1>Uploading...</h1>
+					<CircularProgress size={80} thickness={5} />
+				</div>
+			);
+		}
 		return (
 			<div className="opp-form">
 				<h1>Add a new oppurtunity</h1>
 				<br />
-				<form
-					encType="multipart/form-data"
-					onSubmit={this.props.handleSubmit(() => {
-						this.props.submitForm(this.props.formValues, this.props.history);
-					})}
-				>
-					<div className="form-fields">
-						{this.renderFields()}
-						<div>
-							<h3>Documents</h3>
-							<h6>Resume:</h6>
-							<Field name="resume" component={FileInput} />
-							<h6>Cover Letter:</h6>
-							<Field name="coverLetter" component={FileInput} />
+				<Paper className="form-wrapper">
+					<form
+						encType="multipart/form-data"
+						onSubmit={this.props.handleSubmit(() => {
+							this.handleSubmitBtnClicked();
+							this.props.submitForm(this.props.formValues, this.props.history);
+						})}
+					>
+						<div className="form-fields">
+							{this.renderFields()}
+							<div className="documents-upload-wrapper">
+								<h3>Documents</h3>
+								<div className="file-upload-wrapper">
+									<div>
+										<h6>Resume:</h6>
+										<Field name="resume" component={FileInput} />
+										<p>
+											{this.props.formValues
+												? this.props.formValues.resume
+													? this.props.formValues.resume.name
+													: ''
+												: ''}
+										</p>
+									</div>
+									<div>
+										<h6>Cover Letter:</h6>
+										<Field name="coverLetter" component={FileInput} />
+										<p>
+											{this.props.formValues
+												? this.props.formValues.coverLetter
+													? this.props.formValues.coverLetter.name
+													: ''
+												: ''}
+										</p>
+									</div>
+								</div>
+							</div>
 						</div>
-					</div>
-					<div className="form-buttons">
-						<RaisedButton
-							containerElement={<Link to="/dashboard" />}
-							label="Cancel"
-							backgroundColor={red500}
-							labelColor={white}
-						/>
-						<RaisedButton
-							type="submit"
-							label="Submit"
-							backgroundColor={green500}
-							labelColor={white}
-						/>
-					</div>
-				</form>
+						<div className="form-buttons">
+							<RaisedButton
+								containerElement={<Link to="/dashboard" />}
+								label="Cancel"
+								backgroundColor={red500}
+								labelColor={white}
+							/>
+							{!this.state.submitted ? (
+								<RaisedButton
+									type="submit"
+									label="Submit"
+									backgroundColor={green500}
+									labelColor={white}
+								/>
+							) : (
+								<RaisedButton
+									type="submit"
+									label="Submit"
+									disabled={true}
+									backgroundColor={green500}
+									labelColor={white}
+								/>
+							)}
+						</div>
+					</form>
+				</Paper>
 			</div>
 		);
 	}
