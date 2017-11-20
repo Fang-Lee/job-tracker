@@ -10,6 +10,7 @@ a {
 }
 
 .opp-page-wrapper {
+	position: relative;
 	margin-bottom: 20px;
 	overflow: visible;
 }
@@ -40,7 +41,7 @@ a {
 .company-job-header {
 	display: flex;
 	flex-direction: column;
-	margin: 40px 10px 0 0;
+	margin: 40px 10px 20px 0;
 }
 
 .company-name {
@@ -233,5 +234,13 @@ a {
 .notes-wrapper {
 	margin-top: 20px;
 	margin-bottom: 50px;
+}
+
+.home-btn {
+	position: fixed;
+	bottom: 0;
+	right: 0;
+	margin-right: 5%;
+	margin-bottom: 25px;
 }
 

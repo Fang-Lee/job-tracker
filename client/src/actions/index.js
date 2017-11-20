@@ -52,18 +52,19 @@ export const editOpp = (values, history) => async dispatch => {
 
 export const deleteOpp = (id, history) => async dispatch => {
 	const res = await axios.delete(`/api/delete/opp/${id}`);
-	history.push(res.data.redirect, {snackbarOpen: true});
+	history.push(res.data.redirect, {snackbarDelete: true});
 	dispatch({ type: DELETE_OPP, payload: res.data.opp });
 };
 
 export const archiveOpp = (id, history) => async dispatch => {
+	console.log('archive opp');
 	const res = await axios.post(`/api/archive/opp/${id}`);
-	history.push(res.data.redirect);
+	history.push(res.data.redirect, {snackbarArchive: true});
 	dispatch({ type: ARCHIVE_OPP, payload: res.data });
 };
 
-// export const getFile = path => async dispatch => {
-// 	console.log('path', path);
-// 	const res = await axios.get(`/api/file`, { params: { path: path }});
-// 	dispatch({ type: FETCH_FILE, payload: res.data });
-// }
+export const unarchiveOpp = (id, status, history) => async dispatch => {
+	console.log('unarchiveOpp', status, id);
+	const res = await axios.post(`/api/unarchive/opp/${id}/${status}`);
+	dispatch({ type: ARCHIVE_OPP, payload: res.data });
+};

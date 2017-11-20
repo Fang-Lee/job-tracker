@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link, withRouter } from 'react-router-dom';
-import { fetchOpp, deleteOpp, archiveOpp } from '../../actions';
+import { fetchOpp, deleteOpp, archiveOpp, unarchiveOpp } from '../../actions';
 
 import './OppPage.css';
 
@@ -17,6 +17,8 @@ import FlatButton from 'material-ui/FlatButton';
 import RaisedButton from 'material-ui/RaisedButton';
 import Dialog from 'material-ui/Dialog';
 import Snackbar from 'material-ui/Snackbar';
+import FloatingActionButton from 'material-ui/FloatingActionButton';
+import SelectField from 'material-ui/SelectField';
 
 class OppPage extends Component {
 	state = {
@@ -26,7 +28,8 @@ class OppPage extends Component {
 		deleteAlertOpen: false,
 		archiveAlertOpen: false,
 		snackbarOpen: true,
-		snackbarMessage: 'Successfully Edited'
+		snackbarMessage: 'Successfully Edited',
+		unarchiveStatus: 1
 	};
 	async componentDidMount() {
 		const { id } = this.props.match.params;
@@ -98,6 +101,10 @@ class OppPage extends Component {
 				color = '#34A853';
 				statusLabel = 'RECEIVED OFFER';
 				break;
+			case 5:
+				color = grey600;
+				statusLabel = 'ARCHIVED';
+				break;
 			default:
 				color = 'white';
 		}
@@ -134,13 +141,15 @@ class OppPage extends Component {
 			jobDescription,
 			companyDescription,
 			responsibilities,
-			qualifications
+			qualifications,
+			status
 		} = opp;
 		if (
 			!jobDescription &&
 			!companyDescription &&
 			!responsibilities &&
-			!qualifications
+			!qualifications &&
+			status < 5
 		) {
 			return (
 				<Paper id="descriptions" className="descriptions add-descriptions">
@@ -198,8 +207,11 @@ class OppPage extends Component {
 			</Chip>
 		));
 	};
+	handleUnarchiveStatus = (event, index, value) => {
+		console.log('status', value);
+		this.setState({ unarchiveStatus: value });
+	};
 	render() {
-		console.log('state', this.state);
 		const { opp } = this.props;
 		if (!opp) {
 			return (
@@ -252,13 +264,33 @@ class OppPage extends Component {
 				onClick={this.handleArchiveAlertClose}
 			/>,
 			<RaisedButton
-				label="Archive"
+				label="Confirm"
 				labelColor="#fff"
 				backgroundColor="#EA4335"
 				onClick={() => {
-					this.handleDeleteAlertClose();
-					console.log('archiving opp');
+					this.handleArchiveAlertClose();
 					this.props.archiveOpp(_id, this.props.history);
+				}}
+			/>
+		];
+		const unarchiveActions = [
+			<FlatButton
+				label="Cancel"
+				primary={true}
+				onClick={this.handleArchiveAlertClose}
+			/>,
+			<RaisedButton
+				label="Unarchive"
+				labelColor="#fff"
+				backgroundColor="#EA4335"
+				onClick={() => {
+					this.handleArchiveAlertClose();
+					this.props.unarchiveOpp(
+						_id,
+						this.state.unarchiveStatus,
+						this.props.history
+					);
+					window.location.reload();
 				}}
 			/>
 		];
@@ -290,17 +322,19 @@ class OppPage extends Component {
 							onRequestClose={this.handleRequestClose}
 						>
 							<Menu>
-								<MenuItem>
-									<Link to={`/edit/opp/${_id}`}>
-										<div className="action-menu-items">Edit</div>
-									</Link>
-								</MenuItem>
+								{status < 5 && (
+									<MenuItem>
+										<Link to={`/edit/opp/${_id}`}>
+											<div className="action-menu-items">Edit</div>
+										</Link>
+									</MenuItem>
+								)}
 								<MenuItem
 									onClick={() => {
 										this.handleArchiveAlertOpen();
 										this.handleRequestClose();
 									}}
-									primaryText="Archive"
+									primaryText={status === 5 ? 'Unarchive' : 'Archive'}
 								/>
 								<MenuItem
 									onClick={() => {
@@ -319,14 +353,38 @@ class OppPage extends Component {
 						>
 							Delete this opportunity?
 						</Dialog>
-						<Dialog
-							actions={archiveActions}
-							modal={false}
-							open={this.state.archiveAlertOpen}
-							onRequestClose={this.handleArchiveAlertClose}
-						>
-							Archive this opportunity?
-						</Dialog>
+						{status < 5 ? (
+							<Dialog
+								actions={archiveActions}
+								modal={false}
+								open={this.state.archiveAlertOpen}
+								onRequestClose={this.handleArchiveAlertClose}
+							>
+								Archive this opportunity?
+							</Dialog>
+						) : (
+							<Dialog
+								actions={unarchiveActions}
+								modal={false}
+								open={this.state.archiveAlertOpen}
+								onRequestClose={this.handleArchiveAlertClose}
+							>
+								<div>
+									<div style={{ marginBottom: '10px' }}>
+										Unarchive this opportunity?
+									</div>
+									<SelectField
+										value={this.state.unarchiveStatus}
+										onChange={this.handleUnarchiveStatus}
+									>
+										<MenuItem value={1} primaryText="Interested" />
+										<MenuItem value={2} primaryText="Applied" />
+										<MenuItem value={3} primaryText="Interviewing" />
+										<MenuItem value={4} primaryText="Received Offer" />
+									</SelectField>
+								</div>
+							</Dialog>
+						)}
 					</div>
 				</div>
 				<div className="tags">{tags && this.renderTags(tags)}</div>
@@ -401,7 +459,7 @@ class OppPage extends Component {
 						<Paper className="documents-content">
 							<h3>Documents</h3>
 							<Divider />
-							{!resumeLink && !coverLetterLink ? (
+							{!resumeLink && !coverLetterLink && status < 5 ? (
 								<div className="file-link-wrapper">
 									<Link to={`/edit/opp/${_id}`} className="add-files-link">
 										Upload Resume/Cover Letter
@@ -441,10 +499,18 @@ class OppPage extends Component {
 						<p>{notes}</p>
 					</Paper>
 				</div>
+				<Link to="/dashboard" className="home-btn">
+					<FloatingActionButton>
+						<i className="fa fa-home" />
+					</FloatingActionButton>
+				</Link>
 				{this.props.location.state ? (
 					this.props.location.state.snackbarOpen ? (
 						<Snackbar
-							open={this.state.snackbarOpen && this.props.location.state.snackbarOpen}
+							open={
+								this.state.snackbarOpen &&
+								this.props.location.state.snackbarOpen
+							}
 							message={this.state.snackbarMessage}
 							autoHideDuration={3000}
 							onRequestClose={this.handleSnackbarClose}
@@ -467,6 +533,9 @@ function mapStateToProps(state, ownProps) {
 	};
 }
 
-export default connect(mapStateToProps, { fetchOpp, deleteOpp, archiveOpp })(
-	withRouter(OppPage)
-);
+export default connect(mapStateToProps, {
+	fetchOpp,
+	deleteOpp,
+	archiveOpp,
+	unarchiveOpp
+})(withRouter(OppPage));

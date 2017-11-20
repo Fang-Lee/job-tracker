@@ -8,10 +8,15 @@ import RaisedButton from 'material-ui/RaisedButton';
 import Snackbar from 'material-ui/Snackbar';
 
 class Dashboard extends Component {
-	state = { snackbarOpen: true, snackbarMessage: "Successfully deleted opportunity" };
-	handleSnackbarClose = () => {
+	state = { snackbarDelete: true, snackbarArchive: true };
+	handleDeleteSnackbarClose = () => {
 		this.setState({
-			snackbarOpen: false
+			snackbarDelete: false
+		});
+	};
+	handleArchiveSnackbarClose = () => {
+		this.setState({
+			snackbarArchive: false
 		});
 	};
 	render() {
@@ -28,12 +33,12 @@ class Dashboard extends Component {
 				</div>
 				<OppTable />
 				{this.props.location.state ? (
-					this.props.location.state.snackbarOpen ? (
+					this.props.location.state.snackbarArchive ? (
 						<Snackbar
-							open={this.state.snackbarOpen && this.props.location.state.snackbarOpen}
-							message={this.state.snackbarMessage}
+							open={this.state.snackbarArchive && this.props.location.state.snackbarArchive}
+							message="Succesfully archived opportunity"
 							autoHideDuration={3000}
-							onRequestClose={this.handleSnackbarClose}
+							onRequestClose={this.handleArchiveSnackbarClose}
 						/>
 					) : (
 						''
@@ -41,6 +46,21 @@ class Dashboard extends Component {
 				) : (
 					''
 				)}
+				{this.props.location.state ? (
+					this.props.location.state.snackbarDelete ? (
+						<Snackbar
+							open={this.state.snackbarDelete && this.props.location.state.snackbarDelete}
+							message="Succesfully deleted opportunity"
+							autoHideDuration={3000}
+							onRequestClose={this.handleDeleteSnackbarClose}
+						/>
+					) : (
+						''
+					)
+				) : (
+					''
+				)}
+				
 			</div>
 		);
 	}

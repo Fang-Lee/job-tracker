@@ -370,4 +370,15 @@ module.exports = app => {
 			res.status(500).send(err);
 		}
 	});
+
+	app.post('/api/unarchive/opp/:id/:status', requireLogin, async (req, res) => {
+		try {
+			const updatedOpp = await Opportunity.findByIdAndUpdate(req.params.id, {
+				$set: { status: req.params.status }
+			});
+			res.send({ redirect: '/dashboard' });
+		} catch (err) {
+			res.status(500).send(err);
+		}
+	});
 };

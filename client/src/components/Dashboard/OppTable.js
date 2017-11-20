@@ -284,13 +284,13 @@ class OppTable extends Component {
 							>
 								<Info color={grey600} />
 							</IconButton>
-							<IconButton
+							{status < 5 ? <IconButton
 								containerElement={<Link to={`/edit/opp/${_id}`} />}
 								tooltip="Edit"
 								tooltipPosition="bottom-center"
 							>
 								<ModeEdit color={grey600} />
-							</IconButton>
+							</IconButton> : null }
 						</TableRowColumn>
 					</TableRow>
 				);

@@ -1,21 +1,23 @@
-import React, { Component } from "react";
-import { Link } from "react-router-dom";
-import { reduxForm, Field } from "redux-form";
-import { connect } from "react-redux";
-import { fetchOppForEdit, editOpp } from "../../actions";
+import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
+import { reduxForm, Field } from 'redux-form';
+import { connect } from 'react-redux';
+import { fetchOppForEdit, editOpp, archiveOpp, deleteOpp } from '../../actions';
 import {
 	renderTextField,
 	renderSelectField,
 	renderDatePicker,
 	renderTextAreaField
-} from "../../utils/formElements";
-import { withRouter } from "react-router-dom";
-import "./EditOppPage.css";
+} from '../../utils/formElements';
+import { withRouter } from 'react-router-dom';
+import './EditOppPage.css';
 
-import { Card, CardHeader, CardText } from "material-ui/Card";
-import MenuItem from "material-ui/MenuItem";
-import FlatButton from "material-ui/FlatButton";
-import RaisedButton from "material-ui/RaisedButton";
+import { Card, CardHeader, CardText } from 'material-ui/Card';
+import MenuItem from 'material-ui/MenuItem';
+import FlatButton from 'material-ui/FlatButton';
+import RaisedButton from 'material-ui/RaisedButton';
+import FloatingActionButton from 'material-ui/FloatingActionButton';
+import Dialog from 'material-ui/Dialog';
 
 const adaptFileEventToValue = delegate => e => delegate(e.target.files[0]);
 
@@ -39,13 +41,38 @@ const FileInput = ({
 );
 
 class EditOppPage extends Component {
-	state = { opp: null, submitted: false };
+	state = {
+		opp: null,
+		submitted: false,
+		deleteAlertOpen: false,
+		archiveAlertOpen: false
+	};
 	componentDidMount() {
 		const { id } = this.props.match.params;
 		this.props.fetchOppForEdit(id);
 	}
 	handleSubmitBtnClicked = () => {
 		this.setState({ submitted: true });
+	};
+	handleDeleteAlertOpen = () => {
+		this.setState({
+			deleteAlertOpen: true
+		});
+	};
+	handleDeleteAlertClose = () => {
+		this.setState({
+			deleteAlertOpen: false
+		});
+	};
+	handleArchiveAlertOpen = () => {
+		this.setState({
+			archiveAlertOpen: true
+		});
+	};
+	handleArchiveAlertClose = () => {
+		this.setState({
+			archiveAlertOpen: false
+		});
 	};
 	render() {
 		const { opp, formValues } = this.props;
@@ -54,10 +81,76 @@ class EditOppPage extends Component {
 		}
 		const { _id, company } = opp;
 		const { values } = this.props.formValues;
+		const deleteActions = [
+			<FlatButton
+				label="Cancel"
+				primary={true}
+				onClick={this.handleDeleteAlertClose}
+			/>,
+			<RaisedButton
+				label="Delete"
+				labelColor="#fff"
+				backgroundColor="#EA4335"
+				onClick={() => {
+					this.handleDeleteAlertClose();
+					this.props.deleteOpp(_id, this.props.history);
+				}}
+			/>
+		];
+		const archiveActions = [
+			<FlatButton
+				label="Cancel"
+				primary={true}
+				onClick={this.handleArchiveAlertClose}
+			/>,
+			<RaisedButton
+				label="Archive"
+				labelColor="#fff"
+				backgroundColor="#EA4335"
+				onClick={() => {
+					this.handleArchiveAlertClose();
+					this.props.archiveOpp(_id, this.props.history);
+				}}
+			/>
+		];
 		return (
 			<div className="edit-page-wrapper">
 				<div className="edit-page-header">
 					<h1>Editing {company}</h1>
+					<div className="edit-page-action-btns">
+						<FloatingActionButton
+							mini={true}
+							onClick={() => {
+								this.handleArchiveAlertOpen();
+							}}
+						>
+							<i className="fa fa-archive" />
+						</FloatingActionButton>
+						<FloatingActionButton
+							mini={true}
+							onClick={() => {
+								this.handleDeleteAlertOpen();
+							}}
+						>
+							<i className="fa fa-trash-o" />
+						</FloatingActionButton>
+						<Dialog
+							actions={deleteActions}
+							modal={false}
+							open={this.state.deleteAlertOpen}
+							onRequestClose={this.handleDeleteAlertClose}
+						>
+							Delete this opportunity?
+						</Dialog>
+						<Dialog
+							actions={archiveActions}
+							modal={false}
+							open={this.state.archiveAlertOpen}
+							onRequestClose={this.handleArchiveAlertClose}
+						>
+							Archive this opportunity?
+						</Dialog>
+					</div>
 				</div>
 				<div className="edit-page-body">
 					<form
@@ -142,10 +235,9 @@ class EditOppPage extends Component {
 											label="Summary Tags"
 											component={renderTextAreaField}
 											type="text"
-											style={{ width: "100%" }}
+											style={{ width: '100%' }}
 										/>
 									</div>
-									
 								</div>
 							</CardText>
 						</Card>
@@ -163,7 +255,7 @@ class EditOppPage extends Component {
 											label="Job Description"
 											component={renderTextAreaField}
 											type="text"
-											style={{ width: "100%" }}
+											style={{ width: '100%' }}
 										/>
 									</div>
 									<div className="edit-input-row">
@@ -172,7 +264,7 @@ class EditOppPage extends Component {
 											label="Responsibilities"
 											component={renderTextAreaField}
 											type="text"
-											style={{ width: "100%" }}
+											style={{ width: '100%' }}
 										/>
 									</div>
 									<div className="edit-input-row">
@@ -181,7 +273,7 @@ class EditOppPage extends Component {
 											label="Qualifications"
 											component={renderTextAreaField}
 											type="text"
-											style={{ width: "100%" }}
+											style={{ width: '100%' }}
 										/>
 									</div>
 									<div className="edit-input-row">
@@ -190,7 +282,7 @@ class EditOppPage extends Component {
 											label="Company Description"
 											component={renderTextAreaField}
 											type="text"
-											style={{ width: "100%" }}
+											style={{ width: '100%' }}
 										/>
 									</div>
 								</div>
@@ -250,7 +342,7 @@ class EditOppPage extends Component {
 													? values.resume.name
 														? values.resume.name
 														: values.resumeFileName
-													: ""}
+													: ''}
 											</p>
 											<Field name="resume" component={FileInput} />
 										</div>
@@ -261,7 +353,7 @@ class EditOppPage extends Component {
 													? values.coverLetter.name
 														? values.coverLetter.name
 														: values.coverLetterFileName
-													: ""}
+													: ''}
 											</p>
 											<Field name="coverLetter" component={FileInput} />
 										</div>
@@ -271,7 +363,7 @@ class EditOppPage extends Component {
 						</Card>
 						<Card>
 							<CardHeader
-								title="Misc"
+								title="Notes"
 								actAsExpander={true}
 								showExpandableButton={true}
 							/>
@@ -283,7 +375,7 @@ class EditOppPage extends Component {
 											label="Notes"
 											component={renderTextAreaField}
 											type="text"
-											style={{ width: "100%" }}
+											style={{ width: '100%' }}
 										/>
 									</div>
 								</div>
@@ -291,7 +383,7 @@ class EditOppPage extends Component {
 						</Card>
 						<div className="edit-page-btns">
 							<Link to={`/opp/${_id}`}>
-									<FlatButton label="Cancel" style={{ marginRight: 12 }} />
+								<FlatButton label="Cancel" style={{ marginRight: 12 }} />
 							</Link>
 							{!this.state.submitted ? (
 								<RaisedButton
@@ -325,9 +417,14 @@ function mapStateToProps({ opps, form }, ownProps) {
 	};
 }
 
-export default connect(mapStateToProps, { fetchOppForEdit, editOpp })(
+export default connect(mapStateToProps, {
+	fetchOppForEdit,
+	editOpp,
+	archiveOpp,
+	deleteOpp
+})(
 	reduxForm({
-		form: "oppEditForm",
+		form: 'oppEditForm',
 		enableReinitialize: true
 	})(withRouter(EditOppPage))
 );
