@@ -1,20 +1,20 @@
-import React, { Component } from "react";
-import { BrowserRouter, Route } from "react-router-dom";
-import { connect } from "react-redux";
-import * as actions from "../actions";
+import React, { Component } from 'react';
+import { BrowserRouter, Route } from 'react-router-dom';
+import { connect } from 'react-redux';
+import * as actions from '../actions';
 
-import MuiThemeProvider from "material-ui/styles/MuiThemeProvider";
-import getMuiTheme from "material-ui/styles/getMuiTheme";
-import { grey700, grey800 } from "material-ui/styles/colors";
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import getMuiTheme from 'material-ui/styles/getMuiTheme';
+import { grey700, grey800 } from 'material-ui/styles/colors';
 
-import Header from "./Header/Header";
-import Landing from "./Landing/Landing";
-import Dashboard from "./Dashboard/Dashboard";
-import OppPage from "./opps/OppPage";
+import Header from './Header/Header';
+import Landing from './Landing/Landing';
+import Dashboard from './Dashboard/Dashboard';
+import OppPage from './opps/OppPage';
 import OppForm from './opps/OppForm';
 import EditOppPage from './opps/EditOppPage';
 
-import "./App.css";
+import './App.css';
 
 class App extends Component {
 	componentDidMount() {
@@ -27,7 +27,7 @@ class App extends Component {
 					<div>
 						<Header />
 						<div className="container">
-							<div className="inner-container" style={{ padding: "0 15px" }}>
+							<div className="inner-container" style={{ padding: '0 15px' }}>
 								<Route exact path="/" component={Landing} />
 								<Route exact path="/dashboard" component={Dashboard} />
 								<Route path="/new" component={OppForm} />

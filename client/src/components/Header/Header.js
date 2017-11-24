@@ -21,12 +21,10 @@ class Header extends Component {
 		if (this.props.auth === null) {
 			return;
 		}
-		return (
-			<FlatButton
-				href={this.props.auth ? '/api/logout' : '/auth/google'}
-				label={this.props.auth ? 'Logout' : 'Login'}
-			/>
-		);
+		if (this.props.auth) {
+			return <FlatButton href="/api/logout" label="Logout" />;
+		}
+		return <a className="google-btn" href="/auth/google"><img src={require('../../images/google-signin.png')} alt="google sign in"/></a>;
 	}
 	render() {
 		return (
@@ -55,7 +53,7 @@ const styles = {
 	title: {
 		fontSize: '1.5em',
 		cursor: 'pointer',
-		margin: '0 auto',
+		margin: '0 auto'
 	}
 };
 /************/

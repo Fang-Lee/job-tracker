@@ -429,17 +429,17 @@ class OppPage extends Component {
 							<div className="contact-info">
 								<div>
 									<i className="fa fa-user-circle-o" />
-									<span>{contactName}</span>
+									<span className="truncate">{contactName}</span>
 								</div>
 								<Divider />
 								<div>
 									<i className="fa fa-envelope-o" />
-									<span>{contactEmail}</span>
+									<span className="truncate">{contactEmail}</span>
 								</div>
 								<Divider />
 								<div>
 									<i className="fa fa-phone" />
-									<span>{contactPhone}</span>
+									<span className="truncate">{contactPhone}</span>
 								</div>
 								<Divider />
 								<div>

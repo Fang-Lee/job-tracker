@@ -70,9 +70,9 @@ module.exports = app => {
 				qualifications,
 				lastUpdate = moment().format('L'),
 				priority,
-				contactName,
-				contactEmail,
-				contactPhone,
+				contactName = '',
+				contactEmail = '',
+				contactPhone = '',
 				lastContact,
 				notes,
 				tags = ''

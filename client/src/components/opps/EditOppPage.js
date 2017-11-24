@@ -76,7 +76,7 @@ class EditOppPage extends Component {
 	};
 	render() {
 		const { opp, formValues } = this.props;
-		if (!opp || !formValues) {
+		if (!opp || !formValues || !formValues.values) {
 			return <div>Loading...</div>;
 		}
 		const { _id, company } = opp;
@@ -417,6 +417,40 @@ function mapStateToProps({ opps, form }, ownProps) {
 	};
 }
 
+const fileMaxSize = 10 * 1000 * 1000; // 1MB
+
+function validate(values) {
+	const errors = {};
+
+	const requiredFields = ['company', 'jobTitle', 'status'];
+	const fileFields = ['resume', 'coverLetter'];
+	const lengthFields = ['contactName', 'contactEmail', 'contactPhone'];
+
+	requiredFields.forEach(field => {
+		if (!values[field]) {
+			errors[field] = 'Required';
+		}
+	});
+
+	fileFields.forEach(field => {
+		if (values.resume) {
+			if (values.resume.size > fileMaxSize) {
+				errors.resume = 'File size exceeds maximum size';
+			}
+		}
+	});
+
+	lengthFields.forEach(field => {
+		if (values[field]) {
+			if (values[field].length > 40) {
+				errors[field] = 'Max 40 characters';
+			}
+		}
+	});
+
+	return errors;
+}
+
 export default connect(mapStateToProps, {
 	fetchOppForEdit,
 	editOpp,
@@ -425,6 +459,7 @@ export default connect(mapStateToProps, {
 })(
 	reduxForm({
 		form: 'oppEditForm',
-		enableReinitialize: true
+		enableReinitialize: true,
+		validate
 	})(withRouter(EditOppPage))
 );

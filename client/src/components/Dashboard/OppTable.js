@@ -282,13 +282,15 @@ class OppTable extends Component {
 							>
 								<Info color={grey600} />
 							</IconButton>
-							{status < 5 ? <IconButton
-								containerElement={<Link to={`/edit/opp/${_id}`} />}
-								tooltip="Edit"
-								tooltipPosition="bottom-center"
-							>
-								<ModeEdit color={grey600} />
-							</IconButton> : null }
+							{status < 5 ? (
+								<IconButton
+									containerElement={<Link to={`/edit/opp/${_id}`} />}
+									tooltip="Edit"
+									tooltipPosition="bottom-center"
+								>
+									<ModeEdit color={grey600} />
+								</IconButton>
+							) : null}
 						</TableRowColumn>
 					</TableRow>
 				);
@@ -394,7 +396,13 @@ class OppTable extends Component {
 			case 0:
 				this.setState({
 					category: value,
-					opps: this.originalOpps,
+					opps: this.originalOpps
+						.sort(function(a, b) {
+							let x = Date.parse(a.lastUpdate);
+							let y = Date.parse(b.lastUpdate);
+							return x > y ? 1 : y > x ? -1 : 0;
+						})
+						.reverse(),
 					totalOpps: this.originalOpps.length,
 					totalPages: calcTotalPages(this.originalOpps.length),
 					tableHeaders: [
@@ -410,7 +418,7 @@ class OppTable extends Component {
 							label: 'Last Update',
 							value: 'lastUpdate',
 							sortable: true,
-							reversed: 0
+							reversed: 1
 						},
 						{
 							label: 'Priority',
@@ -425,7 +433,13 @@ class OppTable extends Component {
 			case 1:
 				this.setState({
 					category: value,
-					opps: this.activeOpps,
+					opps: this.activeOpps
+						.sort(function(a, b) {
+							let x = Date.parse(a.lastUpdate);
+							let y = Date.parse(b.lastUpdate);
+							return x > y ? 1 : y > x ? -1 : 0;
+						})
+						.reverse(),
 					totalOpps: this.activeOpps.length,
 					totalPages: calcTotalPages(this.activeOpps.length),
 					tableHeaders: [
@@ -441,7 +455,7 @@ class OppTable extends Component {
 							label: 'Last Update',
 							value: 'lastUpdate',
 							sortable: true,
-							reversed: 0
+							reversed: 1
 						},
 						{
 							label: 'Priority',
@@ -456,7 +470,13 @@ class OppTable extends Component {
 			case 2:
 				this.setState({
 					category: value,
-					opps: this.archivedOpps,
+					opps: this.archivedOpps
+						.sort(function(a, b) {
+							let x = Date.parse(a.lastUpdate);
+							let y = Date.parse(b.lastUpdate);
+							return x > y ? 1 : y > x ? -1 : 0;
+						})
+						.reverse(),
 					totalOpps: this.archivedOpps.length,
 					totalPages: calcTotalPages(this.archivedOpps.length),
 					tableHeaders: [
@@ -472,7 +492,7 @@ class OppTable extends Component {
 							label: 'Last Update',
 							value: 'lastUpdate',
 							sortable: true,
-							reversed: 0
+							reversed: 1
 						},
 						{
 							label: 'Priority',
