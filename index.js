@@ -4,6 +4,7 @@ const cookieSession = require('cookie-session');
 const passport = require('passport');
 const bodyParser = require('body-parser');
 const keys = require('./config/keys');
+const sslRedirect = require('heroku-ssl-redirect');
 require('./models/User');
 require('./models/Opportunity');
 require('./services/passport');
@@ -11,6 +12,9 @@ require('./services/passport');
 mongoose.connect(keys.mongoURI);
 
 const app = express();
+
+// enable ssl redirect
+app.use(sslRedirect());
 
 // each app.use call is wiring up middleware
 // middleware - small functions that are used to modify incoming requests before they are sent off to route handlers.
