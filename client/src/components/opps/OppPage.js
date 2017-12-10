@@ -162,11 +162,8 @@ class OppPage extends Component {
 		return (
 			<Paper id="descriptions" className="descriptions">
 				<div className="job-description">
-					<h3>Job Description</h3>
+					<h3>Job Description/Responsibilities</h3>
 					<p>{this.renderText(jobDescription)}</p>
-					<Divider />
-					<h3>Responsibilities</h3>
-					<p>{this.renderText(responsibilities)}</p>
 					<Divider />
 					<h3>Qualifications</h3>
 					<p>{this.renderText(qualifications)}</p>

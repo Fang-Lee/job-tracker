@@ -69,6 +69,7 @@ module.exports = app => {
 				responsibilities,
 				qualifications,
 				lastUpdate = moment().format('L'),
+				dateApplied,
 				priority,
 				contactName = '',
 				contactEmail = '',
@@ -139,6 +140,7 @@ module.exports = app => {
 				responsibilities,
 				qualifications,
 				lastUpdate,
+				dateApplied,
 				priority,
 				contactName,
 				contactEmail,
@@ -202,7 +204,7 @@ module.exports = app => {
 				oldResume,
 				oldCoverLetter,
 				resume,
-				coverLetter
+				coverLetter,
 			} = req.body;
 		
 			let resumeFileName = resume;

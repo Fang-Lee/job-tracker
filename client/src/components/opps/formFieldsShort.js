@@ -2,6 +2,7 @@ import {
 	renderTextField,
 	renderTextAreaField,
 	renderSelectField,
+	renderDatePicker
 } from '../../utils/formElements';
 
 const styles = {
@@ -84,6 +85,13 @@ const formFieldsShort = [
 		name: 'notes',
 		component: renderTextAreaField,
 		style: styles.fullWidth
+	},
+	{
+		type: 'datePicker',
+		label: 'Date Applied',
+		name: 'dateApplied',
+		component: renderDatePicker,
+		style: styles.fullWidth,
 	}
 ];
 

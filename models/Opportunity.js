@@ -20,6 +20,7 @@ const opportunitySchema = new Schema({
 	contactEmail: String,
 	contactPhone: String,
 	lastContact: Date,
+	dateApplied: String,
 	notes: String,
 	tags: [{type: String}],
 	resume: String,

@@ -260,15 +260,6 @@ class EditOppPage extends Component {
 									</div>
 									<div className="edit-input-row">
 										<Field
-											name="responsibilities"
-											label="Responsibilities"
-											component={renderTextAreaField}
-											type="text"
-											style={{ width: '100%' }}
-										/>
-									</div>
-									<div className="edit-input-row">
-										<Field
 											name="qualifications"
 											label="Qualifications"
 											component={renderTextAreaField}
