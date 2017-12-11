@@ -1,8 +1,14 @@
 import React, { Component } from 'react';
+import { withRouter } from 'react-router-dom';
+import { connect } from 'react-redux';
 import './Landing.css';
 
 class Landing extends Component {
 	render() {
+		if (this.props.auth) {
+			this.props.history.push('/dashboard');
+			return <div />;
+		}
 		return (
 			<div className="landing-wrapper">
 				<div className="">
@@ -70,4 +76,8 @@ class Landing extends Component {
 	}
 }
 
-export default Landing;
+function mapStateToProps({ auth }) {
+	return { auth };
+}
+
+export default connect(mapStateToProps)(withRouter(Landing));

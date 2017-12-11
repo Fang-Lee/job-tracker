@@ -38,7 +38,7 @@ img {
 
 .landing-hero {
 	max-width: 1024px;
-	height: 60vh;
+	height: 50vh;
 	padding-top: 80px;
 	display: flex;
 	justify-content: space-between;
@@ -68,8 +68,8 @@ img {
 }
 
 .landing-about {
-	height: 80vh;
-	padding: 50px 0;
+	height: 70vh;
+	padding: 10px 0 0 0 ;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
@@ -82,7 +82,7 @@ img {
 }
 
 .landing-about > p {
-	margin-bottom: 70px;
+	margin-bottom: 20px;
 }
 
 .landing-features-about {

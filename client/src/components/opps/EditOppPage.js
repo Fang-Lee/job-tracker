@@ -223,10 +223,9 @@ class EditOppPage extends Component {
 									</div>
 									<div className="edit-input-row">
 										<Field
-											name="salary"
-											label="Salary"
-											component={renderTextField}
-											type="text"
+											name="dateApplied"
+											label="Date Applied"
+											component={renderDatePicker}
 										/>
 									</div>
 									<div className="edit-input-row">

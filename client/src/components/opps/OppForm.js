@@ -91,7 +91,6 @@ class OppForm extends Component {
 		this.setState({ submitted: true });
 	};
 	render() {
-		console.log(this.props);
 		if (this.state.submitted) {
 			return (
 				<div className="submitted-screen">

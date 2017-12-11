@@ -205,6 +205,7 @@ module.exports = app => {
 				oldCoverLetter,
 				resume,
 				coverLetter,
+				dateApplied
 			} = req.body;
 		
 			let resumeFileName = resume;
@@ -294,6 +295,7 @@ module.exports = app => {
 				contactEmail,
 				contactPhone,
 				notes,
+				dateApplied,
 				tags: tags.split(',').map(tag => tag.trim())
 			};
 

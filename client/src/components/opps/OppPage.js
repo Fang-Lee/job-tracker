@@ -235,6 +235,8 @@ class OppPage extends Component {
 			coverLetter,
 			resumeLink,
 			coverLetterLink,
+			appLink,
+			dateApplied,
 			tags
 		} = opp;
 		const deleteActions = [
@@ -295,13 +297,24 @@ class OppPage extends Component {
 			<div className="opp-page-wrapper">
 				<div className="opp-page-header">
 					<div className="company-job-header">
-						<h2 className="company-name">{company}</h2>
+						{appLink ? (
+							<a href={appLink} target="_blank">
+								<h2 className="company-name">{company}</h2>
+							</a>
+						) : (
+							<h2 className="company-name">{company}</h2>
+						)}
 						<div className="location-title">
 							<i>
 								{jobTitle}{' '}
 								{location && `${String.fromCharCode(183)} ${location}`}{' '}
 							</i>
 						</div>
+						{dateApplied ? (
+							<div className="date-applied">
+								<i>Applied on: {dateApplied.slice(0, 15)}</i>
+							</div>
+						) : null}
 					</div>
 					<div className="opp-page-header-right">
 						{this.renderStatus(status, priority)}
